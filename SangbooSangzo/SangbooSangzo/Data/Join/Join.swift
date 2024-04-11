@@ -55,6 +55,6 @@ struct UserJoinEmailValidationRequest: Encodable {
     let email: String
 }
 
-struct UserJoinEmailValidationResponse: Encodable {
+struct UserJoinEmailValidationResponse: Decodable {
     let message: String
 }

@@ -21,6 +21,6 @@ struct LoginResponse: Decodable {
     let refreshToken: String
 }
 
-struct RefreshTokenResponse: Encodable {
+struct RefreshTokenResponse: Decodable {
     let accessToken: String
 }

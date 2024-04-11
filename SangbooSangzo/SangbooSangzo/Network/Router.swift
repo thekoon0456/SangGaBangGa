@@ -102,7 +102,5 @@ extension UserRouter: TargetType {
             ]
         }
     }
-    
-    
 }
 
