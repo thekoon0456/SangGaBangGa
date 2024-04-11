@@ -10,13 +10,9 @@ import Foundation
 final class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     
-//    //ShoppingList 저장
-//    @UserDefault(key: Shopping.key, defaultValue: Shopping.defaultList)
-//    var shoppingList: [Shopping]
-//    
-//    //City Index 저장
-//    @UserDefault(key: City.key, defaultValue: 0)
-//    var citySegIndex: Int
+    //Token
+    @UserDefault(key: UserToken.key, defaultValue: UserToken.defaultValue)
+    var userToken: UserToken
     
     private init() { }
 }
