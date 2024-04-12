@@ -85,22 +85,19 @@ extension UserRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .join, .validationEmail, .login:
-            [
-                HTTPHeader.contentType: HTTPHeader.json,
-                HTTPHeader.sesacKey: APIKey.sesacKey
-            ]
+            [HTTPHeader.contentType: HTTPHeader.json]
         case .refreshToken:
-            [
-                HTTPHeader.contentType: HTTPHeader.json,
-                HTTPHeader.sesacKey: APIKey.sesacKey,
-                HTTPHeader.refresh: UserDefaultsManager.shared.userToken.refreshToken
-            ]
+            [HTTPHeader.contentType: HTTPHeader.json,
+             HTTPHeader.refresh: UserDefaultsManager.shared.userToken.refreshToken ?? ""]
         case .withdraw:
-            [
-                HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken,
-                HTTPHeader.sesacKey: APIKey.sesacKey
-            ]
+            [:]
         }
     }
 }
 
+extension TargetType {
+    
+    var validationType: ValidationType {
+          return .successCodes
+      }
+}

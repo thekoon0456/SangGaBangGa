@@ -9,17 +9,10 @@ import Foundation
 
 import Moya
 
-
-
-
-    
-    
 enum PostsRouter {
     case uploadImage(query: UploadImageDatasQuery)
     case uploadContents(query: UploadContentQuery)
 }
-
-
 
 extension PostsRouter: TargetType {
     
@@ -82,17 +75,11 @@ extension PostsRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .uploadImage:
-            [
-                HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken,
-                HTTPHeader.contentType: HTTPHeader.multiPartFormData,
-                HTTPHeader.sesacKey: APIKey.sesacKey
-            ]
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             HTTPHeader.contentType: HTTPHeader.multiPartFormData]
         case .uploadContents:
-            [
-                HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken,
-                HTTPHeader.contentType: HTTPHeader.json,
-                HTTPHeader.sesacKey: APIKey.sesacKey
-            ]
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             HTTPHeader.contentType: HTTPHeader.json]
         }
     }
 }

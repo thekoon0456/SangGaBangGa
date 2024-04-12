@@ -9,8 +9,8 @@ import Foundation
 
 struct UserToken: Codable {
     static let key = "UserToken"
-    static let defaultValue = UserToken(accessToken: "", refreshToken: "")
+    static let defaultValue = UserToken(accessToken: nil, refreshToken: nil)
     
-    var accessToken: String
-    var refreshToken: String
+    var accessToken: String?
+    var refreshToken: String?
 }
