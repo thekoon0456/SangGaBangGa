@@ -11,6 +11,7 @@ enum HTTPHeader {
     static let authorization = "Authorization"
     static let contentType = "Content-Type"
     static let json = "application/json"
+    static let multiPartFormData = "multipart/form-data"
     static let sesacKey = "SesacKey"
     static let refresh = "Refresh"
 }

@@ -1,8 +1,8 @@
 //
-//  Join.swift
+//  UserJoinRequest.swift
 //  SangbooSangzo
 //
-//  Created by Deokhun KIM on 4/11/24.
+//  Created by Deokhun KIM on 4/12/24.
 //
 
 import Foundation
@@ -30,31 +30,4 @@ struct UserJoinRequest: Encodable {
         try container.encodeIfPresent(self.phoneNum, forKey: .phoneNum)
         try container.encodeIfPresent(self.birthDay, forKey: .birthDay)
     }
-}
-
-struct UserJoinResponse: Decodable {
-    let userID: String
-    let email: String
-    let nick: String
-    
-    enum CodingKeys: String, CodingKey {
-        case userID = "user_id"
-        case email
-        case nick
-    }
-    
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.userID = try container.decode(String.self, forKey: .userID)
-        self.email = try container.decode(String.self, forKey: .email)
-        self.nick = try container.decode(String.self, forKey: .nick)
-    }
-}
-
-struct UserJoinEmailValidationRequest: Encodable {
-    let email: String
-}
-
-struct UserJoinEmailValidationResponse: Decodable {
-    let message: String
 }

@@ -1,16 +1,11 @@
 //
-//  Login.swift
+//  LoginResponse.swift
 //  SangbooSangzo
 //
-//  Created by Deokhun KIM on 4/11/24.
+//  Created by Deokhun KIM on 4/12/24.
 //
 
 import Foundation
-
-struct LoginRequest: Encodable {
-    let email: String
-    let password: String
-}
 
 struct LoginResponse: Decodable {
     let user_id: String
@@ -19,8 +14,4 @@ struct LoginResponse: Decodable {
     let profileImage: String?
     let accessToken: String
     let refreshToken: String
-}
-
-struct RefreshTokenResponse: Decodable {
-    let accessToken: String
 }
