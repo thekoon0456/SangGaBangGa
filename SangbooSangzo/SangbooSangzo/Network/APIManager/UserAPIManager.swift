@@ -21,7 +21,6 @@ final class UserAPIManager {
     
     func join(query: UserJoinRequest) -> Single<UserJoinResponse> {
         provider.rx.request(.join(query: query))
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(UserJoinResponse.self)
             .catch { error -> Single<UserJoinResponse> in
                 print("join 에러 발생: \(error)")
@@ -31,7 +30,6 @@ final class UserAPIManager {
     
     func validationEmail(query: UserJoinEmailValidationRequest) -> Single<UserJoinEmailValidationResponse> {
         provider.rx.request(.validationEmail(query: query))
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(UserJoinEmailValidationResponse.self)
             .catch { error -> Single<UserJoinEmailValidationResponse> in
                 print("validationEmail 에러 발생: \(error)")
@@ -41,7 +39,6 @@ final class UserAPIManager {
     
     func login(query: LoginRequest) -> Single<LoginResponse> {
         provider.rx.request(.login(query: query))
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(LoginResponse.self)
             .catch { error -> Single<LoginResponse> in
                 print("login 에러 발생: \(error)")
@@ -51,7 +48,6 @@ final class UserAPIManager {
     
     func refreshToken() -> Single<RefreshTokenResponse> {
         provider.rx.request(.refreshToken)
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(RefreshTokenResponse.self)
             .catch { error -> Single<RefreshTokenResponse> in
                 print("refreshToken 에러 발생: \(error)")
@@ -61,7 +57,6 @@ final class UserAPIManager {
     
     func withdraw() -> Single<WithdrawResponse> {
         provider.rx.request(.withdraw)
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(WithdrawResponse.self)
             .catch { error -> Single<WithdrawResponse> in
                 print("refreshToken 에러 발생: \(error)")

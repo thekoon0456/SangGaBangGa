@@ -35,7 +35,7 @@ final class TokenInterceptor: RequestInterceptor {
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
         print("retry")
         guard let response = request.task?.response as? HTTPURLResponse,
-              response.statusCode == 401
+              response.statusCode == 419
         else {
             //login화면으로
             completion(.doNotRetryWithError(error))

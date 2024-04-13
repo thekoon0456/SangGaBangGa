@@ -30,9 +30,8 @@ final class LoginViewController: RxBaseViewController {
             .map { email, password in
                 LoginRequest(email: email, password: password)
             }
-        loginObservable
-            .take(1)
-            .subscribe
+        
+        
         
     }
     

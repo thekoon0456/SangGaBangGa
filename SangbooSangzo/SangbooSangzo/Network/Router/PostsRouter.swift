@@ -9,9 +9,39 @@ import Foundation
 
 import Moya
 
+struct FetchPostsqQuery: Encodable {
+    let next: String?
+    let limit: String?
+    let productID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case next
+        case limit
+        case productID = "product_id"
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.next, forKey: .next)
+        try container.encodeIfPresent(self.limit, forKey: .limit)
+        try container.encodeIfPresent(self.productID, forKey: .productID)
+    }
+}
+
+struct FetchPostsResponse: Decodable {
+    let data: UploadContentResponse
+    let nextCursor: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case nextCursor = "next_cursor"
+    }
+}
+
 enum PostsRouter {
     case uploadImage(query: UploadImageDatasRequest)
     case uploadContents(query: UploadContentRequest)
+    case fetchContents(query: FetchPostsqQuery)
 }
 
 extension PostsRouter: TargetType {
@@ -23,9 +53,15 @@ extension PostsRouter: TargetType {
     var path: String {
         switch self {
         case .uploadImage(let query):
-            "/posts/files"
+            return "/posts/files"
         case .uploadContents(query: let query):
-            "/posts"
+            return "/posts"
+        case .fetchContents(query: let query):
+            guard let next = query.next,
+                  let limit = query.limit else {
+                return "/posts"
+            }
+            return "/posts?next=\(next)&limit=\(limit)"
         }
     }
     
@@ -35,6 +71,8 @@ extension PostsRouter: TargetType {
                 .post
         case .uploadContents(query: let query):
                 .post
+        case .fetchContents(query: let query):
+                .get
         }
     }
     
@@ -69,17 +107,19 @@ extension PostsRouter: TargetType {
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .fetchContents(query: let query):
+            return .requestPlain
         }
     }
     
     var headers: [String: String]? {
         switch self {
         case .uploadImage:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
-             HTTPHeader.contentType: HTTPHeader.multiPartFormData]
+             [HTTPHeader.contentType: HTTPHeader.multiPartFormData]
         case .uploadContents:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
-             HTTPHeader.contentType: HTTPHeader.json]
+             [HTTPHeader.contentType: HTTPHeader.json]
+        case .fetchContents(query: let query):
+            [:]
         }
     }
 }
