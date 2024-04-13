@@ -10,8 +10,8 @@ import Foundation
 import Moya
 
 enum PostsRouter {
-    case uploadImage(query: UploadImageDatasQuery)
-    case uploadContents(query: UploadContentQuery)
+    case uploadImage(query: UploadImageDatasRequest)
+    case uploadContents(query: UploadContentRequest)
 }
 
 extension PostsRouter: TargetType {

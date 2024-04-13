@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UploadContentQuery: Encodable {
+struct UploadContentRequest: Encodable {
     let title: String?
     let content: String?
     let content1: String?

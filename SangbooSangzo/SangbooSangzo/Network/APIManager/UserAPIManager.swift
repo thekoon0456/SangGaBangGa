@@ -17,7 +17,7 @@ final class UserAPIManager {
     
     private init() { }
     
-    let provider = MoyaProvider<UserRouter>()
+    let provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()))
     
     func join(query: UserJoinRequest) -> Single<UserJoinResponse> {
         provider.rx.request(.join(query: query))

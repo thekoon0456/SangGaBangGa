@@ -13,8 +13,12 @@ import RxSwift
 
 final class TokenInterceptor: RequestInterceptor {
     
+    private let disposeBag = DisposeBag()
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
-        guard urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1") == true,
+        guard urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/join") == false
+                && urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/validation/email") == false
+                && urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/users/login") == false,
               let accessToken = UserDefaultsManager.shared.userToken.accessToken,
               let refreshToken = UserDefaultsManager.shared.userToken.refreshToken else {
             completion(.success(urlRequest))
@@ -24,7 +28,7 @@ final class TokenInterceptor: RequestInterceptor {
         var urlRequest = urlRequest
         urlRequest.setValue(accessToken, forHTTPHeaderField: HTTPHeader.authorization)
         urlRequest.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
-        print("adator, \(urlRequest.headers)")	
+        print("adator, \(urlRequest.headers)")
         completion(.success(urlRequest))
     }
     
@@ -33,17 +37,16 @@ final class TokenInterceptor: RequestInterceptor {
         guard let response = request.task?.response as? HTTPURLResponse,
               response.statusCode == 401
         else {
+            //login화면으로
             completion(.doNotRetryWithError(error))
             return
         }
         
-        //로그인 분기처리
-        
+        UserAPIManager.shared.refreshToken()
+            .subscribe { response in
+                print("refreshToken", response.accessToken)
+                UserDefaultsManager.shared.userToken.accessToken = response.accessToken
+            }
+            .disposed(by: disposeBag)
     }
 }
-
-//func logger(_ logMessage: String, _ logLevel: Int){
-//    #if(DEBUG)
-//    print(logMessage)
-//    #endif
-//}

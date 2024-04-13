@@ -17,9 +17,9 @@ final class PostsAPIManager {
     
     private init() { }
     
-    let provider = MoyaProvider<PostsRouter>()
+    let provider = MoyaProvider<PostsRouter>(session: Session(interceptor: TokenInterceptor()))
     
-    func uploadImages(query: UploadImageDatasQuery) -> Single<UploadImageResponse> {
+    func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageResponse> {
         provider.rx.request(.uploadImage(query: query))
             .filterSuccessfulStatusAndRedirectCodes()
             .map(UploadImageResponse.self)
@@ -29,7 +29,7 @@ final class PostsAPIManager {
             }
     }
     
-    func uploadContents(images: [String], query: UploadImageDatasQuery) -> Single<UploadImageResponse> {
+    func uploadContents(images: [String], query: UploadImageDatasRequest) -> Single<UploadImageResponse> {
         provider.rx.request(.uploadImage(query: query))
             .filterSuccessfulStatusAndRedirectCodes()
             .map(UploadImageResponse.self)

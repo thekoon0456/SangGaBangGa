@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UploadImageDatasQuery: Encodable {
+struct UploadImageDatasRequest: Encodable {
     let datas: [Data]
 }
