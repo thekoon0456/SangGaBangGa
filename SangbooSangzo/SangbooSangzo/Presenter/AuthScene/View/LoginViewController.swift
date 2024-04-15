@@ -42,6 +42,20 @@ final class LoginViewController: RxBaseViewController {
         $0.borderStyle = .roundedRect
     }
     
+    private let loginButton = UIButton().then {
+        $0.backgroundColor = .tintColor
+        $0.setTitle("로그인하기", for: .normal)
+    }
+    
+    private let signInLabel = UILabel().then {
+        $0.text = "아직 회원이 아니세요?"
+    }
+    
+    private let signInButton = UIButton().then {
+        $0.setTitle("여기를 눌러 가입하기", for: .normal)
+        $0.setTitleColor(.tintColor, for: .normal)
+    }
+    
     // MARK: - Lifecycles
     
     init(viewModel: LoginViewModel) {
@@ -73,7 +87,7 @@ final class LoginViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(appLabel, emailTextField, passwordTextField)
+        view.addSubviews(appLabel, emailTextField, passwordTextField, loginButton, signInLabel, signInButton)
     }
     
     override func configureLayout() {
@@ -99,11 +113,29 @@ final class LoginViewController: RxBaseViewController {
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(60)
         }
+        
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(60)
+        }
+        
+        signInLabel.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(40)
+        }
+        
+        signInButton.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(20)
+            make.leading.equalTo(signInLabel.snp.trailing).offset(20)
+            make.height.equalTo(40)
+        }
     }
     
     override func configureView() {
         super.configureView()
-        navigationItem.title = "Login"
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: xButton)
     }
 }
