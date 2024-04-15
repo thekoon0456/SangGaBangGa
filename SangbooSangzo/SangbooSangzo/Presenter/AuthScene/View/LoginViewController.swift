@@ -73,16 +73,12 @@ final class LoginViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let loginObservable = Observable.zip(emailTextField.rx.text.orEmpty,
-                                             passwordTextField.rx.text.orEmpty)
-            .map { email, password in
-                LoginRequest(email: email, password: password)
-            }
-        
-        xButton.rx.tap.subscribe(with: self) { owner, _ in
-            owner.dismiss(animated: true)
-        }
-        .disposed(by: disposeBag)
+        let input = LoginViewModel.Input(email: emailTextField.rx.text.orEmpty,
+                                         password: passwordTextField.rx.text.orEmpty,
+                                         loginButtonTapped: loginButton.rx.tap,
+                                         singInButtonTapped: signInButton.rx.tap,
+                                         xbuttonTapped: xButton.rx.tap)
+        let output = viewModel.transform(input)
     }
     
     override func configureHierarchy() {

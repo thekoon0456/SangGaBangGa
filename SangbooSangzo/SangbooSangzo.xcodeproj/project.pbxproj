@@ -65,6 +65,8 @@
 		7C1C50292BCD062E0066CBCA /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50282BCD062E0066CBCA /* UIColor+.swift */; };
 		7C1C502B2BCD0A980066CBCA /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502A2BCD0A980066CBCA /* CustomAnnotation.swift */; };
 		7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */; };
+		7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50302BCD26E30066CBCA /* SignInViewController.swift */; };
+		7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +124,8 @@
 		7C1C50282BCD062E0066CBCA /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		7C1C502A2BCD0A980066CBCA /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotaionView.swift; sourceTree = "<group>"; };
+		7C1C50302BCD26E30066CBCA /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				7C1C50262BCD02A50066CBCA /* LoginViewModel.swift */,
+				7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -501,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				7C18ECFC2BC8056600F061DE /* LoginViewController.swift */,
+				7C1C50302BCD26E30066CBCA /* SignInViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -598,6 +604,7 @@
 				7C18ECB82BC6799300F061DE /* RxBaseViewController.swift in Sources */,
 				7C18ECE62BC699D300F061DE /* Coordinator.swift in Sources */,
 				7C0ADCB52BC92090002DAEA7 /* UserJoinEmailValidationResponse.swift in Sources */,
+				7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */,
 				7C0ADCB12BC92067002DAEA7 /* UserJoinResponse.swift in Sources */,
 				7C18ECC42BC67EC200F061DE /* UIView+.swift in Sources */,
 				7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */,
@@ -615,6 +622,7 @@
 				7C1C500B2BCCFE310066CBCA /* FeedCoordinator.swift in Sources */,
 				7C1C501B2BCCFFC40066CBCA /* InfoCoordinator.swift in Sources */,
 				7C1C502B2BCD0A980066CBCA /* CustomAnnotation.swift in Sources */,
+				7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */,
 				7C0ADCB32BC92077002DAEA7 /* UserJoinEmailValidationRequest.swift in Sources */,
 				7C18ECF32BC7F57A00F061DE /* UserToken.swift in Sources */,
 				7C18ECFD2BC8056600F061DE /* LoginViewController.swift in Sources */,

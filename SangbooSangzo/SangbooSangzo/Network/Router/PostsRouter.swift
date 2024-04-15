@@ -53,15 +53,15 @@ extension PostsRouter: TargetType {
     var path: String {
         switch self {
         case .uploadImage:
-            return "/posts/files"
+            return "/v1/posts/files"
         case .uploadContents:
-            return "/posts"
+            return "/v1/posts"
         case .fetchContents(query: let query):
             guard let next = query.next,
                   let limit = query.limit else {
-                return "/posts"
+                return "/v1/posts"
             }
-            return "/posts?next=\(next)&limit=\(limit)"
+            return "/v1/posts?next=\(next)&limit=\(limit)"
         }
     }
     

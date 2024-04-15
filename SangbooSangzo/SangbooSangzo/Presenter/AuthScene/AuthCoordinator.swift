@@ -12,6 +12,7 @@ final class AuthCoordinator: Coordinator {
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
     var navigationController: UINavigationController?
+    var childNav = UINavigationController()
     
     init(navigationController: UINavigationController?) {
         self.childCoordinators = []
@@ -21,8 +22,14 @@ final class AuthCoordinator: Coordinator {
     func start() {
         let vm = LoginViewModel(coordinator: self)
         let vc = LoginViewController(viewModel: vm)
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .overFullScreen
-        navigationController?.present(nav, animated: true)
+        childNav.viewControllers = [vc]
+        childNav.modalPresentationStyle = .overFullScreen
+        navigationController?.present(childNav, animated: true)
+    }
+    
+    func pushToSignInView() {
+        let vm = SignInViewModel(coordinator: self)
+        let vc = SignInViewController(viewModel: vm)
+        childNav.pushViewController(vc, animated: true)
     }
 }

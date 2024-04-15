@@ -100,6 +100,7 @@ extension Coordinator {
     
     func presentLoginScene() {
         let coordinator = AuthCoordinator(navigationController: self.navigationController)
+        childCoordinators.append(coordinator)
         coordinator.start()
     }
 }

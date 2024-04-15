@@ -11,18 +11,23 @@ import RxCocoa
 import RxSwift
 
 final class LoginViewModel: ViewModel {
-
+    
     struct Input {
-        
+        let email: ControlProperty<String>
+        let password: ControlProperty<String>
+        let loginButtonTapped: ControlEvent<Void>
+        let singInButtonTapped: ControlEvent<Void>
+        let xbuttonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        
+        //validation 추가
     }
     
     // MARK: - Properties
     
     weak var coordinator: AuthCoordinator?
+    let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: AuthCoordinator?) {
@@ -31,7 +36,41 @@ final class LoginViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
+        let loginInfo = Observable.zip(
+            input.email.asObservable(),
+            input.password.asObservable()
+        )
+        
+        input.loginButtonTapped
+            .flatMap { loginInfo }
+            .debug()
+            .subscribe(with: self) { owner, login in
+                owner
+                    .userAPIManager
+                    .login(query: LoginRequest(email: login.0, password: login.1))
+                    .subscribe(with: self) { owner, result in
+                        owner.coordinator?.navigationController?.dismiss(animated: true)
+                    }
+                    .disposed(by: owner.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        input.singInButtonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.coordinator?.pushToSignInView()
+            }
+            .disposed(by: disposeBag)
+        
+        input.xbuttonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                print(owner.coordinator)
+                owner.coordinator?.navigationController?.dismiss(animated: true)
+                owner.coordinator?.finish()
+            }
+            .disposed(by: disposeBag)
+        
         return Output()
     }
-    
 }

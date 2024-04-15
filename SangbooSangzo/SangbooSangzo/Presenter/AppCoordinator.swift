@@ -48,4 +48,5 @@ final class AppCoordinator: Coordinator {
         tabBarController.viewControllers = [feedNav, mapNav, infoNav]
         navigationController?.setViewControllers([tabBarController], animated: false)
     }
+
 }
