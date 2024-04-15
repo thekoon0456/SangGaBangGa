@@ -37,9 +37,9 @@ final class PostsAPIManager {
             }
     }
 
-    func fetchPosts() -> Single<> {
-        provider.rx.request(.)
-        
-    }
+//    func fetchPosts() -> Single<> {
+//        provider.rx.request(.)
+//        
+//    }
     
 }
