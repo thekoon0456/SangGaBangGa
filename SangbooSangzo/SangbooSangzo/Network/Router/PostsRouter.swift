@@ -52,9 +52,9 @@ extension PostsRouter: TargetType {
     
     var path: String {
         switch self {
-        case .uploadImage(let query):
+        case .uploadImage:
             return "/posts/files"
-        case .uploadContents(query: let query):
+        case .uploadContents:
             return "/posts"
         case .fetchContents(query: let query):
             guard let next = query.next,
@@ -67,11 +67,11 @@ extension PostsRouter: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .uploadImage(let query):
+        case .uploadImage:
                 .post
-        case .uploadContents(query: let query):
+        case .uploadContents:
                 .post
-        case .fetchContents(query: let query):
+        case .fetchContents:
                 .get
         }
     }
@@ -107,7 +107,7 @@ extension PostsRouter: TargetType {
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-        case .fetchContents(query: let query):
+        case .fetchContents:
             return .requestPlain
         }
     }
@@ -118,7 +118,7 @@ extension PostsRouter: TargetType {
              [HTTPHeader.contentType: HTTPHeader.multiPartFormData]
         case .uploadContents:
              [HTTPHeader.contentType: HTTPHeader.json]
-        case .fetchContents(query: let query):
+        case .fetchContents:
             [:]
         }
     }

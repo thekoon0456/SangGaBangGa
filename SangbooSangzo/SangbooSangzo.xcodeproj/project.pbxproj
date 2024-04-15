@@ -63,6 +63,8 @@
 		7C1C50232BCD028A0066CBCA /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50222BCD028A0066CBCA /* AuthCoordinator.swift */; };
 		7C1C50272BCD02A50066CBCA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50262BCD02A50066CBCA /* LoginViewModel.swift */; };
 		7C1C50292BCD062E0066CBCA /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50282BCD062E0066CBCA /* UIColor+.swift */; };
+		7C1C502B2BCD0A980066CBCA /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502A2BCD0A980066CBCA /* CustomAnnotation.swift */; };
+		7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +120,8 @@
 		7C1C50222BCD028A0066CBCA /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		7C1C50262BCD02A50066CBCA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		7C1C50282BCD062E0066CBCA /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		7C1C502A2BCD0A980066CBCA /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotaionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,6 +467,8 @@
 			isa = PBXGroup;
 			children = (
 				7C1C50162BCCFF2C0066CBCA /* MapViewController.swift */,
+				7C1C502A2BCD0A980066CBCA /* CustomAnnotation.swift */,
+				7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -594,6 +600,7 @@
 				7C0ADCB52BC92090002DAEA7 /* UserJoinEmailValidationResponse.swift in Sources */,
 				7C0ADCB12BC92067002DAEA7 /* UserJoinResponse.swift in Sources */,
 				7C18ECC42BC67EC200F061DE /* UIView+.swift in Sources */,
+				7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */,
 				7C0ADCB92BC920B4002DAEA7 /* LoginResponse.swift in Sources */,
 				7C1C50212BCD002B0066CBCA /* InfoViewModel.swift in Sources */,
 				7C1C50132BCCFF1F0066CBCA /* MapCoordinator.swift in Sources */,
@@ -607,6 +614,7 @@
 				7C0ADCAF2BC9203D002DAEA7 /* UserJoinRequest.swift in Sources */,
 				7C1C500B2BCCFE310066CBCA /* FeedCoordinator.swift in Sources */,
 				7C1C501B2BCCFFC40066CBCA /* InfoCoordinator.swift in Sources */,
+				7C1C502B2BCD0A980066CBCA /* CustomAnnotation.swift in Sources */,
 				7C0ADCB32BC92077002DAEA7 /* UserJoinEmailValidationRequest.swift in Sources */,
 				7C18ECF32BC7F57A00F061DE /* UserToken.swift in Sources */,
 				7C18ECFD2BC8056600F061DE /* LoginViewController.swift in Sources */,
