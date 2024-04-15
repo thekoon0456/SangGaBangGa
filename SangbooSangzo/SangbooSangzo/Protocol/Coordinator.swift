@@ -97,4 +97,9 @@ extension Coordinator {
 //            navigationController?.present(alert, animated: true)
 //        }
 //    }
+    
+    func presentLoginScene() {
+        let coordinator = AuthCoordinator(navigationController: self.navigationController)
+        coordinator.start()
+    }
 }

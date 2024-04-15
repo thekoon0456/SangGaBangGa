@@ -19,4 +19,9 @@ final class FeedViewController: RxBaseViewController {
         super.init()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.coordinator?.presentLoginScene()
+    }
+    
 }
