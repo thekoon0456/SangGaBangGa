@@ -22,19 +22,11 @@ final class PostsAPIManager {
     func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageResponse> {
         provider.rx.request(.uploadImage(query: query))
             .map(UploadImageResponse.self)
-            .catch { error -> Single<UploadImageResponse> in
-                print("uploadImages 에러 발생: \(error)")
-                throw error
-            }
     }
     
     func uploadContents(images: [String], query: UploadContentRequest) -> Single<UploadContentResponse> {
         provider.rx.request(.uploadContents(query: query))
             .map(UploadContentResponse.self)
-            .catch { error -> Single<UploadContentResponse> in
-                print("uploadImages 에러 발생: \(error)")
-                throw error
-            }
     }
 
 //    func fetchPosts() -> Single<> {

@@ -48,10 +48,34 @@ final class LoginViewModel: ViewModel {
                 owner
                     .userAPIManager
                     .login(query: LoginRequest(email: login.0, password: login.1))
-                    .subscribe(with: self) { owner, result in
-                        owner.coordinator?.navigationController?.dismiss(animated: true)
-                    }
-                    .disposed(by: owner.disposeBag)
+//                    .catch { [weak self] error in
+//                        guard let self else {
+//                            return Single<LoginResponse>.never()
+//                        }
+//                        coordinator?.showToast(.loginFail)
+//                        return Single<LoginResponse>.never()
+//                    }
+//                    .subscribe {result in
+//                        switch result {
+//                        case .success(let response):
+//                            UserDefaultsManager.shared.userToken = UserToken(accessToken: response.accessToken,
+//                                                                                                     refreshToken: response.refreshToken)
+//                            
+//                                                    owner.coordinator?.showToast(.loginSuccess)
+//                                                    owner.coordinator?.navigationController?.dismiss(animated: true)
+//                        case .failure(let error):
+//                            owner.coordinator?.showToast(.loginFail)
+//                        }
+                        
+                        
+//                        //성공
+//                        UserDefaultsManager.shared.userToken = UserToken(accessToken: result.accessToken,
+//                                                                         refreshToken: result.refreshToken)
+//                        
+//                        owner.coordinator?.showToast(.loginSuccess)
+//                        owner.coordinator?.navigationController?.dismiss(animated: true)
+//                    }.dispose()
+//                    .disposed(by: owner.disposeBag)
             }
             .disposed(by: disposeBag)
         

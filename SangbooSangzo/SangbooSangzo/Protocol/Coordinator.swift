@@ -110,7 +110,7 @@ extension Coordinator {
         vc.modalTransitionStyle = .crossDissolve
         navigationController?.present(vc, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             vc.dismiss(animated: true)
         }
     }

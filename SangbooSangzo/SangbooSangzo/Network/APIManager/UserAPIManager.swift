@@ -17,51 +17,56 @@ final class UserAPIManager {
     
     private init() { }
     
-    let provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()))
+//    let provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()))
+    let logger = NetworkLoggerPlugin()
+    lazy var provider = MoyaProvider<UserRouter>(plugins: [logger])
+    private let disposeBag = DisposeBag()
     
     func join(query: UserJoinRequest) -> Single<UserJoinResponse> {
         provider.rx.request(.join(query: query))
             .map(UserJoinResponse.self)
-            .catch { error -> Single<UserJoinResponse> in
-                print("join 에러 발생: \(error)")
-                throw error
-            }
     }
     
     func validationEmail(query: UserJoinEmailValidationRequest) -> Single<UserJoinEmailValidationResponse> {
         provider.rx.request(.validationEmail(query: query))
             .map(UserJoinEmailValidationResponse.self)
-            .catch { error -> Single<UserJoinEmailValidationResponse> in
-                print("validationEmail 에러 발생: \(error)")
-                throw error
-            }
     }
     
-    func login(query: LoginRequest) -> Single<LoginResponse> {
+    func login(query: LoginRequest) {
         provider.rx.request(.login(query: query))
+            .debug()
             .map(LoginResponse.self)
-            .catch { error -> Single<LoginResponse> in
-                print("login 에러 발생: \(error)")
-                throw error
+            .subscribe { response in
+                print("성공")
+                print(response)
+            } onFailure: { error in
+                print("실패")
+                print(error)
             }
+            .disposed(by: disposeBag)
+
+        
+//        provider.request(.login(query: query)) { result in
+//            switch result {
+//            case .success(let response):
+//                print(response.data)
+//                
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+//        
+//        return provider.rx.request(.login(query: query)).map(LoginResponse.self)
     }
     
     func refreshToken() -> Single<RefreshTokenResponse> {
         provider.rx.request(.refreshToken)
             .map(RefreshTokenResponse.self)
-            .catch { error -> Single<RefreshTokenResponse> in
-                print("refreshToken 에러 발생: \(error)")
-                throw error
-            }
     }
     
     func withdraw() -> Single<WithdrawResponse> {
         provider.rx.request(.withdraw)
             .map(WithdrawResponse.self)
-            .catch { error -> Single<WithdrawResponse> in
-                print("refreshToken 에러 발생: \(error)")
-                throw error
-            }
     }
 }
 

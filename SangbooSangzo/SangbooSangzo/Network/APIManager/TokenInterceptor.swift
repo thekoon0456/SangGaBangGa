@@ -26,8 +26,8 @@ final class TokenInterceptor: RequestInterceptor {
         }
         
         var urlRequest = urlRequest
-        urlRequest.setValue(accessToken, forHTTPHeaderField: HTTPHeader.authorization)
-        urlRequest.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
+//        urlRequest.setValue(accessToken, forHTTPHeaderField: HTTPHeader.authorization)
+//        urlRequest.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
         print("adator, \(urlRequest.headers)")
         completion(.success(urlRequest))
     }

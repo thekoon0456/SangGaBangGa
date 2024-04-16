@@ -7,6 +7,7 @@
 
 import Foundation
 
+import Alamofire
 import Moya
 
 enum UserRouter {
@@ -25,11 +26,11 @@ extension UserRouter: TargetType {
     
     var path: String {
         switch self {
-        case .join(query: let query):
+        case .join:
             "/v1/users/join"
-        case .validationEmail(query: let query):
+        case .validationEmail:
             "/v1/validation/email"
-        case .login(let query):
+        case .login:
             "/v1/users/login"
         case .refreshToken:
             "/v1/auth/refresh"
@@ -40,11 +41,11 @@ extension UserRouter: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .join(let query):
+        case .join:
                 .post
-        case .validationEmail(let query):
+        case .validationEmail:
                 .post
-        case .login(let query):
+        case .login:
                 .post
         case .refreshToken:
                 .get
@@ -53,7 +54,7 @@ extension UserRouter: TargetType {
         }
     }
     
-    var task: Task {
+    var task: Moya.Task {
         switch self {
         case .join(let query):
             let params = [
@@ -70,11 +71,11 @@ extension UserRouter: TargetType {
             ]
             return .requestParameters(parameters: param, encoding: URLEncoding.default)
         case .login(let query):
-            let params = [
+            let params: [String: String] = [
                 "email": query.email,
-                "password": query.password,
+                "password": query.password
             ]
-            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case .refreshToken:
             return .requestPlain
         case .withdraw:
@@ -85,19 +86,22 @@ extension UserRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .join, .validationEmail, .login:
-            [HTTPHeader.contentType: HTTPHeader.json]
-        case .refreshToken:
             [HTTPHeader.contentType: HTTPHeader.json,
+             HTTPHeader.sesacKey: APIKey.sesacKey]
+        case .refreshToken:
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             HTTPHeader.sesacKey: APIKey.sesacKey,
              HTTPHeader.refresh: UserDefaultsManager.shared.userToken.refreshToken ?? ""]
         case .withdraw:
-            [:]
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }
 }
-
-extension TargetType {
-    
-    var validationType: ValidationType {
-          return .successCodes
-      }
-}
+//
+//extension TargetType {
+//    
+//    var validationType: ValidationType {
+//          return .successCodes
+//      }
+//}

@@ -8,6 +8,7 @@
 import UIKit
 
 enum Toast {
+    case loginSuccess
     case loginFail
     
     case emailValidation(email: String)
@@ -15,12 +16,14 @@ enum Toast {
     
     var message: String {
         switch self {
+        case .loginSuccess:
+            "로그인에 성공했습니다"
         case .loginFail:
             "유효하지 않은 회원정보입니다. 회원가입을 진행해주세요."
         case .emailValidation(let email):
-            "\(email)은 사용 가능합니다."
+            "\(email)은 사용 가능합니다"
         case .emailValidationFail(let email):
-            "\(email)은 이미 가입된 이메일입니다."
+            "\(email)은 이미 가입된 이메일입니다"
         }
     }
 }
