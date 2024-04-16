@@ -30,4 +30,10 @@ final class FeedCoordinator: Coordinator {
     func didFinish(childCoordinator: any Coordinator) {
         childCoordinators = []
     }
+    
+    func pushToPost() {
+        let vm = PostViewModel()
+        let vc = PostViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

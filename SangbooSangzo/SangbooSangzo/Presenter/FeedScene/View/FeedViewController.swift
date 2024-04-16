@@ -22,7 +22,7 @@ final class FeedViewController: RxBaseViewController {
         $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
     }
     
-    private lazy var floatingButton = UIButton().then {
+    private lazy var addButton = UIButton().then {
         let image = UIImage(systemName: "plus")?.withTintColor(.white)
             .withRenderingMode(.alwaysOriginal)
             .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24, weight: .bold)))
@@ -47,13 +47,14 @@ final class FeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        
+        let input = FeedViewModel.Input(addButtonTapped: addButton.rx.tap)
+        let output = viewModel.transform(input)
         
     }
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(collectionView, floatingButton)
+        view.addSubviews(collectionView, addButton)
     }
     
     override func configureLayout() {
@@ -62,7 +63,7 @@ final class FeedViewController: RxBaseViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        floatingButton.snp.makeConstraints { make in
+        addButton.snp.makeConstraints { make in
             make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.size.equalTo(56)
         }

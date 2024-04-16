@@ -13,8 +13,9 @@ import RxSwift
 final class FeedViewModel: ViewModel {
 
     struct Input {
-        let viewDidLoad: ControlEvent<Void>
-        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
+//        let viewWillAppear: ControlEvent<Void>
+//        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
+        let addButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -31,6 +32,14 @@ final class FeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
+        
+        input
+            .addButtonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.coordinator?.pushToPost()
+        }
+        .disposed(by: disposeBag)
         
         return Output()
     }

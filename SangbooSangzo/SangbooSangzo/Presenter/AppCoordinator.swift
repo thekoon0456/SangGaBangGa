@@ -46,6 +46,7 @@ final class AppCoordinator: Coordinator {
         infoCoordinator.start()
         
         tabBarController.viewControllers = [feedNav, mapNav, infoNav]
+        tabBarController.tabBar.tintColor = .tintColor
         navigationController?.setViewControllers([tabBarController], animated: false)
     }
 

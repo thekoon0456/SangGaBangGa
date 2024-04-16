@@ -65,35 +65,27 @@ final class LoginViewModel: ViewModel {
                         case .failure(let error):
                             owner.coordinator?.showToast(.loginFail)
                         }
-                        
-                        
-                        //                        //성공
-                        //                        UserDefaultsManager.shared.userToken = UserToken(accessToken: result.accessToken,
-                        //                                                                         refreshToken: result.refreshToken)
-                        //
-                        //                        owner.coordinator?.showToast(.loginSuccess)
-                        //                        owner.coordinator?.navigationController?.dismiss(animated: true)
-                        }
+                    }
                     .disposed(by: owner.disposeBag)
-                    }
-                    .disposed(by: disposeBag)
-                
-                input.singInButtonTapped
-                    .asDriver()
-                    .drive(with: self) { owner, _ in
-                        owner.coordinator?.pushToSignInView()
-                    }
-                    .disposed(by: disposeBag)
-                
-                input.xbuttonTapped
-                    .asDriver()
-                    .drive(with: self) { owner, _ in
-                        print(owner.coordinator)
-                        owner.coordinator?.navigationController?.dismiss(animated: true)
-                        owner.coordinator?.finish()
-                    }
-                    .disposed(by: disposeBag)
-                
-                return Output()
             }
+            .disposed(by: disposeBag)
+        
+        input.singInButtonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.coordinator?.pushToSignInView()
+            }
+            .disposed(by: disposeBag)
+        
+        input.xbuttonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                print(owner.coordinator)
+                owner.coordinator?.navigationController?.dismiss(animated: true)
+                owner.coordinator?.finish()
+            }
+            .disposed(by: disposeBag)
+        
+        return Output()
     }
+}
