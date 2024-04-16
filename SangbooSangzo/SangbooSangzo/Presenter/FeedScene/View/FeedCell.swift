@@ -75,13 +75,13 @@ final class FeedCell: BaseCollectionViewCell {
 
 extension FeedCell {
 
-//    func configureCellData(_ data: ) {
-//        setKF(input: data.image)
+    func configureCellData(_ data: UploadContentResponse) {
+        setKF(input: data.files?.first ?? "")
 //        heartButton.isSelected = isSelectedButton(input: data.id)
-//        categoryLabel.text = data.mallName
-//        titleLabel.text = data.title.removeHTMLTags()
-//        priceLabel.text = Int(data.price)?.formatterStyle(.decimal)
-//    }
+        categoryLabel.text = data.content1
+        titleLabel.text = data.title
+        priceLabel.text = data.content4
+    }
     
     private func setLayout() {
         imageView.snp.makeConstraints { make in
