@@ -103,4 +103,16 @@ extension Coordinator {
         childCoordinators.append(coordinator)
         coordinator.start()
     }
+    
+    func showToast(_ type: Toast) {
+        let vc = ToastViewController(inputMessage: type.message)
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        navigationController?.present(vc, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            vc.dismiss(animated: true)
+        }
+    }
 }
+

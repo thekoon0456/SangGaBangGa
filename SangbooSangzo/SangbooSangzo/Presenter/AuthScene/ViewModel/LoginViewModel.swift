@@ -27,7 +27,7 @@ final class LoginViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: AuthCoordinator?
-    let userAPIManager = UserAPIManager.shared
+    private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: AuthCoordinator?) {
