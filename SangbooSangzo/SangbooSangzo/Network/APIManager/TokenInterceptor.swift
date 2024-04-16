@@ -16,19 +16,15 @@ final class TokenInterceptor: RequestInterceptor {
     private let disposeBag = DisposeBag()
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
-        guard urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/join") == false
-                && urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/validation/email") == false
-                && urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL + "/v1/users/login") == false,
+        guard urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL) == true,
               let accessToken = UserDefaultsManager.shared.userToken.accessToken,
               let refreshToken = UserDefaultsManager.shared.userToken.refreshToken else {
             completion(.success(urlRequest))
             return
         }
         
-        var urlRequest = urlRequest
-//        urlRequest.setValue(accessToken, forHTTPHeaderField: HTTPHeader.authorization)
-//        urlRequest.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
-        print("adator, \(urlRequest.headers)")
+        UserDefaultsManager.shared.userToken.accessToken = accessToken
+        UserDefaultsManager.shared.userToken.refreshToken = refreshToken
         completion(.success(urlRequest))
     }
     

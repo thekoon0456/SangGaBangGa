@@ -17,7 +17,8 @@ final class PostsAPIManager {
     
     private init() { }
     
-    let provider = MoyaProvider<PostsRouter>(session: Session(interceptor: TokenInterceptor()))
+    let logger = NetworkLoggerPlugin()
+    lazy var provider = MoyaProvider<PostsRouter>(session: Session(interceptor: TokenInterceptor()), plugins: [logger])
     
     func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageResponse> {
         provider.rx.request(.uploadImage(query: query))
