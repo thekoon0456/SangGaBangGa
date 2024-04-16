@@ -7,7 +7,6 @@
 
 import Foundation
 
-import Alamofire
 import Moya
 
 enum UserRouter {
@@ -64,18 +63,18 @@ extension UserRouter: TargetType {
                 "phoneNum": query.phoneNum ?? "",
                 "birthDay": query.birthDay ?? ""
             ]
-            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .validationEmail(let query):
             let param = [
                 "email": query.email
             ]
-            return .requestParameters(parameters: param, encoding: URLEncoding.default)
+            return .requestParameters(parameters: param, encoding: JSONEncoding.default)
         case .login(let query):
             let params: [String: String] = [
                 "email": query.email,
                 "password": query.password
             ]
-            return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .refreshToken:
             return .requestPlain
         case .withdraw:
@@ -98,10 +97,10 @@ extension UserRouter: TargetType {
         }
     }
 }
-//
-//extension TargetType {
-//    
-//    var validationType: ValidationType {
-//          return .successCodes
-//      }
-//}
+
+extension TargetType {
+    
+    var validationType: ValidationType {
+          return .successCodes
+      }
+}
