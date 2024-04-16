@@ -68,6 +68,7 @@
 		7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50302BCD26E30066CBCA /* SignInViewController.swift */; };
 		7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */; };
 		7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C8E2BCE56EA00A45268 /* Toast.swift */; };
+		7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C902BCE9DBF00A45268 /* FeedCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +129,7 @@
 		7C1C50302BCD26E30066CBCA /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7CD29C8E2BCE56EA00A45268 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		7CD29C902BCE9DBF00A45268 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				7C1C500E2BCCFE5A0066CBCA /* FeedViewController.swift */,
+				7CD29C902BCE9DBF00A45268 /* FeedCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				7C1C50272BCD02A50066CBCA /* LoginViewModel.swift in Sources */,
 				7C1C50112BCCFE740066CBCA /* FeedViewModel.swift in Sources */,
 				7C0ADCBB2BC920CC002DAEA7 /* RefreshTokenResponse.swift in Sources */,
+				7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */,
 				7C18EC972BC677F900F061DE /* layout.swift in Sources */,
 				7C1C50192BCCFF4F0066CBCA /* MapViewModel.swift in Sources */,
 				7C18ECB82BC6799300F061DE /* RxBaseViewController.swift in Sources */,

@@ -42,6 +42,7 @@ final class TokenInterceptor: RequestInterceptor {
             .subscribe { response in
                 print("refreshToken", response.accessToken)
                 UserDefaultsManager.shared.userToken.accessToken = response.accessToken
+                completion(.retry)
             }
             .disposed(by: disposeBag)
     }
