@@ -67,6 +67,8 @@
 		7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */; };
 		7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50302BCD26E30066CBCA /* SignInViewController.swift */; };
 		7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */; };
+		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
+		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C8E2BCE56EA00A45268 /* Toast.swift */; };
 		7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C902BCE9DBF00A45268 /* FeedCell.swift */; };
 		7CD29C962BCEA9B700A45268 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C952BCEA9B700A45268 /* PostViewController.swift */; };
@@ -130,6 +132,8 @@
 		7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotaionView.swift; sourceTree = "<group>"; };
 		7C1C50302BCD26E30066CBCA /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsQuery.swift; sourceTree = "<group>"; };
+		7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsResponse.swift; sourceTree = "<group>"; };
 		7CD29C8E2BCE56EA00A45268 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		7CD29C902BCE9DBF00A45268 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		7CD29C952BCEA9B700A45268 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 		7C0ADCA92BC91FE8002DAEA7 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				7CCBCF932BCFBB3400B3641D /* ReadPosts */,
 				7C0ADCC72BC92B3A002DAEA7 /* UploadPosts */,
 				7C0ADCBC2BC92124002DAEA7 /* Join */,
 				7C0ADCBD2BC92128002DAEA7 /* Login */,
@@ -166,6 +171,7 @@
 		7C0ADCAA2BC91FEF002DAEA7 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				7CCBCF942BCFBB3D00B3641D /* ReadPosts */,
 				7C0ADCCA2BC92B63002DAEA7 /* UploadPosts */,
 				7C0ADCBE2BC92133002DAEA7 /* Join */,
 				7C0ADCBF2BC92136002DAEA7 /* Login */,
@@ -522,6 +528,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		7CCBCF932BCFBB3400B3641D /* ReadPosts */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */,
+			);
+			path = ReadPosts;
+			sourceTree = "<group>";
+		};
+		7CCBCF942BCFBB3D00B3641D /* ReadPosts */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */,
+			);
+			path = ReadPosts;
+			sourceTree = "<group>";
+		};
 		7CD29C8D2BCE56CA00A45268 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,6 +680,7 @@
 				7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */,
 				7C1C50212BCD002B0066CBCA /* InfoViewModel.swift in Sources */,
 				7C1C50132BCCFF1F0066CBCA /* MapCoordinator.swift in Sources */,
+				7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */,
 				7C18ECF12BC7F11B00F061DE /* HTTPHeader.swift in Sources */,
 				7CD29C962BCEA9B700A45268 /* PostViewController.swift in Sources */,
 				7C0ADCD02BC92BA9002DAEA7 /* UploadContentRequest.swift in Sources */,
@@ -680,6 +703,7 @@
 				7C18ECE42BC6998400F061DE /* UserRouter.swift in Sources */,
 				7C18ECD62BC698A800F061DE /* UserDefaultsManager.swift in Sources */,
 				7C18ECCB2BC697BF00F061DE /* BaseCollectionViewCell.swift in Sources */,
+				7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */,
 				7C18ECBB2BC679AA00F061DE /* UserAPIManager.swift in Sources */,
 				7C1C500F2BCCFE5A0066CBCA /* FeedViewController.swift in Sources */,
 				7C18ECFB2BC7FB7400F061DE /* WithdrawResponse.swift in Sources */,

@@ -9,39 +9,14 @@ import Foundation
 
 import Moya
 
-struct FetchPostsqQuery: Encodable {
-    let next: String?
-    let limit: String?
-    let productID: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case next
-        case limit
-        case productID = "product_id"
-    }
-    
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(self.next, forKey: .next)
-        try container.encodeIfPresent(self.limit, forKey: .limit)
-        try container.encodeIfPresent(self.productID, forKey: .productID)
-    }
-}
-
-struct FetchPostsResponse: Decodable {
-    let data: UploadContentResponse
-    let nextCursor: String
-    
-    enum CodingKeys: String, CodingKey {
-        case data
-        case nextCursor = "next_cursor"
-    }
-}
-
 enum PostsRouter {
     case uploadImage(query: UploadImageDatasRequest)
     case uploadContents(query: UploadContentRequest)
-    case fetchContents(query: FetchPostsqQuery)
+    case readContents(query: ReadPostsQuery)
+    case readPost(queryID: String)
+    case fetchPost(queryID: String, request: UploadContentRequest)
+    case deletePost(queryID: String)
+    case readUserPosts(queryID: String, query: ReadPostsQuery)
 }
 
 extension PostsRouter: TargetType {
@@ -56,12 +31,16 @@ extension PostsRouter: TargetType {
             return "/v1/posts/files"
         case .uploadContents:
             return "/v1/posts"
-        case .fetchContents(query: let query):
-            guard let next = query.next,
-                  let limit = query.limit else {
-                return "/v1/posts"
-            }
-            return "/v1/posts?next=\(next)&limit=\(limit)"
+        case .readContents:
+            return "/v1/posts"
+        case .readPost(let queryID):
+            return "/v1/posts/\(queryID)"
+        case .fetchPost(queryID: let queryID, request: let request):
+            return "/v1/posts/\(queryID)"
+        case .deletePost(queryID: let queryID):
+            return "/v1/posts/\(queryID)"
+        case .readUserPosts(queryID: let userID):
+            return "/v1/posts/users/\(userID)"
         }
     }
     
@@ -71,7 +50,15 @@ extension PostsRouter: TargetType {
                 .post
         case .uploadContents:
                 .post
-        case .fetchContents:
+        case .readContents:
+                .get
+        case .readPost:
+                .get
+        case .fetchPost:
+                .put
+        case .deletePost:
+                .delete
+        case .readUserPosts(queryID: let queryID):
                 .get
         }
     }
@@ -106,20 +93,54 @@ extension PostsRouter: TargetType {
                 "productID": query.productID ?? "",
                 "files": query.files ?? []
             ]
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+        case .readContents(query: let query):
+            let params: [String: Any] = [
+                "next": query.next ?? "",
+                "limit": query.limit ?? "",
+                "product_id": query.productID ?? ""
+            ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-        case .fetchContents:
+        case .readPost:
             return .requestPlain
+        case .fetchPost(queryID: let queryID, request: let request):
+            let params: [String: Any] = [
+                "title": request.title ?? "",
+                "content": request.content ?? "",
+                "content1": request.content1 ?? "",
+                "content2": request.content2 ?? "",
+                "content3": request.content3 ?? "",
+                "content4": request.content4 ?? "",
+                "content5": request.content5 ?? "",
+                "productID": request.productID ?? "",
+                "files": request.files ?? []
+            ]
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+        case .deletePost:
+            return .requestPlain
+        case .readUserPosts(queryID: let queryID, query: let readPostsQuery):
+            let params: [String: Any] = [
+                "next": readPostsQuery.next ?? "",
+                "limit": readPostsQuery.limit ?? "",
+                "product_id": readPostsQuery.productID ?? ""
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
     
     var headers: [String: String]? {
         switch self {
         case .uploadImage:
-             [HTTPHeader.contentType: HTTPHeader.multiPartFormData]
-        case .uploadContents:
-             [HTTPHeader.contentType: HTTPHeader.json]
-        case .fetchContents:
-            [:]
+             [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+              HTTPHeader.contentType: HTTPHeader.multiPartFormData,
+              HTTPHeader.sesacKey: APIKey.sesacKey]
+        case .uploadContents, .fetchPost:
+             [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+              HTTPHeader.contentType: HTTPHeader.json,
+              HTTPHeader.sesacKey: APIKey.sesacKey]
+        case .readContents, .readPost, .deletePost, .readUserPosts:
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }
 }
