@@ -21,14 +21,14 @@ final class UserAPIManager {
     lazy var provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()),
                                                  plugins: [logger])
     
-    func join(query: UserJoinRequest) -> Single<UserJoinResponse> {
+    func join(query: UserJoinRequest) -> Single<UserJoinResponse?> {
         provider.rx.request(.join(query: query))
-            .map(UserJoinResponse.self)
+            .map(UserJoinResponse?.self)
     }
     
-    func validationEmail(query: UserJoinEmailValidationRequest) -> Single<UserJoinEmailValidationResponse> {
+    func validationEmail(query: UserJoinEmailValidationRequest) -> Single<UserJoinEmailValidationResponse?> {
         provider.rx.request(.validationEmail(query: query))
-            .map(UserJoinEmailValidationResponse.self)
+            .map(UserJoinEmailValidationResponse?.self)
     }
     
     func login(query: LoginRequest) -> Single<LoginResponse> {

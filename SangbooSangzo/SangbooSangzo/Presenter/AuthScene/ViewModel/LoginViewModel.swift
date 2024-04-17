@@ -63,6 +63,7 @@ final class LoginViewModel: ViewModel {
                             owner.coordinator?.showToast(.loginSuccess)
                             owner.coordinator?.navigationController?.dismiss(animated: true)
                         case .failure(let error):
+                            print(error)
                             owner.coordinator?.showToast(.loginFail)
                         }
                     }

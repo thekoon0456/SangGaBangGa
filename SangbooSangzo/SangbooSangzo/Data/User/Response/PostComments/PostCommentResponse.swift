@@ -25,7 +25,7 @@ struct PostCommentResponse: Decodable {
         self.commentID = try container.decodeIfPresent(String.self, forKey: .commentID) ?? ""
         self.content = try container.decodeIfPresent(String.self, forKey: .content) ?? ""
         self.createAt = try container.decodeIfPresent(String.self, forKey: .createAt) ?? ""
-        self.creator = try container.decodeIfPresent(CommentCreatorResponse.self, forKey: .creator)
+        self.creator = try container.decode(CommentCreatorResponse.self, forKey: .creator)
     }
 }
 

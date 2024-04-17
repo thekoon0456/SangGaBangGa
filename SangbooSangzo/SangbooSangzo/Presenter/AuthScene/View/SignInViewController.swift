@@ -26,30 +26,33 @@ final class SignInViewController: RxBaseViewController {
     private let emailCheckButton = UIButton().then {
         $0.setTitle("중복체크", for: .normal)
         $0.backgroundColor = .tintColor
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
     }
     
     private let passwordTextField = UITextField().then {
         $0.placeholder = "비밀번호를 입력해주세요"
-        $0.isSecureTextEntry = true
         $0.borderStyle = .roundedRect
     }
     
     private let nicknameTextField = UITextField().then {
         $0.placeholder = "닉네임을 입력해주세요"
-        $0.isSecureTextEntry = true
         $0.borderStyle = .roundedRect
     }
     
     private let phoneNumberTextField = UITextField().then {
         $0.placeholder = "전화번호를 숫자만 입력해주세요"
         $0.keyboardType = .numberPad
-        $0.isSecureTextEntry = true
         $0.borderStyle = .roundedRect
     }
     
     private let signInButton = UIButton().then {
         $0.setTitle("회원가입", for: .normal)
+        $0.setTitle("모든 항목을 입력해주세요", for: .disabled)
+        $0.setTitleColor(.white, for: .normal)
+        $0.setTitleColor(.lightGray, for: .disabled)
         $0.backgroundColor = .tintColor
+        $0.isEnabled = false
     }
     
     init(viewModel: SignInViewModel) {
@@ -60,7 +63,25 @@ final class SignInViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
+        let input = SignInViewModel.Input(email: emailTextField.rx.text.orEmpty,
+                                          password: passwordTextField.rx.text.orEmpty,
+                                          nickname: nicknameTextField.rx.text.orEmpty,
+                                          phoneNumber: phoneNumberTextField.rx.text.orEmpty,
+                                          emailCheckButtonTapped: emailCheckButton.rx.tap,
+                                          signInButtonTapped: signInButton.rx.tap)
+        let output = viewModel.transform(input)
         
+        output.emailEnabled.drive(with: self) { owner, value in
+            if value == false {
+                owner.emailTextField.text = ""
+            }
+        }
+        .disposed(by: disposeBag)
+        
+        output
+            .buttonEnabled
+            .drive(signInButton.rx.isEnabled)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Helpers

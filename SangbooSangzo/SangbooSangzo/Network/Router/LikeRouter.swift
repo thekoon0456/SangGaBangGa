@@ -24,7 +24,7 @@ extension LikeRouter: TargetType {
         switch self {
         case .postLike(let postId, _):
             "/v1/posts/\(postId)/like"
-        case .ReadLikePosts(query: let query):
+        case .ReadLikePosts:
             "/v1/posts/likes/me"
         }
     }
@@ -33,7 +33,7 @@ extension LikeRouter: TargetType {
         switch self {
         case .postLike:
                 .post
-        case .ReadLikePosts(query: let query):
+        case .ReadLikePosts:
                 .get
         }
     }

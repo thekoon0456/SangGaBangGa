@@ -33,6 +33,4 @@ final class MapViewModel: ViewModel {
         
         return Output()
     }
-    
-    
 }
