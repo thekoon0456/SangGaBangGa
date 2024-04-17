@@ -70,6 +70,8 @@
 		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
 		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF992BCFC67900B3641D /* CommentRouter.swift */; };
+		7CCBCF9C2BCFC79C00B3641D /* CommentsAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF9B2BCFC79C00B3641D /* CommentsAPIManager.swift */; };
+		7CCBCF9F2BCFC95D00B3641D /* PostCommentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF9E2BCFC95D00B3641D /* PostCommentResponse.swift */; };
 		7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C8E2BCE56EA00A45268 /* Toast.swift */; };
 		7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C902BCE9DBF00A45268 /* FeedCell.swift */; };
 		7CD29C962BCEA9B700A45268 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C952BCEA9B700A45268 /* PostViewController.swift */; };
@@ -136,6 +138,8 @@
 		7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsQuery.swift; sourceTree = "<group>"; };
 		7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsResponse.swift; sourceTree = "<group>"; };
 		7CCBCF992BCFC67900B3641D /* CommentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRouter.swift; sourceTree = "<group>"; };
+		7CCBCF9B2BCFC79C00B3641D /* CommentsAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsAPIManager.swift; sourceTree = "<group>"; };
+		7CCBCF9E2BCFC95D00B3641D /* PostCommentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentResponse.swift; sourceTree = "<group>"; };
 		7CD29C8E2BCE56EA00A45268 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		7CD29C902BCE9DBF00A45268 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		7CD29C952BCEA9B700A45268 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		7C0ADCAA2BC91FEF002DAEA7 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				7CCBCF9D2BCFC80800B3641D /* PostComments */,
 				7CCBCF942BCFBB3D00B3641D /* ReadPosts */,
 				7C0ADCCA2BC92B63002DAEA7 /* UploadPosts */,
 				7C0ADCBE2BC92133002DAEA7 /* Join */,
@@ -249,6 +254,7 @@
 				7C0ADCD12BC93923002DAEA7 /* TokenInterceptor.swift */,
 				7C18ECBA2BC679AA00F061DE /* UserAPIManager.swift */,
 				7C0ADCC52BC92647002DAEA7 /* PostsAPIManager.swift */,
+				7CCBCF9B2BCFC79C00B3641D /* CommentsAPIManager.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -547,6 +553,14 @@
 			path = ReadPosts;
 			sourceTree = "<group>";
 		};
+		7CCBCF9D2BCFC80800B3641D /* PostComments */ = {
+			isa = PBXGroup;
+			children = (
+				7CCBCF9E2BCFC95D00B3641D /* PostCommentResponse.swift */,
+			);
+			path = PostComments;
+			sourceTree = "<group>";
+		};
 		7CD29C8D2BCE56CA00A45268 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -670,6 +684,7 @@
 				7C0ADCBB2BC920CC002DAEA7 /* RefreshTokenResponse.swift in Sources */,
 				7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */,
 				7C18EC972BC677F900F061DE /* layout.swift in Sources */,
+				7CCBCF9C2BCFC79C00B3641D /* CommentsAPIManager.swift in Sources */,
 				7C1C50192BCCFF4F0066CBCA /* MapViewModel.swift in Sources */,
 				7C18ECB82BC6799300F061DE /* RxBaseViewController.swift in Sources */,
 				7C18ECE62BC699D300F061DE /* Coordinator.swift in Sources */,
@@ -696,6 +711,7 @@
 				7C1C500B2BCCFE310066CBCA /* FeedCoordinator.swift in Sources */,
 				7C1C501B2BCCFFC40066CBCA /* InfoCoordinator.swift in Sources */,
 				7C1C502B2BCD0A980066CBCA /* CustomAnnotation.swift in Sources */,
+				7CCBCF9F2BCFC95D00B3641D /* PostCommentResponse.swift in Sources */,
 				7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */,
 				7C0ADCB32BC92077002DAEA7 /* UserJoinEmailValidationRequest.swift in Sources */,
 				7C18ECF32BC7F57A00F061DE /* UserToken.swift in Sources */,
