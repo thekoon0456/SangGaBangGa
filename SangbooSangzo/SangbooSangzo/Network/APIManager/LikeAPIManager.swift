@@ -18,7 +18,8 @@ final class LikeAPIManager {
     private init() { }
     
     let logger = NetworkLoggerPlugin()
-    lazy var provider = MoyaProvider<LikeRouter>(session: Session(interceptor: TokenInterceptor()), plugins: [logger])
+    lazy var provider = MoyaProvider<LikeRouter>(session: Session(interceptor: TokenInterceptor()),
+                                                 plugins: [logger])
     
     func postLike(queryID: String, status: Bool) -> Single<LikeStatusResponse> {
         provider.rx.request(.postLike(queryID: queryID, status: status))

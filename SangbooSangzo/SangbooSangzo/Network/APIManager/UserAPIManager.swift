@@ -18,7 +18,8 @@ final class UserAPIManager {
     private init() { }
     
     let logger = NetworkLoggerPlugin()
-    lazy var provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()), plugins: [logger])
+    lazy var provider = MoyaProvider<UserRouter>(session: Session(interceptor: TokenInterceptor()),
+                                                 plugins: [logger])
     
     func join(query: UserJoinRequest) -> Single<UserJoinResponse> {
         provider.rx.request(.join(query: query))

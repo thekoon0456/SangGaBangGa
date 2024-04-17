@@ -18,7 +18,8 @@ final class FollowAPIManager {
     private init() { }
     
     let logger = NetworkLoggerPlugin()
-    lazy var provider = MoyaProvider<FollowRouter>(session: Session(interceptor: TokenInterceptor()), plugins: [logger])
+    lazy var provider = MoyaProvider<FollowRouter>(session: Session(interceptor: TokenInterceptor()),
+                                                   plugins: [logger])
     
     func postLike(queryID: String) -> Single<FollowResponse> {
         provider.rx.request(.follow(queryID: queryID))
