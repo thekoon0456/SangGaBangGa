@@ -11,8 +11,6 @@ import Moya
 import RxMoya
 import RxSwift
 
-
-
 final class LikeAPIManager {
     
     static let shared = LikeAPIManager()

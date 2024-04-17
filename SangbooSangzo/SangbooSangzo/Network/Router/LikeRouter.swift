@@ -9,22 +9,6 @@ import Foundation
 
 import Moya
 
-struct LikePostQuery: Encodable {
-    let next: String?
-    let limit: String?
-    
-    enum CodingKeys: CodingKey {
-        case next
-        case limit
-    }
-    
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(self.next, forKey: .next)
-        try container.encodeIfPresent(self.limit, forKey: .limit)
-    }
-}
-
 enum LikeRouter {
     case postLike(queryID: String, status: Bool)
     case ReadLikePosts(query: LikePostQuery)
