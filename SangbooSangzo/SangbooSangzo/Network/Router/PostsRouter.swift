@@ -12,7 +12,7 @@ import Moya
 enum PostsRouter {
     case uploadImage(query: UploadImageDatasRequest)
     case uploadContents(query: UploadContentRequest)
-    case readContents(query: ReadPostsQuery)
+    case readPosts(query: ReadPostsQuery)
     case readPost(queryID: String)
     case fetchPost(queryID: String, request: UploadContentRequest)
     case deletePost(queryID: String)
@@ -31,7 +31,7 @@ extension PostsRouter: TargetType {
             return "/v1/posts/files"
         case .uploadContents:
             return "/v1/posts"
-        case .readContents:
+        case .readPosts:
             return "/v1/posts"
         case .readPost(let queryID):
             return "/v1/posts/\(queryID)"
@@ -50,7 +50,7 @@ extension PostsRouter: TargetType {
                 .post
         case .uploadContents:
                 .post
-        case .readContents:
+        case .readPosts:
                 .get
         case .readPost:
                 .get
@@ -94,7 +94,7 @@ extension PostsRouter: TargetType {
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
-        case .readContents(query: let query):
+        case .readPosts(query: let query):
             let params: [String: Any] = [
                 "next": query.next ?? "",
                 "limit": query.limit ?? "",
@@ -138,7 +138,7 @@ extension PostsRouter: TargetType {
              [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
               HTTPHeader.contentType: HTTPHeader.json,
               HTTPHeader.sesacKey: APIKey.sesacKey]
-        case .readContents, .readPost, .deletePost, .readUserPosts:
+        case .readPosts, .readPost, .deletePost, .readUserPosts:
             [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
