@@ -35,7 +35,7 @@ extension PostsRouter: TargetType {
             return "/v1/posts"
         case .readPost(let queryID):
             return "/v1/posts/\(queryID)"
-        case .fetchPost(queryID: let queryID, request: let request):
+        case .fetchPost(let queryID, _):
             return "/v1/posts/\(queryID)"
         case .deletePost(queryID: let queryID):
             return "/v1/posts/\(queryID)"
@@ -58,7 +58,7 @@ extension PostsRouter: TargetType {
                 .put
         case .deletePost:
                 .delete
-        case .readUserPosts(queryID: let queryID):
+        case .readUserPosts:
                 .get
         }
     }
@@ -81,7 +81,7 @@ extension PostsRouter: TargetType {
             }
             
             return .uploadMultipart(formData)
-        case .uploadContents(query: let query):
+        case .uploadContents(let query):
             let params: [String: Any] = [
                 "title": query.title ?? "",
                 "content": query.content ?? "",
@@ -94,7 +94,7 @@ extension PostsRouter: TargetType {
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
-        case .readPosts(query: let query):
+        case .readPosts(let query):
             let params: [String: Any] = [
                 "next": query.next ?? "",
                 "limit": query.limit ?? "",
@@ -103,7 +103,7 @@ extension PostsRouter: TargetType {
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         case .readPost:
             return .requestPlain
-        case .fetchPost(queryID: let queryID, request: let request):
+        case .fetchPost(_, let request):
             let params: [String: Any] = [
                 "title": request.title ?? "",
                 "content": request.content ?? "",
@@ -118,7 +118,7 @@ extension PostsRouter: TargetType {
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .deletePost:
             return .requestPlain
-        case .readUserPosts(queryID: let queryID, query: let readPostsQuery):
+        case .readUserPosts(_, let readPostsQuery):
             let params: [String: Any] = [
                 "next": readPostsQuery.next ?? "",
                 "limit": readPostsQuery.limit ?? "",
