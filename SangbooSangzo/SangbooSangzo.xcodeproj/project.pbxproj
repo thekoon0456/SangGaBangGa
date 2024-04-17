@@ -78,6 +78,7 @@
 		7CCBCFAA2BCFCD8600B3641D /* LikePostQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCFA92BCFCD8600B3641D /* LikePostQuery.swift */; };
 		7CCBCFAC2BCFCE1200B3641D /* FollowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCFAB2BCFCE1200B3641D /* FollowRouter.swift */; };
 		7CCBCFAF2BCFCF7900B3641D /* FollowResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCFAE2BCFCF7900B3641D /* FollowResponse.swift */; };
+		7CCBCFB12BCFCFAD00B3641D /* FollowAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCFB02BCFCFAD00B3641D /* FollowAPIManager.swift */; };
 		7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C8E2BCE56EA00A45268 /* Toast.swift */; };
 		7CD29C912BCE9DBF00A45268 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C902BCE9DBF00A45268 /* FeedCell.swift */; };
 		7CD29C962BCEA9B700A45268 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD29C952BCEA9B700A45268 /* PostViewController.swift */; };
@@ -152,6 +153,7 @@
 		7CCBCFA92BCFCD8600B3641D /* LikePostQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePostQuery.swift; sourceTree = "<group>"; };
 		7CCBCFAB2BCFCE1200B3641D /* FollowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowRouter.swift; sourceTree = "<group>"; };
 		7CCBCFAE2BCFCF7900B3641D /* FollowResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowResponse.swift; sourceTree = "<group>"; };
+		7CCBCFB02BCFCFAD00B3641D /* FollowAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowAPIManager.swift; sourceTree = "<group>"; };
 		7CD29C8E2BCE56EA00A45268 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		7CD29C902BCE9DBF00A45268 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		7CD29C952BCEA9B700A45268 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				7C0ADCC52BC92647002DAEA7 /* PostsAPIManager.swift */,
 				7CCBCF9B2BCFC79C00B3641D /* CommentsAPIManager.swift */,
 				7CCBCFA62BCFCB7800B3641D /* LikeAPIManager.swift */,
+				7CCBCFB02BCFCFAD00B3641D /* FollowAPIManager.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				7C18ECBB2BC679AA00F061DE /* UserAPIManager.swift in Sources */,
 				7CCBCFA52BCFCB6900B3641D /* LikeStatusResponse.swift in Sources */,
 				7C1C500F2BCCFE5A0066CBCA /* FeedViewController.swift in Sources */,
+				7CCBCFB12BCFCFAD00B3641D /* FollowAPIManager.swift in Sources */,
 				7CCBCFAA2BCFCD8600B3641D /* LikePostQuery.swift in Sources */,
 				7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */,
 				7C18ECFB2BC7FB7400F061DE /* WithdrawResponse.swift in Sources */,
