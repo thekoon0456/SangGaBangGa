@@ -16,7 +16,7 @@ final class FeedCell: BaseCollectionViewCell {
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 15
         $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
     }
     
     let heartButton = UIButton().then {
@@ -42,11 +42,26 @@ final class FeedCell: BaseCollectionViewCell {
     // MARK: - Helpers
     
     func setKF(input: String) {
-        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+//        let processor = RoundCornerImageProcessor(cornerRadius: 20)
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: URL(string: input),
-                              options: [.transition(.fade(1.0)),
-                                        .processor(processor)])
+//        imageView.kf.setImage(with: URL(string: input),
+//                              options: [.transition(.fade(1.0)),
+//                                        .processor(processor)])
+        
+        let url = URL(string: input)
+        
+        let modifier = AnyModifier { request in
+            var request = request
+            request.setValue(UserDefaultsManager.shared.userToken.accessToken ?? "", forHTTPHeaderField: HTTPHeader.authorization)
+            request.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
+            return request
+        }
+
+        let options: KingfisherOptionsInfo = [
+            .requestModifier(modifier)
+        ]
+
+        imageView.kf.setImage(with: url, options: options)
     }
     
     func isSelectedButton(input: String) -> Bool {
@@ -76,7 +91,7 @@ final class FeedCell: BaseCollectionViewCell {
 extension FeedCell {
 
     func configureCellData(_ data: UploadContentResponse) {
-        setKF(input: data.files?.first ?? "")
+        setKF(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
 //        heartButton.isSelected = isSelectedButton(input: data.id)
         categoryLabel.text = data.content1
         titleLabel.text = data.title
@@ -85,8 +100,8 @@ extension FeedCell {
     
     private func setLayout() {
         imageView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.width.equalTo(imageView.snp.height)
+            make.top.width.equalToSuperview()
+            make.height.lessThanOrEqualTo(200)
         }
         
         heartButton.snp.makeConstraints { make in
@@ -111,7 +126,7 @@ extension FeedCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
-            make.bottom.greaterThanOrEqualToSuperview().offset(-4)
+            make.bottom.equalToSuperview().offset(-4)
         }
     }
 }

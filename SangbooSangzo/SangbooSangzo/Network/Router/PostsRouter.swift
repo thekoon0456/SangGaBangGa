@@ -94,13 +94,7 @@ extension PostsRouter: TargetType {
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
-        case .readPosts(let query):
-            guard let text = query.next,
-                  let limit = query.limit,
-                  let id = query.productID else {
-                return .requestPlain
-            }
-                  
+        case .readPosts(let query): 
             let params: [String: Any] = [
                 "next": query.next ?? "",
                 "limit": query.limit ?? "",

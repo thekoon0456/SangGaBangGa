@@ -44,7 +44,7 @@ final class FeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        let posts = postsAPIManager.readPosts(query: .init(next: nil, limit: nil, productID: nil))
+        let posts = postsAPIManager.readPosts(query: .init(next: nil, limit: "20", productID: nil))
             .compactMap { $0.data }
             .debug()
             .asDriver(onErrorJustReturn: [])
