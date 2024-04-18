@@ -60,11 +60,13 @@ final class SignInViewModel: ViewModel {
                     .subscribe { result in
                         switch result {
                         case .success(let result):
+                            print(result)
                             validationEmailRelay.accept(true)
                             print("성공")
                             owner.coordinator?
                                 .showToast(.emailValidation(email: "사용 가능한 이메일입니다."))
                         case .failure(let error):
+                            print(error)
                             validationEmailRelay.accept(false)
                             print("실패")
                             owner.coordinator?

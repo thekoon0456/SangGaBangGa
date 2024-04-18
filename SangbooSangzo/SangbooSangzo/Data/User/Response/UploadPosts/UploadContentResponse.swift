@@ -10,13 +10,13 @@ import Foundation
 struct UploadContentResponse: Decodable {
     let postID: String?
     let productID: String?
-    let title: String?
-    let content: String?
-    let content1: String?
-    let content2: String?
-    let content3: String?
-    let content4: String?
-    let content5: String?
+    let title: String? //제목
+    let content: String? //내용
+    let content1: String? //카테고리 (공실, 카페, 음식점, 기타)
+    let content2: String? //주소
+    let content3: String? //위, 경도
+    let content4: String? //보증금, 월세
+    let content5: String? //평수
     let creator: LoginResponse?
     let files: [String]?
     let likes: [String]?
