@@ -50,19 +50,20 @@ final class MapViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addAnnotation()
+//        addAnnotation()
         registerMapAnnotationViews()
         configureMap()
         configureLocation()
+        mapView.delegate = self
     }
-    
-    private func addAnnotation() {
-        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37,
-                                                                             longitude: 127))
-        annotation.imageName = "star"
-        mapView.addAnnotation(annotation)
-        
-    }
+//    
+//    private func addAnnotation() {
+//        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37,
+//                                                                             longitude: 127))
+//        annotation.imageName = "star"
+//        mapView.addAnnotation(annotation)
+//        
+//    }
     
     func registerMapAnnotationViews() {
         mapView.register(CustomAnnotationView.self,
@@ -90,6 +91,7 @@ final class MapViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "지도"
     }
 }
@@ -124,6 +126,47 @@ extension MapViewController: MKMapViewDelegate {
                                         longitudinalMeters: 5000)
         mapView.setRegion(region, animated: true)
     }
+    
+    //커스텀 어노테이션
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//        guard let customAnnotation = annotation as? CustomAnnotation else {
+//            print("1")
+//            return nil
+//        }
+//
+//        let identifier = "CustomAnnotation"
+//        guard let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView else {
+//            print("2")
+//            return nil
+//        }
+//        annotationView.annotation = annotation
+//        annotationView.image = customAnnotation.image
+//        print("3")
+//        return annotationView
+//    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard let customAnnotation = annotation as? CustomAnnotation else {
+            return nil
+        }
+
+        let identifier = "CustomAnnotation"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+            annotationView?.calloutOffset = CGPoint(x: -5, y: 5)
+        } else {
+            annotationView?.annotation = annotation
+        }
+
+        if let customImage = customAnnotation.image, let resizedImage = customImage.resized(toWidth: 60) {
+            annotationView?.image = resizedImage
+        }
+
+        return annotationView
+    }
 }
 
 extension MapViewController: CLLocationManagerDelegate {
@@ -149,6 +192,14 @@ extension MapViewController: CLLocationManagerDelegate {
 //            
 //            mapView.addAnnotation(annotation)
 //        }
+        
+//        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893),
+//                                          title: "Important Location",
+//                                          subtitle: "This is an important place.",
+//                                          image: UIImage(named: "test"))
+//        mapView.addAnnotation(annotation)
+        setAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893))
+
     }
     
     //맵 annotaion 리셋
@@ -236,11 +287,18 @@ extension MapViewController {
     
     //맵뷰 annotation추가
     func setAnnotation(coordinate: CLLocationCoordinate2D) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "현재 위치"
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = coordinate
+//        annotation.title = "현재 위치"
+//        
+//        mapView.addAnnotation(annotation)
         
+        let annotation = CustomAnnotation(coordinate: coordinate,
+                                          title: "Important Location",
+                                          subtitle: "This is an important place.",
+                                          image: UIImage(named: "test"))
         mapView.addAnnotation(annotation)
+        
     }
     
 }
@@ -300,3 +358,14 @@ extension UIViewController {
     }
 }
 
+extension UIImage {
+    func resized(toWidth width: CGFloat) -> UIImage? {
+        let scale = width / self.size.width
+        let newHeight = self.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: width, height: newHeight))
+        self.draw(in: CGRect(x: 0, y: 0, width: width, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+}

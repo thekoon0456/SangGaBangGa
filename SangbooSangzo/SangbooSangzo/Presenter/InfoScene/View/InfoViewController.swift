@@ -16,4 +16,19 @@ final class InfoViewController: RxBaseViewController {
         super.init()
     }
     
+    override func configureHierarchy() {
+        super.configureHierarchy()
+        
+    }
+    
+    override func configureLayout() {
+        super.configureLayout()
+        
+    }
+    
+    override func configureView() {
+        super.configureView()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "마이페이지"
+    }
 }

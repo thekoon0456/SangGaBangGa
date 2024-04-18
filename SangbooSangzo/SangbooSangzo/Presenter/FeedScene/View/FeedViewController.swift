@@ -71,6 +71,7 @@ final class FeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "피드"
     }
     

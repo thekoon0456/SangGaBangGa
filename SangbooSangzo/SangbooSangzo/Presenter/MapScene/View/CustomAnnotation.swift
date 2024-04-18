@@ -13,18 +13,15 @@ final class CustomAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
-    var imageName: String?
+    var image: UIImage?
     
     init(coordinate: CLLocationCoordinate2D,
          title: String? = nil,
          subtitle: String? = nil,
-         imageName: String? = nil) {
+         image: UIImage? = nil) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
-        self.imageName = imageName
+        self.image = image
     }
-    
-    
-    
 }

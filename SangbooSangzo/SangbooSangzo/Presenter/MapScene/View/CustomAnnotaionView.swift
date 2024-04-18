@@ -81,8 +81,7 @@ final class CustomAnnotationView: MKAnnotationView {
         guard let annotation = annotation as? CustomAnnotation else { return }
         titleLabel.text = annotation.title
         
-        guard let imageName = annotation.imageName,
-              let image = UIImage(named: imageName) else { return }
+        guard let image = annotation.image else { return }
         customImageView.image = image
     }
 }
