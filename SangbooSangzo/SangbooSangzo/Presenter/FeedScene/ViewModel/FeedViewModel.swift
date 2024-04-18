@@ -11,20 +11,21 @@ import RxCocoa
 import RxSwift
 
 final class FeedViewModel: ViewModel {
-
+    
     struct Input {
-//        let viewWillAppear: ControlEvent<Void>
-//        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
+        //        let viewWillAppear: ControlEvent<Void>
+        //        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
         let addButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        
+        let feeds: Driver<[UploadContentResponse]>
     }
     
     // MARK: - Properties
     
     weak var coordinator: FeedCoordinator?
+    private let postsAPIManager = PostsAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: FeedCoordinator?) {
@@ -33,15 +34,23 @@ final class FeedViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
+        //        let
+        
         input
             .addButtonTapped
             .asDriver()
             .drive(with: self) { owner, _ in
                 owner.coordinator?.pushToPost()
-        }
-        .disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
         
-        return Output()
+        let posts = postsAPIManager.readPosts(query: .init(next: nil, limit: nil, productID: nil))
+            .compactMap { $0.data }
+            .debug()
+            .asDriver(onErrorJustReturn: [])
+        
+        
+        return Output(feeds: posts)
     }
     
     

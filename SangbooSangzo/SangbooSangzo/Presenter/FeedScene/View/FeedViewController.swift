@@ -50,6 +50,14 @@ final class FeedViewController: RxBaseViewController {
         let input = FeedViewModel.Input(addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
         
+        output
+            .feeds
+            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+                cell.configureCellData(element)
+                print(element)
+            }
+            .disposed(by: disposeBag)
+        
     }
     
     override func configureHierarchy() {

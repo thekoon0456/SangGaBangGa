@@ -17,11 +17,12 @@ struct UploadContentResponse: Decodable {
     let content3: String? //위, 경도
     let content4: String? //보증금, 월세
     let content5: String? //평수
+    let createdAt: String?
     let creator: LoginResponse?
     let files: [String]?
     let likes: [String]?
     let hashTags: [String]?
-    let comments: [String]?
+    let comments: [PostCommentResponse]?
     
     enum CodingKeys: String, CodingKey {
         case postID = "post_id"
@@ -33,6 +34,7 @@ struct UploadContentResponse: Decodable {
         case content3
         case content4
         case content5
+        case createdAt
         case creator
         case files
         case likes
@@ -42,19 +44,20 @@ struct UploadContentResponse: Decodable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.postID = try container.decodeIfPresent(String.self, forKey: .postID)
-        self.productID = try container.decodeIfPresent(String.self, forKey: .productID)
-        self.title = try container.decodeIfPresent(String.self, forKey: .title)
-        self.content = try container.decodeIfPresent(String.self, forKey: .content)
-        self.content1 = try container.decodeIfPresent(String.self, forKey: .content1)
-        self.content2 = try container.decodeIfPresent(String.self, forKey: .content2)
-        self.content3 = try container.decodeIfPresent(String.self, forKey: .content3)
-        self.content4 = try container.decodeIfPresent(String.self, forKey: .content4)
-        self.content5 = try container.decodeIfPresent(String.self, forKey: .content5)
+        self.postID = try container.decodeIfPresent(String.self, forKey: .postID) ?? ""
+        self.productID = try container.decodeIfPresent(String.self, forKey: .productID) ?? ""
+        self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        self.content = try container.decodeIfPresent(String.self, forKey: .content) ?? ""
+        self.content1 = try container.decodeIfPresent(String.self, forKey: .content1) ?? ""
+        self.content2 = try container.decodeIfPresent(String.self, forKey: .content2) ?? ""
+        self.content3 = try container.decodeIfPresent(String.self, forKey: .content3) ?? ""
+        self.content4 = try container.decodeIfPresent(String.self, forKey: .content4) ?? ""
+        self.content5 = try container.decodeIfPresent(String.self, forKey: .content5) ?? ""
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
         self.creator = try container.decodeIfPresent(LoginResponse.self, forKey: .creator)
-        self.files = try container.decodeIfPresent([String].self, forKey: .files)
-        self.likes = try container.decodeIfPresent([String].self, forKey: .likes)
-        self.hashTags = try container.decodeIfPresent([String].self, forKey: .hashTags)
-        self.comments = try container.decodeIfPresent([String].self, forKey: .comments)
+        self.files = try container.decodeIfPresent([String].self, forKey: .files) ?? []
+        self.likes = try container.decodeIfPresent([String].self, forKey: .likes) ?? []
+        self.hashTags = try container.decodeIfPresent([String].self, forKey: .hashTags) ?? []
+        self.comments = try container.decodeIfPresent([PostCommentResponse].self, forKey: .comments)
     }
 }
