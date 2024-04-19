@@ -61,7 +61,8 @@ final class PostViewController: RxBaseViewController {
         $0.layer.borderColor = UIColor.systemGray.cgColor
     }
     
-    private let categoryButton = SSMenuButton(buttonTitle: "카테고리", menus: ["공실", "카페", "음식점", "기타"])
+    private let categoryButton = SSMenuButton(buttonTitle: "카테고리",
+                                              menus: ["공실", "카페", "음식점", "기타"])
     
     private let addressTextField = UITextField().then {
         $0.placeholder = "주소를 입력해주세요 (시군구)"
@@ -123,6 +124,7 @@ final class PostViewController: RxBaseViewController {
         let output = viewModel.transform(input)
         
         imageButton.rx.tap.bind(with: self) { owner, _ in
+            guard owner.data.count < 5 else { return }
             owner.configurePHPicker()
         }
         .disposed(by: disposeBag)
@@ -138,7 +140,6 @@ final class PostViewController: RxBaseViewController {
                 cellIdentifier: PostImageCell.identifier,
                 cellType: PostImageCell.self)
             ) { item, element, cell in
-                print("element", element)
                 cell.configureCell(image: UIImage(data: element) ?? UIImage())
             }
             .disposed(by: disposeBag)
@@ -146,7 +147,7 @@ final class PostViewController: RxBaseViewController {
     
     private func configurePHPicker() {
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 5
+        configuration.selectionLimit = 5 - data.count
         configuration.filter = .images
         configuration.filter = .any(of: [.images])
         let vc = PHPickerViewController(configuration: configuration)
@@ -184,12 +185,12 @@ extension PostViewController: PHPickerViewControllerDelegate {
                     guard let self,
                           let image = image as? UIImage else { return }
                     data.append(image.jpegData(compressionQuality: 0.5)!)
-                    print(data)
+                    selectedImagesRelay.accept(data)
                 }
             }
         }
+        
         picker.dismiss(animated: true)
-        selectedImagesRelay.accept(data)
     }
 }
 

@@ -48,6 +48,7 @@ final class PostViewModel: ViewModel {
                                            content5: nil,
                                            productID: "SangbooSangzo",
                                            files: nil)
+        
         let imageURLSubject = BehaviorSubject<[String]>(value: [])
         
         let buttonEnable = Observable.combineLatest(
@@ -171,7 +172,7 @@ final class PostViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(selectedPhotos: input.selectedPhotos.asDriver(onErrorJustReturn: [Data()]),
+        return Output(selectedPhotos: input.selectedPhotos.asDriver(onErrorJustReturn: []),
                       buttonEnable: buttonEnable.asDriver(onErrorJustReturn: false))
     }
 }
