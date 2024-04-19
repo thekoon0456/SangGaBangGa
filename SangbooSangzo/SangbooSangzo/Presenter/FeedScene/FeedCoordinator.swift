@@ -32,7 +32,7 @@ final class FeedCoordinator: Coordinator {
     }
     
     func pushToPost() {
-        let vm = PostViewModel()
+        let vm = PostViewModel(coordinator: self)
         let vc = PostViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }

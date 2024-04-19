@@ -8,15 +8,15 @@
 import Foundation
 
 struct UploadContentRequest: Encodable {
-    let title: String?
-    let content: String?
-    let content1: String?
-    let content2: String?
-    let content3: String?
-    let content4: String?
-    let content5: String?
+    var title: String?
+    var content: String?
+    var content1: String?
+    var content2: String?
+    var content3: String?
+    var content4: String?
+    var content5: String?
     let productID: String?
-    let files: [String]?
+    var files: [String]?
     
     enum CodingKeys: String, CodingKey {
         case title

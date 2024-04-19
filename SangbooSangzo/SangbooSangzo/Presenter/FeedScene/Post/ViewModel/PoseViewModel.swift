@@ -29,11 +29,25 @@ final class PostViewModel: ViewModel {
         let buttonEnable: Driver<Bool>
     }
     
+    private weak var coordinator: FeedCoordinator?
     private let postAPIManager = PostsAPIManager.shared
     var disposeBag = DisposeBag()
     
+    init(coordinator: FeedCoordinator?) {
+        self.coordinator = coordinator
+    }
+    
     func transform(_ input: Input) -> Output {
-        
+
+        var request = UploadContentRequest(title: nil,
+                                           content: nil,
+                                           content1: nil,
+                                           content2: nil,
+                                           content3: nil,
+                                           content4: nil,
+                                           content5: nil,
+                                           productID: "SangbooSangzo",
+                                           files: nil)
         let imageURLSubject = BehaviorSubject<[String]>(value: [])
         
         let buttonEnable = Observable.combineLatest(
@@ -50,6 +64,62 @@ final class PostViewModel: ViewModel {
             .map { fields in
                 return fields.filter { $0 == true }.count == 0 ? true : false
             }
+        
+        input
+            .title
+            .subscribe { value in
+                request.title = value
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .title
+            .subscribe { value in
+                request.title = value
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .content
+            .subscribe { value in
+                request.content = value
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .category
+            .subscribe { value in
+                request.content1 = value
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .address
+            .subscribe { value in
+                request.content2 = value
+            }
+            .disposed(by: disposeBag)
+        
+//        input
+//            .content3
+//            .subscribe { value in
+//                request.content3 = value
+//            }
+//            .disposed(by: disposeBag)
+        
+        Observable.zip(input.deposit,
+                       input.rent)
+            .subscribe { value in
+                request.content4 = "\(value.0) / \(value.1)"
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .space
+            .subscribe { value in
+                request.content5 = value
+            }
+            .disposed(by: disposeBag)
         
         
         //        input
@@ -73,23 +143,26 @@ final class PostViewModel: ViewModel {
         
         input
             .post
-            .subscribe(with: self) { owner, _ in
-                guard let images = try? imageURLSubject.value() else { return }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                input
+                    .selectedPhotos
+                    .flatMap { data in
+                        owner
+                            .postAPIManager
+                            .uploadImages(query: .init(datas: data))
+                    }
+            }
+            .subscribe(with: self) { owner, response in
+//                guard let images = try? imageURLSubject.value() else { return }
                 owner
                     .postAPIManager
-                    .uploadContents(images: images, query: .init(title: "test",
-                                                                 content: "test",
-                                                                 content1: "test",
-                                                                 content2: "test",
-                                                                 content3: "test",
-                                                                 content4: "test",
-                                                                 content5: "test",
-                                                                 productID: "SangbooSangzo",
-                                                                 files: images))
+                    .uploadContents(images: response.files, query: request)
                     .subscribe { response in
                         switch response {
                         case .success(let response):
                             print(response)
+                            owner.coordinator?.popViewController()
                         case .failure(let error):
                             print(error.localizedDescription)
                         }
