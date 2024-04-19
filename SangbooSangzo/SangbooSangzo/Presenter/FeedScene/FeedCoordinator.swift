@@ -36,4 +36,10 @@ final class FeedCoordinator: Coordinator {
         let vc = PostViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func pushToDetail(data: UploadContentResponse) {
+        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let vc = DetailFeedViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

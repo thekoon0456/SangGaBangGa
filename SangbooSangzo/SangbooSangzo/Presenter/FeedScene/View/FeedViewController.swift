@@ -46,35 +46,31 @@ final class FeedViewController: RxBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.coordinator?.presentLoginScene()
-        configureDataSource()
-        configureSnapshot()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+//        configureDataSource()
+//        configureSnapshot()
     }
     
     override func bind() {
         super.bind()
         
-        let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+        let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in }, cellSelected: collectionView.rx.modelSelected(UploadContentResponse.self),
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
         
-//        output
-//            .feeds
-//            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
-//                cell.configureCellData(element)
-//                print(element)
-//            }
-//            .disposed(by: disposeBag)
-        
         output
             .feeds
-            .drive(with: self) { owner, item in
-                owner.updateSnapshot(withItems: item, toSection: .feed)
+            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+                cell.configureCellData(element)
+                print(element)
             }
             .disposed(by: disposeBag)
+        
+//        output
+//            .feeds
+//            .drive(with: self) { owner, item in
+//                owner.updateSnapshot(withItems: item, toSection: .feed)
+//            }
+//            .disposed(by: disposeBag)
         
     }
     
@@ -106,7 +102,6 @@ final class FeedViewController: RxBaseViewController {
             // MARK: - 높이 계산해서 고정값 주기
              let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(100))
              let item = NSCollectionLayoutItem(layoutSize: itemSize)
-             item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
 
              let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
              let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)

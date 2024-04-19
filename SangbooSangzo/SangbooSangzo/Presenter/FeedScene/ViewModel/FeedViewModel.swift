@@ -14,7 +14,7 @@ final class FeedViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        //        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
+        let cellSelected: ControlEvent<UploadContentResponse>
         let addButtonTapped: ControlEvent<Void>
     }
     
@@ -39,6 +39,14 @@ final class FeedViewModel: ViewModel {
             .asDriver()
             .drive(with: self) { owner, _ in
                 owner.coordinator?.pushToPost()
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .cellSelected
+            .subscribe(with: self) { owner, model in
+                print("cell.model", model)
+                owner.coordinator?.pushToDetail(data: model)
             }
             .disposed(by: disposeBag)
         

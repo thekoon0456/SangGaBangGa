@@ -15,6 +15,8 @@ import SnapKit
 final class PostViewController: RxBaseViewController {
     
     private let viewModel: PostViewModel
+    var data: [Data] = []
+    private lazy var selectedImagesRelay = BehaviorRelay<[Data]>(value: [])
     
     private lazy var scrollView = UIScrollView().then {
         $0.addSubview(contentView)
@@ -27,9 +29,6 @@ final class PostViewController: RxBaseViewController {
         $0.register(PostImageCell.self, forCellWithReuseIdentifier: PostImageCell.identifier)
         $0.showsHorizontalScrollIndicator = false
     }
-    
-    var data: [Data] = []
-    private lazy var selectedImagesRelay = BehaviorRelay<[Data]>(value: [])
     
     private func configureLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
@@ -158,8 +157,9 @@ final class PostViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(imageButton, imageCollectionView, titleTextField, contentTextView, categoryButton,
-                                addressTextField, depositTextField, rentTextField, spaceTextField, postButton)
+        contentView.addSubviews(imageButton, imageCollectionView, titleTextField,
+                                contentTextView, categoryButton, addressTextField,
+                                depositTextField, rentTextField, spaceTextField, postButton)
     }
     
     override func configureLayout() {

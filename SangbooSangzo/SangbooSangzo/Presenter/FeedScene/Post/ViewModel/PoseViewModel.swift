@@ -122,26 +122,6 @@ final class PostViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        
-        //        input
-        //            .selectedPhotos
-        //            .subscribe(with: self) { owner, values in
-        //                owner
-        //                    .postAPIManager
-        //                    .uploadImages(query: .init(datas: values))
-        //                    .subscribe { response in
-        //                        switch response {
-        //                        case .success(let response):
-        //                            imageURLSubject.onNext(response.files)
-        //                        case .failure(let error):
-        //                            print(error.localizedDescription)
-        //                        }
-        //                    }
-        //                    .disposed(by: owner.disposeBag)
-        //            }
-        //            .disposed(by: disposeBag)
-        
-        
         input
             .post
             .withUnretained(self)
@@ -155,8 +135,6 @@ final class PostViewModel: ViewModel {
                     }
             }
             .subscribe(with: self) { owner, response in
-                print(response.files)
-//                guard let images = try? imageURLSubject.value() else { return }
                 owner
                     .postAPIManager
                     .uploadContents(images: response.files, query: request)

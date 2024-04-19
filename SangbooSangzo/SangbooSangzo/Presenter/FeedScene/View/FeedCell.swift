@@ -41,28 +41,24 @@ final class FeedCell: BaseCollectionViewCell {
     
     // MARK: - Helpers
     
-    func setKF(input: String) {
-//        let processor = RoundCornerImageProcessor(cornerRadius: 20)
-        imageView.kf.indicatorType = .activity
-//        imageView.kf.setImage(with: URL(string: input),
-//                              options: [.transition(.fade(1.0)),
-//                                        .processor(processor)])
-        
-        let url = URL(string: input)
-        
-        let modifier = AnyModifier { request in
-            var request = request
-            request.setValue(UserDefaultsManager.shared.userToken.accessToken ?? "", forHTTPHeaderField: HTTPHeader.authorization)
-            request.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
-            return request
-        }
-
-        let options: KingfisherOptionsInfo = [
-            .requestModifier(modifier)
-        ]
-
-        imageView.kf.setImage(with: url, options: options)
-    }
+//    func setKF(input: String) {
+//        imageView.kf.indicatorType = .activity
+//        
+//        let url = URL(string: input)
+//        
+//        let modifier = AnyModifier { request in
+//            var request = request
+//            request.setValue(UserDefaultsManager.shared.userToken.accessToken ?? "", forHTTPHeaderField: HTTPHeader.authorization)
+//            request.setValue(APIKey.sesacKey, forHTTPHeaderField: HTTPHeader.sesacKey)
+//            return request
+//        }
+//
+//        let options: KingfisherOptionsInfo = [
+//            .requestModifier(modifier)
+//        ]
+//
+//        imageView.kf.setImage(with: url, options: options)
+//    }
     
     func isSelectedButton(input: String) -> Bool {
 //        guard let user = UserManager.shared.currentUserValue else { return false }
@@ -91,8 +87,11 @@ final class FeedCell: BaseCollectionViewCell {
 extension FeedCell {
 
     func configureCellData(_ data: UploadContentResponse) {
-        setKF(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
+//        setKF(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
 //        heartButton.isSelected = isSelectedButton(input: data.id)
+        
+        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
+        
         categoryLabel.text = data.content1
         titleLabel.text = data.title
         priceLabel.text = data.content4

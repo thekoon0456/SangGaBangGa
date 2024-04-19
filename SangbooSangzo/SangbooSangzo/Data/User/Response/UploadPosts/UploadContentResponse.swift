@@ -8,6 +8,7 @@
 import Foundation
 
 struct UploadContentResponse: Decodable, Hashable {
+    let id = UUID()
     let postID: String?
     let productID: String?
     let title: String? //제목
@@ -59,5 +60,23 @@ struct UploadContentResponse: Decodable, Hashable {
         self.likes = try container.decodeIfPresent([String].self, forKey: .likes) ?? []
         self.hashTags = try container.decodeIfPresent([String].self, forKey: .hashTags) ?? []
         self.comments = try container.decodeIfPresent([PostCommentResponse].self, forKey: .comments)
+    }
+    
+    init() {
+        self.postID = nil
+        self.productID = nil
+        self.title = nil
+        self.content = nil
+        self.content1 = nil
+        self.content2 = nil
+        self.content3 = nil
+        self.content4 = nil
+        self.content5 = nil
+        self.createdAt = nil
+        self.creator = nil
+        self.files = nil
+        self.likes = nil
+        self.hashTags = nil
+        self.comments = nil
     }
 }
