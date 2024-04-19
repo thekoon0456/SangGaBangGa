@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UploadContentResponse: Decodable {
+struct UploadContentResponse: Decodable, Hashable {
     let postID: String?
     let productID: String?
     let title: String? //제목

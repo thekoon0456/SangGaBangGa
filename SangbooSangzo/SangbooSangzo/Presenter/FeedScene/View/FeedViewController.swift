@@ -15,7 +15,11 @@ final class FeedViewController: RxBaseViewController {
     
     // MARK: - Properties
     
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, UploadContentResponse>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UploadContentResponse>
+    
     private let viewModel: FeedViewModel
+    private var dataSource: DataSource?
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: createLayout()).then {
@@ -42,19 +46,33 @@ final class FeedViewController: RxBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.coordinator?.presentLoginScene()
+        configureDataSource()
+        configureSnapshot()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
     
     override func bind() {
         super.bind()
         
-        let input = FeedViewModel.Input(addButtonTapped: addButton.rx.tap)
+        let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                        addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
+        
+//        output
+//            .feeds
+//            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+//                cell.configureCellData(element)
+//                print(element)
+//            }
+//            .disposed(by: disposeBag)
         
         output
             .feeds
-            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
-                cell.configureCellData(element)
-                print(element)
+            .drive(with: self) { owner, item in
+                owner.updateSnapshot(withItems: item, toSection: .feed)
             }
             .disposed(by: disposeBag)
         
@@ -93,7 +111,48 @@ final class FeedViewController: RxBaseViewController {
              let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
              let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = 16
              return section
          }
     }
+}
+
+extension FeedViewController {
+    enum Section: Int, CaseIterable {
+        case feed
+    }
+    
+    private func feedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, UploadContentResponse> {
+        UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+            cell.configureCellData(itemIdentifier)
+        }
+    }
+    
+    private func configureDataSource() {
+        let feedCellRegistration = feedCellRegistration()
+        
+        dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
+            guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
+            switch section {
+            case .feed:
+                let cell = collectionView.dequeueConfiguredReusableCell(using: feedCellRegistration, for: indexPath, item: itemIdentifier)
+                return cell
+            }
+        }
+    }
+    
+    private func configureSnapshot() {
+        let snapshot = Snapshot().then {
+            $0.appendSections(Section.allCases)
+        }
+        dataSource?.apply(snapshot)
+    }
+    
+    private func updateSnapshot(withItems items: [UploadContentResponse], toSection section: Section) {
+        var snapshot = dataSource?.snapshot() ?? Snapshot()
+        snapshot.appendItems(items, toSection: section)
+        dataSource?.apply(snapshot)
+    }
+    
+    
 }

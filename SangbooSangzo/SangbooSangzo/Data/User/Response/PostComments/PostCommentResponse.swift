@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostCommentResponse: Decodable {
+struct PostCommentResponse: Decodable, Hashable {
     let commentID: String?
     let content: String?
     let createAt: String?
@@ -29,7 +29,7 @@ struct PostCommentResponse: Decodable {
     }
 }
 
-struct CommentCreatorResponse: Decodable {
+struct CommentCreatorResponse: Decodable, Hashable {
     let userID: String?
     let nick: String?
     let profileImage: String?

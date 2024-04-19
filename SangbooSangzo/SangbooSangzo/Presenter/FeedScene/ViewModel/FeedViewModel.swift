@@ -13,7 +13,7 @@ import RxSwift
 final class FeedViewModel: ViewModel {
     
     struct Input {
-        //        let viewWillAppear: ControlEvent<Void>
+        let viewWillAppear: Observable<Void>
         //        let cellSelected: Observable<(index: Int, model: UploadContentResponse)>
         let addButtonTapped: ControlEvent<Void>
     }
@@ -34,8 +34,6 @@ final class FeedViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
-        //        let
-        
         input
             .addButtonTapped
             .asDriver()
@@ -44,13 +42,17 @@ final class FeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        let posts = postsAPIManager.readPosts(query: .init(next: nil, limit: "20", productID: nil))
+        let feeds = input
+            .viewWillAppear
+            .flatMap {
+                PostsAPIManager.shared.readPosts(query: .init(next: nil, limit: "20", productID: nil))
+            }
             .compactMap { $0.data }
             .debug()
             .asDriver(onErrorJustReturn: [])
         
         
-        return Output(feeds: posts)
+        return Output(feeds: feeds)
     }
     
     
