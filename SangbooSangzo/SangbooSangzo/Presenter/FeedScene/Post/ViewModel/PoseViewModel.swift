@@ -155,6 +155,7 @@ final class PostViewModel: ViewModel {
                     }
             }
             .subscribe(with: self) { owner, response in
+                print(response.files)
 //                guard let images = try? imageURLSubject.value() else { return }
                 owner
                     .postAPIManager

@@ -28,7 +28,7 @@ final class PostsAPIManager {
     }
     
     func uploadContents(images: [String], query: UploadContentRequest) -> Single<UploadContentResponse> {
-        provider.rx.request(.uploadContents(query: query))
+        provider.rx.request(.uploadContents(files: images, query: query))
             .map(UploadContentResponse.self)
     }
 

@@ -11,7 +11,7 @@ import Moya
 
 enum PostsRouter {
     case uploadImage(query: UploadImageDatasRequest)
-    case uploadContents(query: UploadContentRequest)
+    case uploadContents(files: [String], query: UploadContentRequest)
     case readPosts(query: ReadPostsQuery)
     case readPost(queryID: String)
     case fetchPost(queryID: String, request: UploadContentRequest)
@@ -81,7 +81,7 @@ extension PostsRouter: TargetType {
             }
             
             return .uploadMultipart(formData)
-        case .uploadContents(let query):
+        case .uploadContents(let files, let query):
             let params: [String: Any] = [
                 "title": query.title ?? "",
                 "content": query.content ?? "",
@@ -91,7 +91,7 @@ extension PostsRouter: TargetType {
                 "content4": query.content4 ?? "",
                 "content5": query.content5 ?? "",
                 "product_id": query.productID ?? "SangbooSangzo",
-                "files": query.files ?? []
+                "files": files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .readPosts(let query): 
