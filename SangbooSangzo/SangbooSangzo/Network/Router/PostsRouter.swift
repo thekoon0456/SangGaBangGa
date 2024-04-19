@@ -90,7 +90,7 @@ extension PostsRouter: TargetType {
                 "content3": query.content3 ?? "",
                 "content4": query.content4 ?? "",
                 "content5": query.content5 ?? "",
-                "productID": query.productID ?? "",
+                "product_id": query.productID ?? "SangbooSangzo",
                 "files": query.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
@@ -112,7 +112,7 @@ extension PostsRouter: TargetType {
                 "content3": request.content3 ?? "",
                 "content4": request.content4 ?? "",
                 "content5": request.content5 ?? "",
-                "productID": request.productID ?? "",
+                "product_id": request.productID ?? "",
                 "files": request.files ?? []
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)

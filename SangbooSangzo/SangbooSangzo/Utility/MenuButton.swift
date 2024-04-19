@@ -12,7 +12,7 @@ import RxSwift
 
 final class SSMenuButton: UIButton {
     
-    var menuButtonSubject = PublishSubject<String?>()
+    var menuButtonRelay = BehaviorRelay<String?>(value: nil)
     let chevronImage = UIImage(systemName: "chevron.down")
     let disposeBag = DisposeBag()
     
@@ -22,7 +22,7 @@ final class SSMenuButton: UIButton {
         super.init(frame: .zero)
         configureUI(buttonTitle: buttonTitle, menus: menus)
         
-        menuButtonSubject.subscribe { [weak self] title in
+        menuButtonRelay.subscribe { [weak self] title in
             guard let self,
                   let title else { return }
             setTitle(title, for: .normal)
@@ -50,7 +50,7 @@ final class SSMenuButton: UIButton {
         menu = UIMenu(children: menus.map { title in
             UIAction(title: title) { [weak self] _ in
                 guard let self else { return }
-                menuButtonSubject.onNext(title)
+                menuButtonRelay.accept(title)
             }
         })
         

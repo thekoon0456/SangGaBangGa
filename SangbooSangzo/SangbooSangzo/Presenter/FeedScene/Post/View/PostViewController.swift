@@ -28,9 +28,8 @@ final class PostViewController: RxBaseViewController {
         $0.showsHorizontalScrollIndicator = false
     }
     
-    private let photoSubject = BehaviorSubject(value: [UIImage]())
-    
-    var data = [UIImage]()
+    var data: [Data] = []
+    private lazy var selectedImagesRelay = BehaviorRelay<[Data]>(value: [])
     
     private func configureLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
@@ -112,26 +111,44 @@ final class PostViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
+        let input = PostViewModel.Input(selectedPhotos: selectedImagesRelay,
+                                        title: titleTextField.rx.text.orEmpty,
+                                        category: categoryButton.menuButtonRelay,
+                                        address: addressTextField.rx.text.orEmpty,
+                                        deposit: depositTextField.rx.text.orEmpty,
+                                        rent: rentTextField.rx.text.orEmpty,
+                                        space: rentTextField.rx.text.orEmpty,
+                                        content: contentTextView.rx.text.orEmpty,
+                                        post: postButton.rx.tap)
+        let output = viewModel.transform(input)
+        
         imageButton.rx.tap.bind(with: self) { owner, _ in
             owner.configurePHPicker()
         }
         .disposed(by: disposeBag)
         
+        output
+            .buttonEnable
+            .drive(postButton.rx.isEnabled)
+            .disposed(by: disposeBag)
         
-        photoSubject.bind(to:imageCollectionView.rx.items(cellIdentifier: PostImageCell.identifier, cellType: PostImageCell.self)) { item, element, cell in
-            cell.configureCell(image: element)
-        }
-        .disposed(by: disposeBag)
+        output
+            .selectedPhotos
+            .drive(imageCollectionView.rx.items(
+                cellIdentifier: PostImageCell.identifier,
+                cellType: PostImageCell.self)
+            ) { item, element, cell in
+                print("element", element)
+                cell.configureCell(image: UIImage(data: element) ?? UIImage())
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configurePHPicker() {
         var configuration = PHPickerConfiguration()
-        //사진 다중선택 가능, 0으로 설정시 무제한 선택 가능
         configuration.selectionLimit = 5
-        //앨범 중 사진, 동영사상, 스크린캡쳐, 화면녹화, 타임랩스 등 사진에 대한 종류 필터
-        configuration.filter = .images //사진만 나옴
-        //.any를 통해 배열 형태로 여러 종류 동시에 필터 설정 가능
-        configuration.filter = .any(of: [.images, .videos])
+        configuration.filter = .images
+        configuration.filter = .any(of: [.images])
         let vc = PHPickerViewController(configuration: configuration)
         vc.delegate = self
         present(vc, animated: true)
@@ -141,12 +158,44 @@ final class PostViewController: RxBaseViewController {
         super.configureHierarchy()
         view.addSubview(scrollView)
         contentView.addSubviews(imageButton, imageCollectionView, titleTextField, contentTextView, categoryButton,
-                         addressTextField, depositTextField, rentTextField, spaceTextField, postButton)
+                                addressTextField, depositTextField, rentTextField, spaceTextField, postButton)
     }
     
     override func configureLayout() {
         super.configureLayout()
+        setLayout()
+    }
+    
+    override func configureView() {
+        super.configureView()
+        navigationItem.title = "게시글 작성하기"
+    }
+}
+
+extension PostViewController: PHPickerViewControllerDelegate {
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
+        results.forEach { result in
+            let itemProvider = result.itemProvider
+            
+            if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                    guard let self,
+                          let image = image as? UIImage else { return }
+                    data.append(image.jpegData(compressionQuality: 0.5)!)
+                    print(data)
+                }
+            }
+        }
+        picker.dismiss(animated: true)
+        selectedImagesRelay.accept(data)
+    }
+}
+
+extension PostViewController {
+    
+    private func setLayout() {
         scrollView.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
@@ -224,49 +273,5 @@ final class PostViewController: RxBaseViewController {
             make.height.equalTo(60)
             make.bottom.equalToSuperview()
         }
-        
-    }
-    
-    override func configureView() {
-        super.configureView()
-        navigationItem.title = "게시글 작성하기"
-    }
-    
-}
-
-extension PostViewController: PHPickerViewControllerDelegate {
-    
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        
-        results.forEach { result in
-            let itemProvider = result.itemProvider
-            
-            if itemProvider.canLoadObject(ofClass: UIImage.self) {
-                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                    guard let self,
-                          let image = image as? UIImage else { return }
-                    data.append(image)
-                    photoSubject.onNext(data)
-                }
-            }
-        }
-        
-//        let itemProvider = results.first?.itemProvider
-//        
-//        if let itemProvider,
-//           //실제 이미지가 존재하고, UIImage타입으로 가지고 올 수 있는지 체크
-//           itemProvider.canLoadObject(ofClass: UIImage.self) {
-//            //메타정보는 빼고 이미지만 가져옴
-//            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-//                //메인스레드에서 동작하도록 설정
-//                DispatchQueue.main.async { [weak self] in
-//                    guard let self,
-//                        let image = image as? UIImage else { return }
-//                    imageButton.setImage(image, for: .normal)
-//                }
-//            }
-//        }
-        
-        picker.dismiss(animated: true)
     }
 }

@@ -45,7 +45,7 @@ final class FeedViewModel: ViewModel {
         let feeds = input
             .viewWillAppear
             .flatMap {
-                PostsAPIManager.shared.readPosts(query: .init(next: nil, limit: "20", productID: nil))
+                PostsAPIManager.shared.readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
             .compactMap { $0.data }
             .debug()
