@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 import RxCocoa
 import RxSwift
@@ -20,6 +21,24 @@ final class PostViewController: RxBaseViewController {
     }
     
     private let contentView = UIView()
+    
+    private lazy var imageCollectionView = UICollectionView(frame: .zero,
+                                                            collectionViewLayout: configureLayout()).then {
+        $0.register(PostImageCell.self, forCellWithReuseIdentifier: PostImageCell.identifier)
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
+    private let photoSubject = BehaviorSubject(value: [UIImage]())
+    
+    var data = [UIImage]()
+    
+    private func configureLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = .init(width: 100, height: 100)
+        layout.minimumInteritemSpacing = 8
+        layout.scrollDirection = .horizontal
+        return layout
+    }
     
     private let imageButton = UIButton().then {
         $0.setImage(UIImage(systemName: "photo"), for: .normal)
@@ -90,10 +109,38 @@ final class PostViewController: RxBaseViewController {
         super.init()
     }
     
+    override func bind() {
+        super.bind()
+        
+        imageButton.rx.tap.bind(with: self) { owner, _ in
+            owner.configurePHPicker()
+        }
+        .disposed(by: disposeBag)
+        
+        
+        photoSubject.bind(to:imageCollectionView.rx.items(cellIdentifier: PostImageCell.identifier, cellType: PostImageCell.self)) { item, element, cell in
+            cell.configureCell(image: element)
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    private func configurePHPicker() {
+        var configuration = PHPickerConfiguration()
+        //사진 다중선택 가능, 0으로 설정시 무제한 선택 가능
+        configuration.selectionLimit = 5
+        //앨범 중 사진, 동영사상, 스크린캡쳐, 화면녹화, 타임랩스 등 사진에 대한 종류 필터
+        configuration.filter = .images //사진만 나옴
+        //.any를 통해 배열 형태로 여러 종류 동시에 필터 설정 가능
+        configuration.filter = .any(of: [.images, .videos])
+        let vc = PHPickerViewController(configuration: configuration)
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(imageButton, titleTextField, contentTextView, categoryButton,
+        contentView.addSubviews(imageButton, imageCollectionView, titleTextField, contentTextView, categoryButton,
                          addressTextField, depositTextField, rentTextField, spaceTextField, postButton)
     }
     
@@ -112,6 +159,13 @@ final class PostViewController: RxBaseViewController {
         imageButton.snp.makeConstraints { make in
             make.size.equalTo(100)
             make.top.leading.equalToSuperview().offset(20)
+        }
+        
+        imageCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalTo(imageButton.snp.trailing).offset(8)
+            make.trailing.equalToSuperview()
+            make.height.equalTo(100)
         }
         
         titleTextField.snp.makeConstraints { make in
@@ -180,3 +234,39 @@ final class PostViewController: RxBaseViewController {
     
 }
 
+extension PostViewController: PHPickerViewControllerDelegate {
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        results.forEach { result in
+            let itemProvider = result.itemProvider
+            
+            if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                    guard let self,
+                          let image = image as? UIImage else { return }
+                    data.append(image)
+                    photoSubject.onNext(data)
+                }
+            }
+        }
+        
+//        let itemProvider = results.first?.itemProvider
+//        
+//        if let itemProvider,
+//           //실제 이미지가 존재하고, UIImage타입으로 가지고 올 수 있는지 체크
+//           itemProvider.canLoadObject(ofClass: UIImage.self) {
+//            //메타정보는 빼고 이미지만 가져옴
+//            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+//                //메인스레드에서 동작하도록 설정
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self,
+//                        let image = image as? UIImage else { return }
+//                    imageButton.setImage(image, for: .normal)
+//                }
+//            }
+//        }
+        
+        picker.dismiss(animated: true)
+    }
+}

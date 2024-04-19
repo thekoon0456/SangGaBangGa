@@ -69,7 +69,7 @@ final class FeedCell: BaseCollectionViewCell {
 //        return user.likes.contains(input) ? true : false
         return false
     }
-    
+
     override func configureHierarchy() {
         super.configureHierarchy()
         contentView.addSubviews(imageView, heartButton, categoryLabel, titleLabel, priceLabel)
@@ -100,8 +100,8 @@ extension FeedCell {
     
     private func setLayout() {
         imageView.snp.makeConstraints { make in
-            make.top.width.equalToSuperview()
-            make.height.lessThanOrEqualTo(200)
+            make.top.horizontalEdges.equalToSuperview()
+            make.height.lessThanOrEqualTo(300)
         }
         
         heartButton.snp.makeConstraints { make in
