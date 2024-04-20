@@ -14,9 +14,9 @@ final class FeedCell: BaseCollectionViewCell {
     // MARK: - Properties
     
     private let imageView = UIImageView().then {
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
     }
     
     let heartButton = UIButton().then {
@@ -77,8 +77,8 @@ extension FeedCell {
     
     private func setLayout() {
         imageView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview()
-            make.height.lessThanOrEqualTo(300)
+            make.top.width.equalToSuperview()
+            make.height.equalTo(imageView.snp.width)
         }
         
         heartButton.snp.makeConstraints { make in

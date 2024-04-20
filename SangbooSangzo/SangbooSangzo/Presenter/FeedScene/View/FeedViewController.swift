@@ -22,7 +22,7 @@ final class FeedViewController: RxBaseViewController {
     private var dataSource: DataSource?
     
     private lazy var collectionView = UICollectionView(frame: .zero,
-                                                  collectionViewLayout: createLayout()).then {
+                                                       collectionViewLayout: createLayout()).then {
         $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
     }
     
@@ -45,16 +45,16 @@ final class FeedViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        viewModel.coordinator?.presentLoginScene()
-//        configureDataSource()
-//        configureSnapshot()
+
+        //        configureDataSource()
+        //        configureSnapshot()
     }
     
     override func bind() {
         super.bind()
         
         let input = FeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
-            viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                        viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.modelSelected(UploadContentResponse.self),
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
@@ -67,12 +67,12 @@ final class FeedViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
-//        output
-//            .feeds
-//            .drive(with: self) { owner, item in
-//                owner.updateSnapshot(withItems: item, toSection: .feed)
-//            }
-//            .disposed(by: disposeBag)
+        //        output
+        //            .feeds
+        //            .drive(with: self) { owner, item in
+        //                owner.updateSnapshot(withItems: item, toSection: .feed)
+        //            }
+        //            .disposed(by: disposeBag)
         
     }
     
@@ -99,21 +99,24 @@ final class FeedViewController: RxBaseViewController {
         navigationItem.title = "피드"
     }
     
-    private func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             // MARK: - 높이 계산해서 고정값 주기
-             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(100))
-             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
-
-             let section = NSCollectionLayoutSection(group: group)
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(300))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+            
+            let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 16
-             return section
-         }
+            return section
+        }
     }
 }
+
+
 
 extension FeedViewController {
     enum Section: Int, CaseIterable {
@@ -151,6 +154,4 @@ extension FeedViewController {
         snapshot.appendItems(items, toSection: section)
         dataSource?.apply(snapshot)
     }
-    
-    
 }

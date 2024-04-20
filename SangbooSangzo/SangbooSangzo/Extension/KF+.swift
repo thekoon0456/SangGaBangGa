@@ -12,6 +12,8 @@ import Kingfisher
 extension KingfisherWrapper<UIImageView> {
     
     func setSeSACImage(input: String) {
+        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300), mode: .aspectFit)
+        
         let url = URL(string: input)
         
         let modifier = AnyModifier { request in
@@ -22,6 +24,10 @@ extension KingfisherWrapper<UIImageView> {
         }
 
         let options: KingfisherOptionsInfo = [
+            .processor(processor),
+            .scaleFactor(UIScreen.main.scale),
+                 .transition(.fade(1)),
+                 .cacheOriginalImage,
             .requestModifier(modifier)
         ]
         self.setImage(with: url, options: options)
