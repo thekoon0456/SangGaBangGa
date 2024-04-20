@@ -97,6 +97,7 @@ final class PostViewModel: ViewModel {
             .address
             .do { [weak self] value in
                 guard let self else { return }
+                //입력한 주소를 좌표로 변환해 content3에 저장
                 convertAddressToCoordinates(address: value)
                     .subscribe { location in
                         request.content3 = location
@@ -108,8 +109,6 @@ final class PostViewModel: ViewModel {
                 
             }
             .disposed(by: disposeBag)
-        
-        //
         
         Observable.zip(input.deposit,
                        input.rent)
@@ -160,10 +159,9 @@ final class PostViewModel: ViewModel {
 }
 
 extension PostViewModel {
-    
+    //위도 / 경도
     func convertAddressToCoordinates(address: String) -> Observable<String> {
         return Observable.create { observer in
-            
             let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(address) { (placemarks, error) in
                 if let error = error {
@@ -175,12 +173,13 @@ extension PostViewModel {
                     observer.onNext("\(location.coordinate.latitude) / \(location.coordinate.longitude)")
                     observer.onCompleted()
                 } else {
-                    observer.onError(NSError(domain: "LocationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No valid coordinates found"]))
+                    observer.onError(NSError(domain: "LocationError",
+                                             code: 0,
+                                             userInfo: [NSLocalizedDescriptionKey: "No valid coordinates found"]))
                 }
             }
             
             return Disposables.create()
         }
     }
-    
 }

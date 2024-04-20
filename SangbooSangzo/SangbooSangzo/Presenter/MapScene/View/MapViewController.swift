@@ -56,7 +56,23 @@ final class MapViewController: RxBaseViewController {
         configureLocation()
         mapView.delegate = self
     }
-//    
+    
+    override func bind() {
+        super.bind()
+        
+        let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in })
+        let output = viewModel.transform(input)
+        
+        output
+            .feeds
+            .drive(with: self) { owner, value in
+                value.forEach { data in
+                    owner.setSSAnnotation(data: data)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+//
 //    private func addAnnotation() {
 //        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37,
 //                                                                             longitude: 127))
@@ -96,57 +112,19 @@ final class MapViewController: RxBaseViewController {
     }
 }
 
-//extension MapViewController: MKMapViewDelegate {
-//    
-//    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
-//        let lat = annotation.coordinate.latitude
-//        let lon = annotation.coordinate.longitude
-//        let location = CLLocation(latitude: lat, longitude: lon)
-//        
-//        locationManager.getPlacemark(location: location) { [weak self] locality, country in
-//            guard let self else { return }
-//            viewModel.coordinator?.showMapAlert(location: locality) {
-//                UserDefaultsManager.shared.city = City(id: 0,
-//                                                       name: locality,
-//                                                       country: country,
-//                                                       coord: CityCoord(lat: lat, lon: lon))
-//                LocationManager.shared.updateCity()
-//            }
-//        }
-//    }
-//}
-
 extension MapViewController: MKMapViewDelegate {
     //시점 이동
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let annotation = view.annotation as? MKPointAnnotation else { return }
         
         let region = MKCoordinateRegion(center: annotation.coordinate,
-                                        latitudinalMeters: 5000,
-                                        longitudinalMeters: 5000)
+                                        latitudinalMeters: 500,
+                                        longitudinalMeters: 500)
         mapView.setRegion(region, animated: true)
     }
-    
-    //커스텀 어노테이션
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        guard let customAnnotation = annotation as? CustomAnnotation else {
-//            print("1")
-//            return nil
-//        }
-//
-//        let identifier = "CustomAnnotation"
-//        guard let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? CustomAnnotationView else {
-//            print("2")
-//            return nil
-//        }
-//        annotationView.annotation = annotation
-//        annotationView.image = customAnnotation.image
-//        print("3")
-//        return annotationView
-//    }
-    
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let customAnnotation = annotation as? CustomAnnotation else {
+        guard let customAnnotation = annotation as? SSAnnotation else {
             return nil
         }
 
@@ -174,32 +152,14 @@ extension MapViewController: CLLocationManagerDelegate {
     func configureMap() {
         mapView.delegate = self
         
-        let coordinate2 = CLLocationCoordinate2D(latitude: 37,
-                                                 longitude: 127)
+        guard let userLocation else { return }
         
-        //meters: 중심지로부터 거리
-        let region = MKCoordinateRegion(center: coordinate2,
-                                        latitudinalMeters: 1000,
-                                        longitudinalMeters: 1000)
-        
-        mapView.setRegion(region, animated: true)
-        
-//        theaterData.forEach { theater in
-//            let coordinate = CLLocationCoordinate2D(latitude: theater.latitude, longitude: theater.longitude)
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = coordinate
-//            annotation.title = theater.location
-//            
-//            mapView.addAnnotation(annotation)
-//        }
-        
-//        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893),
-//                                          title: "Important Location",
-//                                          subtitle: "This is an important place.",
-//                                          image: UIImage(named: "test"))
-//        mapView.addAnnotation(annotation)
-        setAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893))
-
+//        let region = MKCoordinateRegion(center: userLocation,
+//                                        latitudinalMeters: 500,
+//                                        longitudinalMeters: 500)
+//        mapView.setRegion(region, animated: true)
+//        
+//        setAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893))
     }
     
     //맵 annotaion 리셋
@@ -212,16 +172,12 @@ extension MapViewController: CLLocationManagerDelegate {
 extension MapViewController {
     
     func configureLocation() {
-        //delegate 연결
         locationManager.delegate = self
-        //사용자 권한 확인
         self.checkDeviceLocationAuthorization()
     }
     
     func checkDeviceLocationAuthorization() {
         //첫 진입시 권한 띄워주거나, 동의 하면 위치 가져오기
-        //사용자 아이폰의 위치 서비스가 켜져있는 경우
-        //사용자 권한 확인, 글로벌 스레드에서 동작
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled() {
                 let authorization: CLAuthorizationStatus = self.locationManager.authorizationStatus
@@ -268,39 +224,37 @@ extension MapViewController {
         }
     }
     
-    func setRegionAndAnnotation() {
-        guard let userLocation else {
-            let region = MKCoordinateRegion(center: defaultLocation,
-                                            latitudinalMeters: 300,
-                                            longitudinalMeters: 300)
-            mapView.setRegion(region, animated: true)
-            setAnnotation(coordinate: defaultLocation)
-            return
-        }
-        
-        let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 300,
-                                        longitudinalMeters: 300)
-        mapView.setRegion(region, animated: true)
-        setAnnotation(coordinate: userLocation)
-    }
-    
-    //맵뷰 annotation추가
-    func setAnnotation(coordinate: CLLocationCoordinate2D) {
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = coordinate
-//        annotation.title = "현재 위치"
+//    func setRegionAndAnnotation() {
+//        guard let userLocation else {
+//            let region = MKCoordinateRegion(center: defaultLocation,
+//                                            latitudinalMeters: 300,
+//                                            longitudinalMeters: 300)
+//            mapView.setRegion(region, animated: true)
+//            let annotation = mkannota()
+//            mapView.addAnnotation(annotation)
+//            return
+//        }
 //        
+//        let region = MKCoordinateRegion(center: userLocation,
+//                                        latitudinalMeters: 300,
+//                                        longitudinalMeters: 300)
+//        let annotation = SSAnnotation(coordinate: coordinate,
+//                                      data: data)
 //        mapView.addAnnotation(annotation)
-        
-        let annotation = CustomAnnotation(coordinate: coordinate,
-                                          title: "Important Location",
-                                          subtitle: "This is an important place.",
-                                          image: UIImage(named: "test"))
-        mapView.addAnnotation(annotation)
-        
-    }
+//        mapView.setRegion(region, animated: true)
+//    }
     
+    func setSSAnnotation(data: UploadContentResponse) {
+        guard let site = data.content3,
+            let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
+            let longitude = Double(site.components(separatedBy: " / ").last ?? "")
+        else { return }
+        
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let annotation = SSAnnotation(coordinate: coordinate,
+                                      data: data)
+        mapView.addAnnotation(annotation)
+    }
 }
 
 extension MapViewController {
@@ -309,12 +263,10 @@ extension MapViewController {
         print(locations)
         
         if let coordinate = locations.last?.coordinate {
-//            userLocation?.latitude = coordinate.latitude
-//            userLocation?.longitude = coordinate.longitude
             userLocation = CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                   longitude: coordinate.longitude)
         }
-        setRegionAndAnnotation()
+//        setRegionAndAnnotation()
     }
     
     //위치정보 가져오지 못했을 경우. alert이나 default 위치 띄우기
@@ -332,7 +284,6 @@ extension MapViewController {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkDeviceLocationAuthorization()
     }
-    
 }
 
 // MARK: - Alert
@@ -355,17 +306,5 @@ extension UIViewController {
         alert.addAction(defaultButton)
         
         present(alert, animated: true)
-    }
-}
-
-extension UIImage {
-    func resized(toWidth width: CGFloat) -> UIImage? {
-        let scale = width / self.size.width
-        let newHeight = self.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: width, height: newHeight))
-        self.draw(in: CGRect(x: 0, y: 0, width: width, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
     }
 }

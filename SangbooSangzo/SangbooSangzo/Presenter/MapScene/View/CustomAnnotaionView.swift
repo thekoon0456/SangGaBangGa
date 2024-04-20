@@ -78,7 +78,7 @@ final class CustomAnnotationView: MKAnnotationView {
     override func prepareForDisplay() {
         super.prepareForDisplay()
         
-        guard let annotation = annotation as? CustomAnnotation else { return }
+        guard let annotation = annotation as? SSAnnotation else { return }
         titleLabel.text = annotation.title
         
         guard let image = annotation.image else { return }

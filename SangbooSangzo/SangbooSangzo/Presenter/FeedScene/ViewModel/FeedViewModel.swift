@@ -28,7 +28,6 @@ final class FeedViewModel: ViewModel {
     weak var coordinator: FeedCoordinator?
     private let postsAPIManager = PostsAPIManager.shared
     private let userAPIManager = UserAPIManager.shared
-    let images = BehaviorRelay<[UploadContentResponse]>(value: [])
     var disposeBag = DisposeBag()
     
     init(coordinator: FeedCoordinator?) {
@@ -36,13 +35,6 @@ final class FeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-        
-        input
-            .viewWillAppear
-            .subscribe(with: self) { owner, _ in
-                
-            }
-            .disposed(by: disposeBag)
         
         input
             .addButtonTapped
@@ -69,10 +61,6 @@ final class FeedViewModel: ViewModel {
                     .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
             .compactMap { $0.data }
-            .do { [weak self] data in
-                guard let self else { return }
-                images.accept(data)
-            }
             .debug()
             .asDriver(onErrorJustReturn: [])
         
