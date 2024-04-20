@@ -5,6 +5,7 @@
 //  Created by Deokhun KIM on 4/16/24.
 //
 
+import CoreLocation
 import Foundation
 
 import RxCocoa
@@ -38,7 +39,7 @@ final class PostViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-
+        
         var request = UploadContentRequest(title: nil,
                                            content: nil,
                                            content1: nil,
@@ -48,8 +49,6 @@ final class PostViewModel: ViewModel {
                                            content5: nil,
                                            productID: "SangbooSangzo",
                                            files: nil)
-        
-        let imageURLSubject = BehaviorSubject<[String]>(value: [])
         
         let buttonEnable = Observable.combineLatest(
             [
@@ -96,24 +95,28 @@ final class PostViewModel: ViewModel {
         
         input
             .address
+            .do { [weak self] value in
+                guard let self else { return }
+                convertAddressToCoordinates(address: value)
+                    .subscribe { location in
+                        request.content3 = location
+                    }
+                    .disposed(by: disposeBag)
+            }
             .subscribe { value in
                 request.content2 = value
+                
             }
             .disposed(by: disposeBag)
         
-//        input
-//            .content3
-//            .subscribe { value in
-//                request.content3 = value
-//            }
-//            .disposed(by: disposeBag)
+        //
         
         Observable.zip(input.deposit,
                        input.rent)
-            .subscribe { value in
-                request.content4 = "\(value.0) / \(value.1)"
-            }
-            .disposed(by: disposeBag)
+        .subscribe { value in
+            request.content4 = "\(value.0) / \(value.1)"
+        }
+        .disposed(by: disposeBag)
         
         input
             .space
@@ -154,4 +157,30 @@ final class PostViewModel: ViewModel {
         return Output(selectedPhotos: input.selectedPhotos.asDriver(onErrorJustReturn: []),
                       buttonEnable: buttonEnable.asDriver(onErrorJustReturn: false))
     }
+}
+
+extension PostViewModel {
+    
+    func convertAddressToCoordinates(address: String) -> Observable<String> {
+        return Observable.create { observer in
+            
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(address) { (placemarks, error) in
+                if let error = error {
+                    observer.onError(error)
+                    return
+                }
+                
+                if let placemark = placemarks?.first, let location = placemark.location {
+                    observer.onNext("\(location.coordinate.latitude) / \(location.coordinate.longitude)")
+                    observer.onCompleted()
+                } else {
+                    observer.onError(NSError(domain: "LocationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No valid coordinates found"]))
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
 }
