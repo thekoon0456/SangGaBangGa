@@ -16,16 +16,16 @@ final class SSAnnotation: NSObject, MKAnnotation {
     var title: String?
     var subtitle: String?
     var image: UIImage?
-    var data: UploadContentResponse?
+    var data: UploadContentResponse
     let imageView = UIImageView()
     
     init(coordinate: CLLocationCoordinate2D,
-         data: UploadContentResponse?) {
+         data: UploadContentResponse) {
         self.coordinate = coordinate
         self.data = data
-        self.title = data?.title
-        self.subtitle = data?.content4
-        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data?.files?.first ?? ""))
+        self.title = data.title
+        self.subtitle = data.content4
+        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
         self.image = imageView.image
     }
 }

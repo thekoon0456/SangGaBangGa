@@ -14,6 +14,7 @@ final class MapViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
+        let selectCell: Driver<UploadContentResponse>
     }
     
     struct Output {
@@ -31,6 +32,13 @@ final class MapViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
+        input
+            .selectCell
+            .drive(with: self) { owner, data in
+                owner.coordinator?.pushToDetail(data: data)
+            }
+            .disposed(by: disposeBag)
+        
         let feeds = input
             .viewWillAppear
             .withUnretained(self)

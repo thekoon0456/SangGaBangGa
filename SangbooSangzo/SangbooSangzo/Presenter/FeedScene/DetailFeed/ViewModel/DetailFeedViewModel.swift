@@ -20,12 +20,12 @@ final class DetailFeedViewModel: ViewModel {
         let data: Driver<UploadContentResponse>
     }
     
-    private weak var coordinator: FeedCoordinator?
+    private weak var coordinator: Coordinator?
 //    private let data: UploadContentResponse
     private let dataRelay = BehaviorRelay<UploadContentResponse>(value: UploadContentResponse())
     var disposeBag = DisposeBag()
     
-    init(coordinator: FeedCoordinator?, data: UploadContentResponse) {
+    init(coordinator: Coordinator?, data: UploadContentResponse) {
         self.coordinator = coordinator
 //        self.data = data
         dataRelay.accept(data)

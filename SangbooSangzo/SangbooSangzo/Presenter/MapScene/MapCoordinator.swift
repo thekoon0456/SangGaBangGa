@@ -26,4 +26,10 @@ final class MapCoordinator: Coordinator {
                                      selectedImage: UIImage(systemName: "map.fill"))
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func pushToDetail(data: UploadContentResponse) {
+        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let vc = DetailFeedViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

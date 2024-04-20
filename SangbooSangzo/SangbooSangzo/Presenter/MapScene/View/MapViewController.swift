@@ -19,6 +19,7 @@ final class MapViewController: RxBaseViewController {
     let locationManager = CLLocationManager()
     let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
     var userLocation: CLLocationCoordinate2D?
+    private let dataRelay = PublishRelay<UploadContentResponse>()
     
     private lazy var currentLocationButton = UIButton().then {
         let image = UIImage(systemName: "mappin.and.ellipse.circle")
@@ -60,7 +61,8 @@ final class MapViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in })
+        let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                       selectCell: dataRelay.asDriver(onErrorJustReturn: UploadContentResponse()))
         let output = viewModel.transform(input)
         
         output
@@ -113,17 +115,24 @@ final class MapViewController: RxBaseViewController {
 }
 
 extension MapViewController: MKMapViewDelegate {
-    //시점 이동
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let annotation = view.annotation as? MKPointAnnotation else { return }
+        print(#function)
+
+//        guard let annotation = view.annotation as? MKPointAnnotation else { return }
+//        
+//        let region = MKCoordinateRegion(center: annotation.coordinate,
+//                                        latitudinalMeters: 500,
+//                                        longitudinalMeters: 500)
+//        mapView.setRegion(region, animated: true)
         
-        let region = MKCoordinateRegion(center: annotation.coordinate,
-                                        latitudinalMeters: 500,
-                                        longitudinalMeters: 500)
-        mapView.setRegion(region, animated: true)
+        guard let annotation =  view.annotation as? SSAnnotation else { return }
+        print("annotation", annotation)
+        dataRelay.accept(annotation.data)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        print(#function)
         guard let customAnnotation = annotation as? SSAnnotation else {
             return nil
         }
