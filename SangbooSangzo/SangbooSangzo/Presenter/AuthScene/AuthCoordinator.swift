@@ -23,7 +23,7 @@ final class AuthCoordinator: Coordinator {
         let vm = LoginViewModel(coordinator: self)
         let vc = LoginViewController(viewModel: vm)
         childNav.viewControllers = [vc]
-        childNav.modalPresentationStyle = .overFullScreen
+        childNav.modalPresentationStyle = .fullScreen
         navigationController?.present(childNav, animated: true)
     }
     

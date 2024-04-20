@@ -13,6 +13,7 @@ import RxSwift
 final class FeedViewModel: ViewModel {
     
     struct Input {
+        let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: Observable<Void>
         let cellSelected: ControlEvent<UploadContentResponse>
         let addButtonTapped: ControlEvent<Void>
@@ -26,6 +27,7 @@ final class FeedViewModel: ViewModel {
     
     weak var coordinator: FeedCoordinator?
     private let postsAPIManager = PostsAPIManager.shared
+    private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: FeedCoordinator?) {
@@ -33,6 +35,13 @@ final class FeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
+        
+        input
+            .viewWillAppear
+            .subscribe(with: self) { owner, _ in
+                
+            }
+            .disposed(by: disposeBag)
         
         input
             .addButtonTapped
@@ -52,13 +61,23 @@ final class FeedViewModel: ViewModel {
         
         let feeds = input
             .viewWillAppear
-            .flatMap {
-                PostsAPIManager.shared.readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner
+                    .postsAPIManager
+                    .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
             .compactMap { $0.data }
             .debug()
             .asDriver(onErrorJustReturn: [])
         
+        TokenInterceptor
+            .errorSubject
+            .asDriver(onErrorJustReturn: ())
+            .drive(with: self) { owner, _ in
+                owner.coordinator?.presentLoginScene()
+            }
+            .disposed(by: disposeBag)
         
         return Output(feeds: feeds)
     }

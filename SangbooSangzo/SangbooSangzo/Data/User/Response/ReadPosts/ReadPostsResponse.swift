@@ -21,4 +21,9 @@ struct ReadPostsResponse: Decodable {
         self.data = try container.decodeIfPresent([UploadContentResponse].self, forKey: .data) ?? []
         self.nextCursor = try container.decodeIfPresent(String.self, forKey: .nextCursor) ?? ""
     }
+    
+    init() {
+        self.data = nil
+        self.nextCursor = nil
+    }
 }

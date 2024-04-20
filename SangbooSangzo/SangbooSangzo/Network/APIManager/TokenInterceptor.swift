@@ -6,6 +6,7 @@
 //
 import os
 import Foundation
+import UIKit
 
 import Alamofire
 import Moya
@@ -13,6 +14,7 @@ import RxSwift
 
 final class TokenInterceptor: RequestInterceptor {
     
+    static let errorSubject = PublishSubject<Void>()
     private let disposeBag = DisposeBag()
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
@@ -31,9 +33,10 @@ final class TokenInterceptor: RequestInterceptor {
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
         print("retry")
         guard let response = request.task?.response as? HTTPURLResponse,
-              response.statusCode == 419
+              response.statusCode == 419 //엑세스 토큰 만료
         else {
             //login화면으로
+            TokenInterceptor.errorSubject.onNext(())
             completion(.doNotRetryWithError(error))
             return
         }
@@ -42,7 +45,6 @@ final class TokenInterceptor: RequestInterceptor {
             .subscribe { response in
                 print("refreshToken", response.accessToken)
                 UserDefaultsManager.shared.userToken.accessToken = response.accessToken
-//                completion(.retry)
             }
             .disposed(by: disposeBag)
     }

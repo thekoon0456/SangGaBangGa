@@ -45,7 +45,7 @@ final class FeedViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.coordinator?.presentLoginScene()
+//        viewModel.coordinator?.presentLoginScene()
 //        configureDataSource()
 //        configureSnapshot()
     }
@@ -53,7 +53,9 @@ final class FeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in }, cellSelected: collectionView.rx.modelSelected(UploadContentResponse.self),
+        let input = FeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
+            viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                        cellSelected: collectionView.rx.modelSelected(UploadContentResponse.self),
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
         
