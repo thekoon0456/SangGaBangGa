@@ -147,19 +147,42 @@ extension MapViewController: MKMapViewDelegate {
     }
 }
 
-extension MapViewController: CLLocationManagerDelegate {
-    //맵 구성
-    func configureMap() {
-        mapView.delegate = self
+extension MapViewController {
+    
+    func setSSAnnotation(data: UploadContentResponse) {
+        guard let site = data.content3,
+            let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
+            let longitude = Double(site.components(separatedBy: " / ").last ?? "")
+        else { return }
         
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let annotation = SSAnnotation(coordinate: coordinate,
+                                      data: data)
+        mapView.addAnnotation(annotation)
+    }
+    
+    func setCurrentRegionAndAnnotation() {
         guard let userLocation else { return }
         
-//        let region = MKCoordinateRegion(center: userLocation,
-//                                        latitudinalMeters: 500,
-//                                        longitudinalMeters: 500)
-//        mapView.setRegion(region, animated: true)
-//        
-//        setAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893))
+        let region = MKCoordinateRegion(center: userLocation,
+                                        latitudinalMeters: 300,
+                                        longitudinalMeters: 300)
+        mapView.setRegion(region, animated: true)
+        setAnnotation(coordinate: userLocation)
+    }
+    
+    func setAnnotation(coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "현재 위치"
+        
+        mapView.addAnnotation(annotation)
+    }
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+    func configureMap() {
+        mapView.delegate = self
     }
     
     //맵 annotaion 리셋
@@ -167,7 +190,6 @@ extension MapViewController: CLLocationManagerDelegate {
         mapView.removeAnnotations(mapView.annotations)
     }
 }
-
 
 extension MapViewController {
     
@@ -223,38 +245,6 @@ extension MapViewController {
             UIApplication.shared.open(settingURL)
         }
     }
-    
-//    func setRegionAndAnnotation() {
-//        guard let userLocation else {
-//            let region = MKCoordinateRegion(center: defaultLocation,
-//                                            latitudinalMeters: 300,
-//                                            longitudinalMeters: 300)
-//            mapView.setRegion(region, animated: true)
-//            let annotation = mkannota()
-//            mapView.addAnnotation(annotation)
-//            return
-//        }
-//        
-//        let region = MKCoordinateRegion(center: userLocation,
-//                                        latitudinalMeters: 300,
-//                                        longitudinalMeters: 300)
-//        let annotation = SSAnnotation(coordinate: coordinate,
-//                                      data: data)
-//        mapView.addAnnotation(annotation)
-//        mapView.setRegion(region, animated: true)
-//    }
-    
-    func setSSAnnotation(data: UploadContentResponse) {
-        guard let site = data.content3,
-            let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
-            let longitude = Double(site.components(separatedBy: " / ").last ?? "")
-        else { return }
-        
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let annotation = SSAnnotation(coordinate: coordinate,
-                                      data: data)
-        mapView.addAnnotation(annotation)
-    }
 }
 
 extension MapViewController {
@@ -266,7 +256,8 @@ extension MapViewController {
             userLocation = CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                   longitude: coordinate.longitude)
         }
-//        setRegionAndAnnotation()
+        
+        setCurrentRegionAndAnnotation()
     }
     
     //위치정보 가져오지 못했을 경우. alert이나 default 위치 띄우기
