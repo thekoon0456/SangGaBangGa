@@ -51,11 +51,9 @@ final class MapViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        addAnnotation()
         registerMapAnnotationViews()
         configureMap()
         configureLocation()
-        mapView.delegate = self
     }
     
     override func bind() {
@@ -74,18 +72,10 @@ final class MapViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
     }
-//
-//    private func addAnnotation() {
-//        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: 37,
-//                                                                             longitude: 127))
-//        annotation.imageName = "star"
-//        mapView.addAnnotation(annotation)
-//        
-//    }
     
     func registerMapAnnotationViews() {
-        mapView.register(CustomAnnotationView.self,
-                         forAnnotationViewWithReuseIdentifier:CustomAnnotationView.identifier)
+        mapView.register(SSAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier:SSAnnotationView.identifier)
     }
     
     override func configureHierarchy() {
@@ -118,39 +108,23 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print(#function)
-
-//        guard let annotation = view.annotation as? MKPointAnnotation else { return }
-//        
-//        let region = MKCoordinateRegion(center: annotation.coordinate,
-//                                        latitudinalMeters: 500,
-//                                        longitudinalMeters: 500)
-//        mapView.setRegion(region, animated: true)
-        
         guard let annotation =  view.annotation as? SSAnnotation else { return }
         print("annotation", annotation)
         dataRelay.accept(annotation.data)
     }
-
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         print(#function)
-        guard let customAnnotation = annotation as? SSAnnotation else {
+        guard let customAnnotation = annotation as? SSAnnotation,
+              let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier),
+              let customImage = customAnnotation.image,
+              let resizedImage = customImage.resized(toWidth: 60)
+        else {
             return nil
         }
-
-        let identifier = "CustomAnnotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-
-        if annotationView == nil {
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-            annotationView?.calloutOffset = CGPoint(x: -5, y: 5)
-        } else {
-            annotationView?.annotation = annotation
-        }
-
-        if let customImage = customAnnotation.image, let resizedImage = customImage.resized(toWidth: 60) {
-            annotationView?.image = resizedImage
-        }
+        
+        annotationView.annotation = annotation
+        annotationView.image = resizedImage
 
         return annotationView
     }
@@ -160,8 +134,8 @@ extension MapViewController {
     
     func setSSAnnotation(data: UploadContentResponse) {
         guard let site = data.content3,
-            let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
-            let longitude = Double(site.components(separatedBy: " / ").last ?? "")
+              let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
+              let longitude = Double(site.components(separatedBy: " / ").last ?? "")
         else { return }
         
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)

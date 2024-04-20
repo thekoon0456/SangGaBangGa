@@ -8,7 +8,7 @@
 import MapKit
 import UIKit
 
-final class CustomAnnotationView: MKAnnotationView {
+final class SSAnnotationView: MKAnnotationView {
     
     static var identifier: String {
         self.description()
