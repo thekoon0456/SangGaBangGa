@@ -27,13 +27,18 @@ final class DetailUserInfoView: BaseView {
     private let userNicknameLabel = UILabel().then {
         $0.text = "닉네임"
         $0.font = SSFont.titleRegular
+        $0.tintColor = .tintColor
     }
     
     // MARK: - Helpers
     
     func setValues(user: ProfileResponse) {
         userNicknameLabel.text = user.nick ?? "닉네임을 설정해주세요"
-        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (user.profileImage ?? ""))
+        guard let profileURL = user.profileImage else {
+            profileImageView.image = UIImage(named: "person.fill")
+            return
+        }
+        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + profileURL)
     }
     
     override func configureHierarchy() {

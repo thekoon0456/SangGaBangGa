@@ -148,8 +148,8 @@ extension MapViewController {
         guard let userLocation else { return }
         
         let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 300,
-                                        longitudinalMeters: 300)
+                                        latitudinalMeters: 5000,
+                                        longitudinalMeters: 5000)
         mapView.setRegion(region, animated: true)
         setAnnotation(coordinate: userLocation)
     }
@@ -249,8 +249,8 @@ extension MapViewController {
                                  message: "위치서비스를 사용할 수 없습니다\n기기의 설정 -> 개인정보 보호 및 보안에서 위치 서비스를 켜주세요")
         
         let region = MKCoordinateRegion(center: defaultLocation,
-                                        latitudinalMeters: 300,
-                                        longitudinalMeters: 300)
+                                        latitudinalMeters: 1000,
+                                        longitudinalMeters: 1000)
         mapView.setRegion(region, animated: true)
     }
     
