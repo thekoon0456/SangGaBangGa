@@ -19,7 +19,7 @@ struct UploadContentResponse: Decodable, Hashable {
     let content4: String? //보증금, 월세
     let content5: String? //평수
     let createdAt: String?
-    let creator: LoginResponse?
+    let creator: ProfileResponse?
     let files: [String]?
     let likes: [String]?
     let hashTags: [String]?
@@ -55,7 +55,7 @@ struct UploadContentResponse: Decodable, Hashable {
         self.content4 = try container.decodeIfPresent(String.self, forKey: .content4) ?? ""
         self.content5 = try container.decodeIfPresent(String.self, forKey: .content5) ?? ""
         self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
-        self.creator = try container.decodeIfPresent(LoginResponse.self, forKey: .creator)
+        self.creator = try container.decodeIfPresent(ProfileResponse.self, forKey: .creator) ?? ProfileResponse()
         self.files = try container.decodeIfPresent([String].self, forKey: .files) ?? []
         self.likes = try container.decodeIfPresent([String].self, forKey: .likes) ?? []
         self.hashTags = try container.decodeIfPresent([String].self, forKey: .hashTags) ?? []

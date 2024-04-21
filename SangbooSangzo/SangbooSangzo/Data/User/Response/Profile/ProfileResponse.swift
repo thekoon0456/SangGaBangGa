@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct ProfileResponse: Decodable {
+struct ProfileResponse: Decodable, Hashable {
     let userID: String
     let email: String?
     let nick: String?
     let phoneNum: String?
     let birthDay: String?
     let profileImage: String?
-    let followers: [Follow]
-    let following: [Follow]
-    let posts: [String]
+    let followers: [Follow]?
+    let following: [Follow]?
+    let posts: [String]?
     
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
@@ -38,9 +38,9 @@ struct ProfileResponse: Decodable {
         self.phoneNum = try container.decodeIfPresent(String.self, forKey: .phoneNum)
         self.birthDay = try container.decodeIfPresent(String.self, forKey: .birthDay)
         self.profileImage = try container.decodeIfPresent(String.self, forKey: .profileImage)
-        self.followers = try container.decode([Follow].self, forKey: .followers)
-        self.following = try container.decode([Follow].self, forKey: .following)
-        self.posts = try container.decode([String].self, forKey: .posts)
+        self.followers = try container.decodeIfPresent([Follow].self, forKey: .followers)
+        self.following = try container.decodeIfPresent([Follow].self, forKey: .following)
+        self.posts = try container.decodeIfPresent([String].self, forKey: .posts)
     }
     
     init() {
@@ -50,13 +50,13 @@ struct ProfileResponse: Decodable {
         self.phoneNum = nil
         self.birthDay = nil
         self.profileImage = nil
-        self.followers = []
-        self.following = []
-        self.posts = []
+        self.followers = nil
+        self.following = nil
+        self.posts = nil
     }
 }
 
-struct Follow: Decodable {
+struct Follow: Decodable, Hashable {
     let userID: String
     let nick: String
     let profileImage: String?

@@ -112,8 +112,8 @@ final class InfoViewController: RxBaseViewController {
         super.configureLayout()
         detailUserInfoView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
             make.height.equalTo(64)
         }
         

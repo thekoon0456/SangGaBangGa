@@ -19,7 +19,7 @@ final class DetailUserInfoView: BaseView {
     
     lazy var profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 64/2
+        $0.layer.cornerRadius = 48/2
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = true
     }
@@ -51,7 +51,7 @@ final class DetailUserInfoView: BaseView {
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.size.equalTo(64)
+            make.size.equalTo(48)
         }
         
         userNicknameLabel.snp.makeConstraints { make in

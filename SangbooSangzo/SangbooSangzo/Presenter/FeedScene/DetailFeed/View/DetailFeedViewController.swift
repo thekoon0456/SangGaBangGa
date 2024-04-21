@@ -24,15 +24,25 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let contentView = UIView()
     
+    private let profileView = DetailUserInfoView()
+    
     private let imageView = UIImageView().then {
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart"), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .selected)
+        $0.backgroundColor = .white
+        $0.tintColor = .tintColor
+        $0.layer.cornerRadius = 15
+        $0.clipsToBounds = true
+    }
+    
+    let commentButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
         $0.backgroundColor = .white
         $0.tintColor = .tintColor
         $0.layer.cornerRadius = 15
@@ -99,6 +109,7 @@ final class DetailFeedViewController: RxBaseViewController {
 //            owner.areaLabel.text = data.content3
             owner.priceLabel.text = data.content4
             owner.spaceLabel.text = data.content5
+            owner.profileView.setValues(user: data.creator ?? ProfileResponse())
         }
         .disposed(by: disposeBag)
         
@@ -111,7 +122,7 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(imageView, heartButton, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
+        contentView.addSubviews(profileView, imageView, heartButton, commentButton, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
     }
     
     override func configureLayout() {
@@ -139,15 +150,28 @@ extension DetailFeedViewController {
             make.verticalEdges.equalToSuperview()
         }
         
-        imageView.snp.makeConstraints { make in
+        profileView.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.height.equalTo(64)
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(profileView.snp.bottom)
             make.width.equalToSuperview()
-            make.height.equalTo(300)
+            make.height.equalTo(imageView.snp.width)
         }
         
         heartButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(8)
+            make.size.equalTo(44)
+        }
+        
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.equalTo(heartButton.snp.trailing).offset(8)
             make.size.equalTo(44)
         }
         

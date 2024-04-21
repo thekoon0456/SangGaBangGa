@@ -20,8 +20,16 @@ final class FeedCell: BaseCollectionViewCell {
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart"), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .selected)
+        $0.backgroundColor = .white
+        $0.tintColor = .tintColor
+        $0.layer.cornerRadius = 15
+        $0.clipsToBounds = true
+    }
+    
+    let commentButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
         $0.backgroundColor = .white
         $0.tintColor = .tintColor
         $0.layer.cornerRadius = 15
@@ -49,7 +57,7 @@ final class FeedCell: BaseCollectionViewCell {
 
     override func configureHierarchy() {
         super.configureHierarchy()
-        contentView.addSubviews(imageView, heartButton, categoryLabel, titleLabel, priceLabel)
+        contentView.addSubviews(imageView, heartButton, commentButton, categoryLabel, titleLabel, priceLabel)
     }
     
     override func configureLayout() {
@@ -82,13 +90,19 @@ extension FeedCell {
         }
         
         heartButton.snp.makeConstraints { make in
-            make.trailing.equalTo(imageView.snp.trailing).offset(-10)
-            make.bottom.equalTo(imageView.snp.bottom).offset(-10)
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(8)
+            make.size.equalTo(30)
+        }
+        
+        commentButton.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.equalTo(heartButton.snp.trailing).offset(8)
             make.size.equalTo(30)
         }
         
         categoryLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(4)
+            make.top.equalTo(heartButton.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
         }
