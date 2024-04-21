@@ -132,7 +132,6 @@ final class DetailFeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        
     }
     
 }

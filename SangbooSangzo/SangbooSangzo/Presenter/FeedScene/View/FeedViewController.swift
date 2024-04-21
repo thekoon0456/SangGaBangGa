@@ -50,6 +50,18 @@ final class FeedViewController: RxBaseViewController {
         //        configureSnapshot()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "피드"
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     override func bind() {
         super.bind()
         
@@ -95,8 +107,6 @@ final class FeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "피드"
     }
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
