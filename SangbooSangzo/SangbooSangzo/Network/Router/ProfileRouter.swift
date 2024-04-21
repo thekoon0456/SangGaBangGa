@@ -35,7 +35,7 @@ extension ProfileRouter: TargetType {
     var method: Moya.Method {
         switch self {
         case .getMyProfile:
-                .post
+                .get
         case .updateMyProfile:
                 .put
         case .getOtherProfile(id: let id):

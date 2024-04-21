@@ -73,6 +73,13 @@
 		7C21F5FB2BD28C5C00D52383 /* DetailFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C21F5FA2BD28C5C00D52383 /* DetailFeedViewModel.swift */; };
 		7C21F5FD2BD28F1700D52383 /* KF+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C21F5FC2BD28F1700D52383 /* KF+.swift */; };
 		7C2ADFF82BD3FEFB00DA2C1F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ADFF72BD3FEFB00DA2C1F /* UIImage+.swift */; };
+		7C2ADFFA2BD5150B00DA2C1F /* DetailUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ADFF92BD5150B00DA2C1F /* DetailUserInfoView.swift */; };
+		7C2ADFFC2BD515D100DA2C1F /* SSFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2ADFFB2BD515D100DA2C1F /* SSFont.swift */; };
+		7C2AE0032BD515EE00DA2C1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ADFFD2BD515EE00DA2C1F /* Pretendard-Bold.otf */; };
+		7C2AE0042BD515EE00DA2C1F /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ADFFE2BD515EE00DA2C1F /* Pretendard-Light.otf */; };
+		7C2AE0052BD515EE00DA2C1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2ADFFF2BD515EE00DA2C1F /* Pretendard-Medium.otf */; };
+		7C2AE0062BD515EE00DA2C1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2AE0002BD515EE00DA2C1F /* Pretendard-Regular.otf */; };
+		7C2AE0072BD515EE00DA2C1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2AE0012BD515EE00DA2C1F /* Pretendard-SemiBold.otf */; };
 		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
 		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF992BCFC67900B3641D /* CommentRouter.swift */; };
@@ -158,6 +165,13 @@
 		7C21F5FA2BD28C5C00D52383 /* DetailFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFeedViewModel.swift; sourceTree = "<group>"; };
 		7C21F5FC2BD28F1700D52383 /* KF+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KF+.swift"; sourceTree = "<group>"; };
 		7C2ADFF72BD3FEFB00DA2C1F /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		7C2ADFF92BD5150B00DA2C1F /* DetailUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailUserInfoView.swift; sourceTree = "<group>"; };
+		7C2ADFFB2BD515D100DA2C1F /* SSFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSFont.swift; sourceTree = "<group>"; };
+		7C2ADFFD2BD515EE00DA2C1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		7C2ADFFE2BD515EE00DA2C1F /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
+		7C2ADFFF2BD515EE00DA2C1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		7C2AE0002BD515EE00DA2C1F /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		7C2AE0012BD515EE00DA2C1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsQuery.swift; sourceTree = "<group>"; };
 		7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsResponse.swift; sourceTree = "<group>"; };
 		7CCBCF992BCFC67900B3641D /* CommentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRouter.swift; sourceTree = "<group>"; };
@@ -451,6 +465,7 @@
 		7C18ECD82BC698D200F061DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7C2AE0022BD515EE00DA2C1F /* Font */,
 				7C18EC9B2BC677FA00F061DE /* Assets.xcassets */,
 				7C18EC9D2BC677FA00F061DE /* LaunchScreen.storyboard */,
 			);
@@ -563,6 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				7C1C501E2BCD000C0066CBCA /* InfoViewController.swift */,
+				7C2ADFF92BD5150B00DA2C1F /* DetailUserInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -608,6 +624,18 @@
 				7C21F5F62BD28C1600D52383 /* DetailFeedViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		7C2AE0022BD515EE00DA2C1F /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				7C2ADFFD2BD515EE00DA2C1F /* Pretendard-Bold.otf */,
+				7C2ADFFE2BD515EE00DA2C1F /* Pretendard-Light.otf */,
+				7C2ADFFF2BD515EE00DA2C1F /* Pretendard-Medium.otf */,
+				7C2AE0002BD515EE00DA2C1F /* Pretendard-Regular.otf */,
+				7C2AE0012BD515EE00DA2C1F /* Pretendard-SemiBold.otf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		7CCBCF932BCFBB3400B3641D /* ReadPosts */ = {
@@ -671,6 +699,7 @@
 			children = (
 				7CD29C8E2BCE56EA00A45268 /* Toast.swift */,
 				7CFC8B032BD108AF00F713E1 /* MenuButton.swift */,
+				7C2ADFFB2BD515D100DA2C1F /* SSFont.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -774,8 +803,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C18EC9C2BC677FA00F061DE /* Assets.xcassets in Resources */,
+				7C2AE0032BD515EE00DA2C1F /* Pretendard-Bold.otf in Resources */,
 				7C18ECED2BC7F01400F061DE /* .gitignore in Resources */,
+				7C2AE0072BD515EE00DA2C1F /* Pretendard-SemiBold.otf in Resources */,
+				7C2AE0042BD515EE00DA2C1F /* Pretendard-Light.otf in Resources */,
+				7C2AE0062BD515EE00DA2C1F /* Pretendard-Regular.otf in Resources */,
 				7C18EC9F2BC677FA00F061DE /* Base in Resources */,
+				7C2AE0052BD515EE00DA2C1F /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,6 +847,7 @@
 				7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */,
 				7CCBCFAF2BCFCF7900B3641D /* FollowResponse.swift in Sources */,
 				7C18ECF12BC7F11B00F061DE /* HTTPHeader.swift in Sources */,
+				7C2ADFFC2BD515D100DA2C1F /* SSFont.swift in Sources */,
 				7CD29C962BCEA9B700A45268 /* PostViewController.swift in Sources */,
 				7CCBCFB32BCFDED100B3641D /* ProfileRouter.swift in Sources */,
 				7C0ADCD02BC92BA9002DAEA7 /* UploadContentRequest.swift in Sources */,
@@ -826,6 +861,7 @@
 				7C0ADCAF2BC9203D002DAEA7 /* UserJoinRequest.swift in Sources */,
 				7C1C500B2BCCFE310066CBCA /* FeedCoordinator.swift in Sources */,
 				7C1C501B2BCCFFC40066CBCA /* InfoCoordinator.swift in Sources */,
+				7C2ADFFA2BD5150B00DA2C1F /* DetailUserInfoView.swift in Sources */,
 				7C1C502B2BCD0A980066CBCA /* SSAnnotation.swift in Sources */,
 				7CCBCF9F2BCFC95D00B3641D /* PostCommentResponse.swift in Sources */,
 				7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */,

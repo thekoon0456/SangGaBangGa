@@ -1,0 +1,63 @@
+//
+//  DetailUserInfoView.swift
+//  SangbooSangzo
+//
+//  Created by Deokhun KIM on 4/21/24.
+//
+
+import UIKit
+
+import Kingfisher
+import SnapKit
+
+final class DetailUserInfoView: BaseView {
+    
+    // MARK: - Properties
+    
+    //설정버튼 카메라
+    private lazy var cameraImage = UIImageView(image: UIImage(named: "SSCameraButton"))
+    
+    lazy var profileImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = 64/2
+        $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private let userNicknameLabel = UILabel().then {
+        $0.text = "닉네임"
+        $0.font = SSFont.titleRegular
+    }
+    
+    // MARK: - Helpers
+    
+    func setValues(user: ProfileResponse) {
+        userNicknameLabel.text = user.nick ?? "닉네임을 설정해주세요"
+        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (user.profileImage ?? ""))
+    }
+    
+    override func configureHierarchy() {
+        super.configureHierarchy()
+        addSubviews(profileImageView, userNicknameLabel)
+    }
+    
+    override func configureLayout() {
+        super.configureLayout()
+        profileImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.size.equalTo(64)
+        }
+        
+        userNicknameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImageView.snp.centerY)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview()
+        }
+    }
+    
+    override func configureView() {
+        super.configureView()
+        
+    }
+}

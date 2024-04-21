@@ -66,6 +66,12 @@ final class DetailFeedViewController: RxBaseViewController {
         $0.numberOfLines = 0
     }
     
+//    private lazy var commentCollectionView = UICollectionView(frame: .zero,
+//                                                              collectionViewLayout: createLayout()).then {
+//        $0.register(<#T##cellClass: AnyClass?##AnyClass?#>, forCellWithReuseIdentifier: <#T##String#>)
+//        $0.isScrollEnabled = false
+//    }
+    
     // MARK: - Lifecycles
     
     init(viewModel: DetailFeedViewModel) {
@@ -95,6 +101,9 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.spaceLabel.text = data.content5
         }
         .disposed(by: disposeBag)
+        
+//        output.data.drive(commentTableView.rx.items(cellIdentifier: <#T##String#>,
+//                                                    cellType: <#T##Cell.Type#>))
     }
     
     // MARK: - Configure
