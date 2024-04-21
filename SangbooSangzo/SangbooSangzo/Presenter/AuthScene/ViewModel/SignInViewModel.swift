@@ -91,9 +91,7 @@ final class SignInViewModel: ViewModel {
                                                  birthDay: nil))
                     .catchAndReturn(nil)
                     .subscribe(with: self) { owner, response in
-                        guard let response else {
-                            return
-                        }
+                        guard let response else { return }
                         owner.coordinator?.dismissViewController()
                     }
                     .disposed(by: owner.disposeBag)

@@ -7,7 +7,11 @@
 
 import UIKit
 
-class BaseCollectionViewCell: UICollectionViewCell {
+import RxSwift
+
+class RxBaseCollectionViewCell: UICollectionViewCell {
+    
+    var disposeBag = DisposeBag()
     
     static var identifier: String {
         return self.description()
@@ -16,11 +20,13 @@ class BaseCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        bind()
         configureHierarchy()
         configureLayout()
         configureView()
     }
     
+    func bind() { }
     func configureHierarchy() { }
     func configureLayout() { }
     func configureView() { }

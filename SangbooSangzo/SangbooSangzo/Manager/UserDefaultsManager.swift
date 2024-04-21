@@ -11,8 +11,8 @@ final class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     
     //Token
-    @UserDefault(key: UserToken.key, defaultValue: UserToken.defaultValue)
-    var userToken: UserToken
+    @UserDefault(key: UserData.key, defaultValue: UserData.defaultValue)
+    var userData: UserData
     
     private init() { }
 }

@@ -48,7 +48,7 @@ extension FollowRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .follow, .cancelFollow:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }

@@ -58,7 +58,8 @@ final class LoginViewModel: ViewModel {
                     .subscribe {result in
                         switch result {
                         case .success(let response):
-                            UserDefaultsManager.shared.userToken = UserToken(accessToken: response.accessToken,
+                            UserDefaultsManager.shared.userData = UserData(userID: response.userID,
+                                accessToken: response.accessToken,
                                                                              refreshToken: response.refreshToken)
                             owner.coordinator?.showToast(.loginSuccess)
                             owner.coordinator?.navigationController?.dismiss(animated: true)

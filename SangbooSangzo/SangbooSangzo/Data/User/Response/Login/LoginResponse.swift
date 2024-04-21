@@ -8,15 +8,15 @@
 import Foundation
 
 struct LoginResponse: Decodable, Hashable {
-    let user_id: String?
+    let userID: String?
     let email: String?
     let nick: String?
     let profileImage: String?
     let accessToken: String?
     let refreshToken: String?
     
-    enum CodingKeys: CodingKey {
-        case user_id
+    enum CodingKeys: String, CodingKey {
+        case userID = "user_id"
         case email
         case nick
         case profileImage
@@ -26,7 +26,7 @@ struct LoginResponse: Decodable, Hashable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.user_id = try container.decodeIfPresent(String.self, forKey: .user_id)
+        self.userID = try container.decodeIfPresent(String.self, forKey: .userID)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.nick = try container.decodeIfPresent(String.self, forKey: .nick)
         self.profileImage = try container.decodeIfPresent(String.self, forKey: .profileImage)

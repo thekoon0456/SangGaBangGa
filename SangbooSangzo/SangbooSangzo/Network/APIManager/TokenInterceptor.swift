@@ -19,14 +19,14 @@ final class TokenInterceptor: RequestInterceptor {
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
         guard urlRequest.url?.absoluteString.hasPrefix(APIKey.baseURL) == true,
-              let accessToken = UserDefaultsManager.shared.userToken.accessToken,
-              let refreshToken = UserDefaultsManager.shared.userToken.refreshToken else {
+              let accessToken = UserDefaultsManager.shared.userData.accessToken,
+              let refreshToken = UserDefaultsManager.shared.userData.refreshToken else {
             completion(.success(urlRequest))
             return
         }
         
-        UserDefaultsManager.shared.userToken.accessToken = accessToken
-        UserDefaultsManager.shared.userToken.refreshToken = refreshToken
+        UserDefaultsManager.shared.userData.accessToken = accessToken
+        UserDefaultsManager.shared.userData.refreshToken = refreshToken
         completion(.success(urlRequest))
     }
     
@@ -44,7 +44,7 @@ final class TokenInterceptor: RequestInterceptor {
         UserAPIManager.shared.refreshToken()
             .subscribe { response in
                 print("refreshToken", response.accessToken)
-                UserDefaultsManager.shared.userToken.accessToken = response.accessToken
+                UserDefaultsManager.shared.userData.accessToken = response.accessToken
             }
             .disposed(by: disposeBag)
     }

@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PostImageCell: BaseCollectionViewCell {
+final class PostImageCell: RxBaseCollectionViewCell {
     
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill

@@ -131,15 +131,15 @@ extension PostsRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .uploadImage:
-             [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
               HTTPHeader.contentType: HTTPHeader.multiPartFormData,
               HTTPHeader.sesacKey: APIKey.sesacKey]
         case .uploadContents, .fetchPost:
-             [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
               HTTPHeader.contentType: HTTPHeader.json,
               HTTPHeader.sesacKey: APIKey.sesacKey]
         case .readPosts, .readPost, .deletePost, .readUserPosts:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }

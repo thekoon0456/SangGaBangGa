@@ -49,14 +49,14 @@ final class InfoViewModel: ViewModel {
             }
             .asDriver(onErrorJustReturn: ProfileResponse())
         
-        let feeds = input
-            .segmentTapped
+        let feeds = Observable.combineLatest(input.viewWillAppear,
+                                             input.segmentTapped)
             .withUnretained(self)
             .do { owner, index in
-                updateBar.accept(index)
+                updateBar.accept(index.1)
             }
             .flatMap { owner, index in
-                if index == 0 {
+                if index.1 == 0 {
                     owner.likeAPIManager.ReadLikePosts(query: .init(next: "",
                                                                     limit: "20"))
                 } else {

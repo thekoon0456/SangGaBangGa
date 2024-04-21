@@ -46,8 +46,8 @@ final class FeedViewController: RxBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //        configureDataSource()
-        //        configureSnapshot()
+//                configureDataSource()
+//                configureSnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,12 +79,12 @@ final class FeedViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
-        //        output
-        //            .feeds
-        //            .drive(with: self) { owner, item in
-        //                owner.updateSnapshot(withItems: item, toSection: .feed)
-        //            }
-        //            .disposed(by: disposeBag)
+//                output
+//                    .feeds
+//                    .drive(with: self) { owner, item in
+//                        owner.updateSnapshot(withItems: item, toSection: .feed)
+//                    }
+//                    .disposed(by: disposeBag)
         
     }
     

@@ -43,7 +43,7 @@ extension CommentsRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .postComments:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.contentType: HTTPHeader.json,
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }

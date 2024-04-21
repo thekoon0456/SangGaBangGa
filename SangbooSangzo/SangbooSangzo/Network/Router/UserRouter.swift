@@ -88,11 +88,11 @@ extension UserRouter: TargetType {
             [HTTPHeader.contentType: HTTPHeader.json,
              HTTPHeader.sesacKey: APIKey.sesacKey]
         case .refreshToken:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey,
-             HTTPHeader.refresh: UserDefaultsManager.shared.userToken.refreshToken ?? ""]
+             HTTPHeader.refresh: UserDefaultsManager.shared.userData.refreshToken ?? ""]
         case .withdraw:
-            [HTTPHeader.authorization: UserDefaultsManager.shared.userToken.accessToken ?? "",
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }

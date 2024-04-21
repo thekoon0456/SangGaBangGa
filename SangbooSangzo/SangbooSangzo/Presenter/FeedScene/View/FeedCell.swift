@@ -7,11 +7,16 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import Kingfisher
 
-final class FeedCell: BaseCollectionViewCell {
+final class FeedCell: RxBaseCollectionViewCell {
     
     // MARK: - Properties
+    
+    private let viewModel = FeedCellViewModel()
+    private let dataSubject = PublishSubject<UploadContentResponse>()
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 5
@@ -22,10 +27,7 @@ final class FeedCell: BaseCollectionViewCell {
     let heartButton = UIButton().then {
         $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
         $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .selected)
-        $0.backgroundColor = .white
         $0.tintColor = .tintColor
-        $0.layer.cornerRadius = 15
-        $0.clipsToBounds = true
     }
     
     let commentButton = UIButton().then {
@@ -39,20 +41,43 @@ final class FeedCell: BaseCollectionViewCell {
     private let categoryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 13)
     }
+    
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.numberOfLines = 2
     }
+    
     private let priceLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
+    // MARK: - Lifecycles
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+        heartButton.isSelected = false
+        bind()
+    }
+    
     // MARK: - Helpers
     
-    func isSelectedButton(input: String) -> Bool {
-//        guard let user = UserManager.shared.currentUserValue else { return false }
-//        return user.likes.contains(input) ? true : false
-        return false
+    override func bind() {
+        super.bind()
+        
+        let input = FeedCellViewModel.Input(inputData: dataSubject.asObservable(),
+                                            heartButtonTapped: heartButton.rx.tap)
+        let output = viewModel.transform(input)
+        
+        output
+            .heartButtonStatus
+            .drive(heartButton.rx.isSelected)
+            .disposed(by: disposeBag)
     }
 
     override func configureHierarchy() {
@@ -67,7 +92,6 @@ final class FeedCell: BaseCollectionViewCell {
     
     override func configureView() {
         super.configureView()
-        
     }
 }
 
@@ -77,10 +101,10 @@ extension FeedCell {
 
     func configureCellData(_ data: UploadContentResponse) {
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
-        
         categoryLabel.text = data.content1
         titleLabel.text = data.title
         priceLabel.text = data.content4
+        dataSubject.onNext(data)
     }
     
     private func setLayout() {

@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct UserToken: Codable {
+struct UserData: Codable {
     static let key = "UserToken"
-    static let defaultValue = UserToken(accessToken: nil, refreshToken: nil)
+    static let defaultValue = UserData(userID: nil, accessToken: nil, refreshToken: nil)
     
+    var userID: String?
     var accessToken: String?
     var refreshToken: String?
 }
