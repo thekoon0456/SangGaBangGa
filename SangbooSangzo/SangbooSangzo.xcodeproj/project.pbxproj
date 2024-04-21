@@ -64,7 +64,7 @@
 		7C1C50272BCD02A50066CBCA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50262BCD02A50066CBCA /* LoginViewModel.swift */; };
 		7C1C50292BCD062E0066CBCA /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50282BCD062E0066CBCA /* UIColor+.swift */; };
 		7C1C502B2BCD0A980066CBCA /* SSAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502A2BCD0A980066CBCA /* SSAnnotation.swift */; };
-		7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */; };
+		7C1C502D2BCD0B280066CBCA /* SSAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C502C2BCD0B280066CBCA /* SSAnnotationView.swift */; };
 		7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50302BCD26E30066CBCA /* SignInViewController.swift */; };
 		7C1C50332BCD26EA0066CBCA /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */; };
 		7C21F5F22BD23E9A00D52383 /* Reactive+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C21F5F12BD23E9A00D52383 /* Reactive+.swift */; };
@@ -157,7 +157,7 @@
 		7C1C50262BCD02A50066CBCA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		7C1C50282BCD062E0066CBCA /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		7C1C502A2BCD0A980066CBCA /* SSAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSAnnotation.swift; sourceTree = "<group>"; };
-		7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotaionView.swift; sourceTree = "<group>"; };
+		7C1C502C2BCD0B280066CBCA /* SSAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSAnnotationView.swift; sourceTree = "<group>"; };
 		7C1C50302BCD26E30066CBCA /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7C1C50322BCD26EA0066CBCA /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7C21F5F12BD23E9A00D52383 /* Reactive+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+.swift"; sourceTree = "<group>"; };
@@ -563,7 +563,7 @@
 			children = (
 				7C1C50162BCCFF2C0066CBCA /* MapViewController.swift */,
 				7C1C502A2BCD0A980066CBCA /* SSAnnotation.swift */,
-				7C1C502C2BCD0B280066CBCA /* CustomAnnotaionView.swift */,
+				7C1C502C2BCD0B280066CBCA /* SSAnnotationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -841,7 +841,7 @@
 				7C21F5FB2BD28C5C00D52383 /* DetailFeedViewModel.swift in Sources */,
 				7C0ADCB12BC92067002DAEA7 /* UserJoinResponse.swift in Sources */,
 				7C18ECC42BC67EC200F061DE /* UIView+.swift in Sources */,
-				7C1C502D2BCD0B280066CBCA /* CustomAnnotaionView.swift in Sources */,
+				7C1C502D2BCD0B280066CBCA /* SSAnnotationView.swift in Sources */,
 				7C0ADCB92BC920B4002DAEA7 /* LoginResponse.swift in Sources */,
 				7CD29C982BCEA9C700A45268 /* PoseViewModel.swift in Sources */,
 				7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */,

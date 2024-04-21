@@ -17,4 +17,12 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
+    
+    func resizedAnnotation() -> UIImage? {
+        UIGraphicsBeginImageContext(CGSize(width: 70, height: 100))
+        self.draw(in: CGRect(x: 0, y: 0, width: 70, height: 100))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 }

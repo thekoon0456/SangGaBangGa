@@ -33,9 +33,7 @@ final class MapViewController: RxBaseViewController {
     
     @objc func currentLocationButtonTapped() {
         print(#function)
-        print(userLocation)
         guard let userLocation else {
-            print("안댐")
             return
         }
         let region = MKCoordinateRegion(center: userLocation,
@@ -108,7 +106,7 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print(#function)
-        guard let annotation =  view.annotation as? SSAnnotation else { return }
+        guard let annotation = view.annotation as? SSAnnotation else { return }
         print("annotation", annotation)
         dataRelay.accept(annotation.data)
     }
@@ -118,14 +116,14 @@ extension MapViewController: MKMapViewDelegate {
         guard let customAnnotation = annotation as? SSAnnotation,
               let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier),
               let customImage = customAnnotation.image,
-              let resizedImage = customImage.resized(toWidth: 60)
+              let resizedImage = customImage.resizedAnnotation()
         else {
             return nil
         }
         
         annotationView.annotation = annotation
         annotationView.image = resizedImage
-
+        
         return annotationView
     }
 }
