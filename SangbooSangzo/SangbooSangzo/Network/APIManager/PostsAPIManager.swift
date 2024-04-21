@@ -63,8 +63,8 @@ final class PostsAPIManager {
         .disposed(by: disposeBag)
     }
     
-    func readUserPosts(queryID: String, request: ReadPostsQuery) -> Single<UploadContentResponse> {
-        provider.rx.request(.readUserPosts(queryID: queryID, query: request))
-            .map(UploadContentResponse.self)
+    func readUserPosts(queryID: String, query: ReadPostsQuery) -> Single<ReadPostsResponse> {
+        provider.rx.request(.readUserPosts(queryID: queryID, query: query))
+            .map(ReadPostsResponse.self)
     }
 }

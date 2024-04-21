@@ -55,10 +55,24 @@ final class InfoViewController: RxBaseViewController {
         super.init()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "마이페이지"
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     override func bind() {
         super.bind()
 
-        let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in })
+        let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                        segmentTapped: titleSegment.rx.value,
+                                        cellTapped: collectionView.rx.modelSelected(UploadContentResponse.self))
         let output = viewModel.transform(input)
         
         output
@@ -69,11 +83,18 @@ final class InfoViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
-        titleSegment.rx.value
-            .asObservable()
-            .subscribe(onNext: { [unowned self] index in
-                updateUnderlinePosition(index: index)
-            })
+        output
+            .underBarIndex
+            .drive(with: self) { owner, index in
+                owner.updateUnderlinePosition(index: index)
+            }
+            .disposed(by: disposeBag)
+        
+        output
+            .feeds
+            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+                cell.configureCellData(element)
+            }
             .disposed(by: disposeBag)
     }
     

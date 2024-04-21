@@ -54,6 +54,18 @@ final class MapViewController: RxBaseViewController {
         configureLocation()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "지도"
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.title = ""
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     override func bind() {
         super.bind()
         
@@ -97,8 +109,6 @@ final class MapViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "지도"
     }
 }
 

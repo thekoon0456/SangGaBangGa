@@ -39,7 +39,7 @@ extension PostsRouter: TargetType {
             return "/v1/posts/\(queryID)"
         case .deletePost(queryID: let queryID):
             return "/v1/posts/\(queryID)"
-        case .readUserPosts(queryID: let userID):
+        case .readUserPosts(let userID, _):
             return "/v1/posts/users/\(userID)"
         }
     }
@@ -122,7 +122,7 @@ extension PostsRouter: TargetType {
             let params: [String: Any] = [
                 "next": readPostsQuery.next ?? "",
                 "limit": readPostsQuery.limit ?? "",
-                "product_id": readPostsQuery.productID ?? ""
+                "product_id": readPostsQuery.productID ?? "SangbooSangzo"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
