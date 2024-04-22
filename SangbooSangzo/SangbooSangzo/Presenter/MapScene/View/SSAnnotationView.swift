@@ -8,6 +8,8 @@
 import MapKit
 import UIKit
 
+import Kingfisher
+
 final class SSAnnotationView: MKAnnotationView {
     
     static var identifier: String {
@@ -15,19 +17,23 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     private let backgroundView = UIView().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = .systemGray6
+        $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
     }
     
     let titleLabel = UILabel().then {
         $0.font = SSFont.titleSmall
         $0.textColor = .label
         $0.textAlignment = .center
+        $0.text = ""
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.filterDay
         $0.textColor = .label
         $0.textAlignment = .center
+        $0.text = ""
     }
     
     lazy var imageView = UIImageView().then {
@@ -36,9 +42,15 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     lazy var stackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [titleLabel, priceLabel, imageView])
+        let view = UIStackView(arrangedSubviews: [titleLabel, imageView, priceLabel])
         view.spacing = 5
         view.axis = .vertical
+        
+        imageView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(imageView.snp.width).multipliedBy(0.75)
+        }
+        
         return view
     }()
     
@@ -78,7 +90,7 @@ final class SSAnnotationView: MKAnnotationView {
         guard let annotation = annotation as? SSAnnotation else { return }
         titleLabel.text = annotation.title
         priceLabel.text = annotation.subtitle
-        guard let image = annotation.image else { return }
-        imageView.image = image
+        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (annotation.data.files?.first ?? ""))
+        setNeedsLayout()
     }
 }

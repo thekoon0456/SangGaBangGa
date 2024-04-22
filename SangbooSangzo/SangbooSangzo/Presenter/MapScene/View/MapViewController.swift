@@ -15,10 +15,13 @@ import RxSwift
 final class MapViewController: RxBaseViewController {
     
     private let viewModel: MapViewModel
-    private let mapView = MKMapView()
-    let locationManager = CLLocationManager()
-    let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
-    var userLocation: CLLocationCoordinate2D?
+    private let mapView = MKMapView().then {
+        $0.register(SSAnnotationView.self,
+                    forAnnotationViewWithReuseIdentifier:SSAnnotationView.identifier)
+    }
+    private let locationManager = CLLocationManager()
+    private let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
+    private var userLocation: CLLocationCoordinate2D?
     private let dataRelay = PublishRelay<UploadContentResponse>()
     
     private lazy var currentLocationButton = UIButton().then {
@@ -32,13 +35,10 @@ final class MapViewController: RxBaseViewController {
     }
     
     @objc func currentLocationButtonTapped() {
-        print(#function)
-        guard let userLocation else {
-            return
-        }
+        guard let userLocation else { return }
         let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 300,
-                                        longitudinalMeters: 300)
+                                        latitudinalMeters: 5000,
+                                        longitudinalMeters: 5000)
         mapView.setRegion(region, animated: true)
     }
     
@@ -49,7 +49,6 @@ final class MapViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerMapAnnotationViews()
         configureMap()
         configureLocation()
     }
@@ -81,11 +80,6 @@ final class MapViewController: RxBaseViewController {
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    func registerMapAnnotationViews() {
-        mapView.register(SSAnnotationView.self,
-                         forAnnotationViewWithReuseIdentifier:SSAnnotationView.identifier)
     }
     
     override func configureHierarchy() {
@@ -124,15 +118,13 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         print(#function)
         guard let customAnnotation = annotation as? SSAnnotation,
-              let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier),
-              let customImage = customAnnotation.image,
-              let resizedImage = customImage.resizedAnnotation()
+              let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier)
         else {
             return nil
         }
         
-        annotationView.annotation = annotation
-        annotationView.image = resizedImage
+        annotationView.annotation = customAnnotation
+        annotationView.frame = .init(x: 0, y: 0, width: 70, height: 100)
         
         return annotationView
     }
