@@ -82,6 +82,7 @@
 		7C2AE0072BD515EE00DA2C1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7C2AE0012BD515EE00DA2C1F /* Pretendard-SemiBold.otf */; };
 		7C2AE00A2BD51E4500DA2C1F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 7C2AE0092BD51E4500DA2C1F /* RxDataSources */; };
 		7C2AE00D2BD56F9000DA2C1F /* FeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2AE00C2BD56F9000DA2C1F /* FeedCellViewModel.swift */; };
+		7C62A0B12BD62F9D00296BD7 /* ImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C62A0B02BD62F9D00296BD7 /* ImageScrollView.swift */; };
 		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
 		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF992BCFC67900B3641D /* CommentRouter.swift */; };
@@ -175,6 +176,7 @@
 		7C2AE0002BD515EE00DA2C1F /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		7C2AE0012BD515EE00DA2C1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		7C2AE00C2BD56F9000DA2C1F /* FeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewModel.swift; sourceTree = "<group>"; };
+		7C62A0B02BD62F9D00296BD7 /* ImageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScrollView.swift; sourceTree = "<group>"; };
 		7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsQuery.swift; sourceTree = "<group>"; };
 		7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsResponse.swift; sourceTree = "<group>"; };
 		7CCBCF992BCFC67900B3641D /* CommentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRouter.swift; sourceTree = "<group>"; };
@@ -705,6 +707,7 @@
 				7CD29C8E2BCE56EA00A45268 /* Toast.swift */,
 				7CFC8B032BD108AF00F713E1 /* MenuButton.swift */,
 				7C2ADFFB2BD515D100DA2C1F /* SSFont.swift */,
+				7C62A0B02BD62F9D00296BD7 /* ImageScrollView.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -848,6 +851,7 @@
 				7C0ADCB92BC920B4002DAEA7 /* LoginResponse.swift in Sources */,
 				7CD29C982BCEA9C700A45268 /* PoseViewModel.swift in Sources */,
 				7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */,
+				7C62A0B12BD62F9D00296BD7 /* ImageScrollView.swift in Sources */,
 				7CCBCFB82BCFE18100B3641D /* ProfileResponse.swift in Sources */,
 				7C1C50212BCD002B0066CBCA /* InfoViewModel.swift in Sources */,
 				7C1C50132BCCFF1F0066CBCA /* MapCoordinator.swift in Sources */,

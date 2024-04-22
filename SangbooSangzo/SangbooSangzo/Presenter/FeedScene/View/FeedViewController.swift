@@ -73,7 +73,8 @@ final class FeedViewController: RxBaseViewController {
         
         output
             .feeds
-            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier,
+                                           cellType: FeedCell.self)) { item , element, cell in
                 cell.configureCellData(element)
                 print(element)
             }

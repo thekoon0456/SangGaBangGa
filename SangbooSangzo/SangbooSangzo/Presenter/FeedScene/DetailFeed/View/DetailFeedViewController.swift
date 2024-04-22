@@ -24,13 +24,17 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let contentView = UIView()
     
-    private let profileView = DetailUserInfoView()
+    private let profileView = DetailUserInfoView().then {
+        $0.isUserInteractionEnabled = true
+    }
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
     }
+    
+    private lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
         $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
@@ -98,7 +102,6 @@ final class DetailFeedViewController: RxBaseViewController {
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
-            owner.imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
             owner.heartButton.isSelected = data.likes!.contains(data.postID ?? "")
             ? true
             : false
@@ -110,6 +113,13 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.priceLabel.text = data.content4
             owner.spaceLabel.text = data.content5
             owner.profileView.setValues(user: data.creator ?? ProfileResponse())
+            
+            guard let files = data.files else { return }
+            owner.imageScrollView.imageViews = files.map {
+                let imageView = UIImageView()
+                imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
+                return imageView
+            }
         }
         .disposed(by: disposeBag)
         
@@ -122,7 +132,8 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(profileView, imageView, heartButton, commentButton, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
+        contentView.addSubviews(profileView, imageScrollView, heartButton, commentButton,
+                                titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
     }
     
     override func configureLayout() {
@@ -156,20 +167,20 @@ extension DetailFeedViewController {
             make.height.equalTo(64)
         }
         
-        imageView.snp.makeConstraints { make in
+        imageScrollView.snp.makeConstraints { make in
             make.top.equalTo(profileView.snp.bottom)
             make.width.equalToSuperview()
-            make.height.equalTo(imageView.snp.width)
+            make.height.equalTo(view.snp.width)
         }
         
         heartButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.size.equalTo(44)
         }
         
         commentButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
             make.leading.equalTo(heartButton.snp.trailing).offset(8)
             make.size.equalTo(44)
         }
