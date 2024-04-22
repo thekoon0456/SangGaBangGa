@@ -19,6 +19,7 @@ final class FeedCellViewModel: ViewModel {
     
     struct Output {
         let heartButtonStatus: Driver<Bool>
+        let heartCount: Driver<String>
     }
     
     private let likeAPIManager = LikeAPIManager.shared
@@ -27,11 +28,13 @@ final class FeedCellViewModel: ViewModel {
     func transform(_ input: Input) -> Output {
         let postID = BehaviorRelay(value: "")
         let buttonStatus = BehaviorRelay(value: false)
+        let heartCount = BehaviorRelay(value: 0)
         
         input
             .inputData
             .do { data in
                 postID.accept(data.postID ?? "")
+                heartCount.accept(data.likes?.count ?? 0)
             }
             .map { data in
                 guard let like = data.likes else { return false }
@@ -54,12 +57,19 @@ final class FeedCellViewModel: ViewModel {
             }
             .subscribe { value in
                 guard let bool = value.element?.likeStatus else { return }
-                print("왜안도ㅔㅐㅁ", bool)
                 buttonStatus.accept(bool)
+                if bool == true {
+                    let newCount = (heartCount.value + 1)
+                    heartCount.accept(newCount)
+                } else {
+                    let newCount = (heartCount.value - 1)
+                    heartCount.accept(newCount)
+                }
             }
             .disposed(by: disposeBag)
         
-        return Output(heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false))
+        return Output(heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
+                      heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""))
     }
 }
 

@@ -30,12 +30,22 @@ final class FeedCell: RxBaseCollectionViewCell {
         $0.tintColor = .tintColor
     }
     
+    private let heartCountLabel = UILabel().then {
+        $0.font = SSFont.titleSmall
+        $0.textAlignment = .left
+    }
+    
     let commentButton = UIButton().then {
         $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
         $0.backgroundColor = .white
         $0.tintColor = .tintColor
         $0.layer.cornerRadius = 15
         $0.clipsToBounds = true
+    }
+    
+    private let commentCountLabel = UILabel().then {
+        $0.font = SSFont.titleSmall
+        $0.textAlignment = .left
     }
     
     private let categoryLabel = UILabel().then {
@@ -62,6 +72,8 @@ final class FeedCell: RxBaseCollectionViewCell {
         super.prepareForReuse()
         disposeBag = DisposeBag()
         heartButton.isSelected = false
+        heartCountLabel.text = nil
+        commentCountLabel.text = nil
         bind()
     }
     
@@ -78,11 +90,18 @@ final class FeedCell: RxBaseCollectionViewCell {
             .heartButtonStatus
             .drive(heartButton.rx.isSelected)
             .disposed(by: disposeBag)
+        
+        output
+            .heartCount
+            .drive(heartCountLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 
     override func configureHierarchy() {
         super.configureHierarchy()
-        contentView.addSubviews(imageView, heartButton, commentButton, categoryLabel, titleLabel, priceLabel)
+        contentView.addSubviews(imageView, heartButton, heartCountLabel,
+                                commentButton, commentCountLabel,
+                                categoryLabel, titleLabel, priceLabel)
     }
     
     override func configureLayout() {
@@ -104,6 +123,14 @@ extension FeedCell {
         categoryLabel.text = data.content1
         titleLabel.text = data.title
         priceLabel.text = data.content4
+        if let like = data.likes {
+            heartCountLabel.text = String(like.count)
+        }
+        if let comments = data.comments {
+            print("코멘트", comments)
+            commentCountLabel.text = String(comments.count)
+        }
+
         dataSubject.onNext(data)
     }
     
@@ -115,14 +142,26 @@ extension FeedCell {
         
         heartButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalToSuperview().offset(4)
             make.size.equalTo(30)
+        }
+        
+        heartCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.equalTo(heartButton.snp.trailing).offset(2)
+            make.height.equalTo(30)
         }
         
         commentButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartButton.snp.trailing).offset(8)
+            make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
             make.size.equalTo(30)
+        }
+        
+        commentCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.leading.equalTo(commentButton.snp.trailing).offset(2)
+            make.height.equalTo(30)
         }
         
         categoryLabel.snp.makeConstraints { make in
