@@ -58,13 +58,9 @@ final class FeedCellViewModel: ViewModel {
             .subscribe { value in
                 guard let bool = value.element?.likeStatus else { return }
                 buttonStatus.accept(bool)
-                if bool == true {
-                    let newCount = (heartCount.value + 1)
-                    heartCount.accept(newCount)
-                } else {
-                    let newCount = (heartCount.value - 1)
-                    heartCount.accept(newCount)
-                }
+                bool == true
+                ? heartCount.accept(heartCount.value + 1)
+                : heartCount.accept(heartCount.value - 1)
             }
             .disposed(by: disposeBag)
         

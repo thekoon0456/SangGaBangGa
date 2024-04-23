@@ -127,10 +127,8 @@ extension FeedCell {
             heartCountLabel.text = String(like.count)
         }
         if let comments = data.comments {
-            print("코멘트", comments)
             commentCountLabel.text = String(comments.count)
         }
-
         dataSubject.onNext(data)
     }
     

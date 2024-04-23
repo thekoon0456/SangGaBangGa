@@ -45,12 +45,22 @@ final class DetailFeedViewController: RxBaseViewController {
         $0.clipsToBounds = true
     }
     
+    private let heartCountLabel = UILabel().then {
+        $0.font = SSFont.titleSmall
+        $0.textAlignment = .left
+    }
+    
     let commentButton = UIButton().then {
         $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
         $0.backgroundColor = .white
         $0.tintColor = .tintColor
         $0.layer.cornerRadius = 15
         $0.clipsToBounds = true
+    }
+    
+    private let commentCountLabel = UILabel().then {
+        $0.font = SSFont.titleSmall
+        $0.textAlignment = .left
     }
     
     private let titleLabel = UILabel().then {
@@ -98,13 +108,21 @@ final class DetailFeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let input = DetailFeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad)
+        let input = DetailFeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
+                                              heartButtonTapped: heartButton.rx.tap)
         let output = viewModel.transform(input)
         
+        output
+            .heartButtonStatus
+            .drive(heartButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        output
+            .heartCount
+            .drive(heartCountLabel.rx.text)
+            .disposed(by: disposeBag)
+        
         output.data.drive(with: self) { owner, data in
-            owner.heartButton.isSelected = data.likes!.contains(data.postID ?? "")
-            ? true
-            : false
             owner.titleLabel.text = data.title
             owner.contentLabel.text = data.content
             owner.categoryLabel.text = data.content1
@@ -120,6 +138,10 @@ final class DetailFeedViewController: RxBaseViewController {
                 imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
                 return imageView
             }
+            
+            if let likes = data.likes?.count {
+                owner.heartCountLabel.text = String(likes)
+            }
         }
         .disposed(by: disposeBag)
         
@@ -132,8 +154,7 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(profileView, imageScrollView, heartButton, commentButton,
-                                titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
+        contentView.addSubviews(profileView, imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
     }
     
     override func configureLayout() {
@@ -144,7 +165,6 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureView() {
         super.configureView()
     }
-    
 }
 
 extension DetailFeedViewController {
@@ -175,14 +195,26 @@ extension DetailFeedViewController {
         
         heartButton.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(8)
-            make.size.equalTo(44)
+            make.leading.equalToSuperview().offset(4)
+            make.size.equalTo(30)
+        }
+        
+        heartCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.leading.equalTo(heartButton.snp.trailing).offset(2)
+            make.height.equalTo(30)
         }
         
         commentButton.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalTo(heartButton.snp.trailing).offset(8)
-            make.size.equalTo(44)
+            make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
+            make.size.equalTo(30)
+        }
+        
+        commentCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.leading.equalTo(commentButton.snp.trailing).offset(2)
+            make.height.equalTo(30)
         }
         
         titleLabel.snp.makeConstraints { make in
