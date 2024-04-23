@@ -38,4 +38,10 @@ final class InfoCoordinator: Coordinator {
         let vc = SettingViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func presentUserInfo(userInfo: ProfileResponse) {
+        let vm = SignInViewModel(coordinator: self, userInfo: userInfo)
+        let vc = SignInViewController(viewModel: vm)
+        navigationController?.present(vc, animated: true)
+    }
 }
