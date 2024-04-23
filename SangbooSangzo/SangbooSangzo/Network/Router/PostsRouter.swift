@@ -91,7 +91,7 @@ extension PostsRouter: TargetType {
                 "content4": query.content4 ?? "",
                 "content5": query.content5 ?? "",
                 "product_id": query.productID ?? "SangbooSangzo",
-                "files": files ?? []
+                "files": files
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .readPosts(let query): 

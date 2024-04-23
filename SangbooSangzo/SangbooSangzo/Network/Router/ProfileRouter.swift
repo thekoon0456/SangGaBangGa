@@ -38,7 +38,7 @@ extension ProfileRouter: TargetType {
                 .get
         case .updateMyProfile:
                 .put
-        case .getOtherProfile(id: let id):
+        case .getOtherProfile:
                 .get
         }
     }

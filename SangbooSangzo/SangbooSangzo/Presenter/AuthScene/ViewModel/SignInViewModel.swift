@@ -59,8 +59,7 @@ final class SignInViewModel: ViewModel {
                     .validationEmail(query: UserJoinEmailValidationRequest(email: email))
                     .subscribe { result in
                         switch result {
-                        case .success(let result):
-                            print(result)
+                        case .success:
                             validationEmailRelay.accept(true)
                             print("성공")
                             owner.coordinator?
@@ -91,7 +90,7 @@ final class SignInViewModel: ViewModel {
                                                  birthDay: nil))
                     .catchAndReturn(nil)
                     .subscribe(with: self) { owner, response in
-                        guard let response else { return }
+                        guard response != nil else { return }
                         owner.coordinator?.dismissViewController()
                     }
                     .disposed(by: owner.disposeBag)

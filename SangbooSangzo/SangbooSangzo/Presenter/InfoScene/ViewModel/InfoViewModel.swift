@@ -15,6 +15,7 @@ final class InfoViewModel: ViewModel {
     struct Input {
         let viewWillAppear: Observable<Void>
         let segmentTapped: ControlProperty<Int>
+        let settingTapped: ControlEvent<Void>
         let cellTapped: ControlEvent<UploadContentResponse>
     }
     
@@ -68,6 +69,14 @@ final class InfoViewModel: ViewModel {
             }
             .compactMap { $0.data }
             .asDriver(onErrorJustReturn: [UploadContentResponse]())
+        
+        input
+            .settingTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.coordinator?.pushToSetting()
+            }
+            .disposed(by: disposeBag)
         
         input
             .cellTapped

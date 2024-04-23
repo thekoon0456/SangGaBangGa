@@ -16,7 +16,7 @@ final class FeedCell: RxBaseCollectionViewCell {
     // MARK: - Properties
     
     private let viewModel = FeedCellViewModel()
-    private let dataSubject = PublishSubject<UploadContentResponse>()
+    private let dataSubject = BehaviorSubject(value: UploadContentResponse())
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 5
@@ -63,11 +63,6 @@ final class FeedCell: RxBaseCollectionViewCell {
     
     // MARK: - Lifecycles
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
@@ -83,7 +78,9 @@ final class FeedCell: RxBaseCollectionViewCell {
         super.bind()
         
         let input = FeedCellViewModel.Input(inputData: dataSubject.asObservable(),
-                                            heartButtonTapped: heartButton.rx.tap)
+                                            heartButtonTapped: heartButton.rx.tap.map { [weak self] in
+            guard let self else { return false }
+            return heartButton.isSelected })
         let output = viewModel.transform(input)
         
         output
@@ -119,16 +116,11 @@ final class FeedCell: RxBaseCollectionViewCell {
 extension FeedCell {
 
     func configureCellData(_ data: UploadContentResponse) {
-        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files?.first ?? ""))
+        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files.first ?? ""))
         categoryLabel.text = data.content1
         titleLabel.text = data.title
         priceLabel.text = data.content4
-        if let like = data.likes {
-            heartCountLabel.text = String(like.count)
-        }
-        if let comments = data.comments {
-            commentCountLabel.text = String(comments.count)
-        }
+        commentCountLabel.text = String(data.comments.count)
         dataSubject.onNext(data)
     }
     

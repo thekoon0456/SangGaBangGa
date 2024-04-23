@@ -82,7 +82,6 @@ final class LoginViewModel: ViewModel {
         input.xbuttonTapped
             .asDriver()
             .drive(with: self) { owner, _ in
-                print(owner.coordinator)
                 owner.coordinator?.navigationController?.dismiss(animated: true)
                 owner.coordinator?.finish()
             }

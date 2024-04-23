@@ -14,7 +14,7 @@ extension KingfisherWrapper<UIImageView> {
     func setSeSACImage(input: String) {
         let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300), mode: .aspectFit)
         
-        let url = URL(string: input ?? "")
+        let url = URL(string: input)
         
         let modifier = AnyModifier { request in
             var request = request

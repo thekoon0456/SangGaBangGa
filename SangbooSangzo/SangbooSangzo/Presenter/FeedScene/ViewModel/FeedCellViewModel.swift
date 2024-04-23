@@ -14,7 +14,7 @@ final class FeedCellViewModel: ViewModel {
     
     struct Input {
         let inputData: Observable<UploadContentResponse>
-        let heartButtonTapped: ControlEvent<Void>
+        let heartButtonTapped: Observable<Bool>
     }
     
     struct Output {
@@ -26,19 +26,18 @@ final class FeedCellViewModel: ViewModel {
     var disposeBag = DisposeBag()
     
     func transform(_ input: Input) -> Output {
-        let postID = BehaviorRelay(value: "")
+        var inputData = UploadContentResponse()
         let buttonStatus = BehaviorRelay(value: false)
         let heartCount = BehaviorRelay(value: 0)
         
         input
             .inputData
             .do { data in
-                postID.accept(data.postID ?? "")
-                heartCount.accept(data.likes?.count ?? 0)
+                inputData = data
+                heartCount.accept(data.likes.count)
             }
             .map { data in
-                guard let like = data.likes else { return false }
-                return like.contains { $0 == UserDefaultsManager.shared.userData.userID }
+                return data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
             }
             .subscribe { value in
                 buttonStatus.accept(value)
@@ -47,12 +46,13 @@ final class FeedCellViewModel: ViewModel {
         
         input
             .heartButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .withUnretained(self)
             .flatMap { owner, value in
-                if buttonStatus.value == true {
-                    owner.likeAPIManager.postLike(queryID: postID.value, status: false)
+                if value == true {
+                    owner.likeAPIManager.postLike(queryID: inputData.postID, status: false)
                 } else {
-                    owner.likeAPIManager.postLike(queryID: postID.value, status: true)
+                    owner.likeAPIManager.postLike(queryID: inputData.postID, status: true)
                 }
             }
             .subscribe { value in

@@ -32,4 +32,10 @@ final class InfoCoordinator: Coordinator {
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func pushToSetting() {
+        let vm = SettingViewModel(coordinator: self)
+        let vc = SettingViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

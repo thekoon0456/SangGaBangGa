@@ -13,8 +13,8 @@ import RxSwift
 final class DetailFeedViewModel: ViewModel {
     
     struct Input {
-        let viewDidLoad: ControlEvent<Void>
-        let heartButtonTapped: ControlEvent<Void>
+        let viewWillAppear: Observable<Void>
+        let heartButtonTapped: Observable<Bool>
     }
     
     struct Output {
@@ -24,39 +24,38 @@ final class DetailFeedViewModel: ViewModel {
     }
     
     private weak var coordinator: Coordinator?
-    //    private let data: UploadContentResponse
-    private let dataRelay = BehaviorRelay<UploadContentResponse>(value: UploadContentResponse())
-    
+    private let data: UploadContentResponse
+    private let postAPIManager = PostsAPIManager.shared
     private let likeAPIManager = LikeAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: Coordinator?, data: UploadContentResponse) {
         self.coordinator = coordinator
-        //        self.data = data
-        dataRelay.accept(data)
+        self.data = data
+        print("data:", data)
     }
     
     func transform(_ input: Input) -> Output {
+            let buttonStatus = BehaviorRelay(value: data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
+        let heartCount = BehaviorRelay(value: data.likes.count)
         
-        let buttonStatus = BehaviorRelay(value: false)
-        let heartCount = BehaviorRelay(value: 0)
-        
-        dataRelay.subscribe(with: self) { owner, data in
-            guard let likes = data.likes else { return }
-            heartCount.accept(likes.count)
-            buttonStatus.accept(likes.contains { $0 == UserDefaultsManager.shared.userData.userID} ? true : false)
-            
-        }
-        .disposed(by: disposeBag)
+        let data = input
+            .viewWillAppear
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.postAPIManager.readPost(queryID: owner.data.postID)
+            }
+            .asDriver(onErrorJustReturn: UploadContentResponse())
         
         input
             .heartButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .withUnretained(self)
             .flatMap { owner, value in
-                if buttonStatus.value == true {
-                    owner.likeAPIManager.postLike(queryID: owner.dataRelay.value.postID ?? "", status: false)
+                if value == true {
+                    owner.likeAPIManager.postLike(queryID: owner.data.postID, status: false)
                 } else {
-                    owner.likeAPIManager.postLike(queryID: owner.dataRelay.value.postID ?? "", status: true)
+                    owner.likeAPIManager.postLike(queryID: owner.data.postID, status: true)
                 }
             }
             .subscribe { value in
@@ -68,7 +67,7 @@ final class DetailFeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(data: dataRelay.asDriver(onErrorJustReturn: UploadContentResponse()),
+        return Output(data: data,
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: "")
         )

@@ -90,7 +90,7 @@ final class SSAnnotationView: MKAnnotationView {
         guard let annotation = annotation as? SSAnnotation else { return }
         titleLabel.text = annotation.title
         priceLabel.text = annotation.subtitle
-        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (annotation.data.files?.first ?? ""))
+        imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (annotation.data.files.first ?? ""))
         setNeedsLayout()
     }
 }

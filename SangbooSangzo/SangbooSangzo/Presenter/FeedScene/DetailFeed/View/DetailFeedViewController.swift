@@ -108,9 +108,31 @@ final class DetailFeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let input = DetailFeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
-                                              heartButtonTapped: heartButton.rx.tap)
+        let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                              heartButtonTapped: heartButton.rx.tap.map { [weak self] in
+            guard let self else { return false }
+            return heartButton.isSelected })
         let output = viewModel.transform(input)
+        
+        output.data.drive(with: self) { owner, data in
+            owner.titleLabel.text = data.title
+            owner.contentLabel.text = data.content
+            owner.categoryLabel.text = data.content1
+            owner.addressLabel.text = data.content2
+            owner.priceLabel.text = data.content4
+            owner.spaceLabel.text = data.content5
+            owner.profileView.setValues(user: data.creator)
+            
+            owner.imageScrollView.imageViews = data.files.map {
+                let imageView = UIImageView()
+                imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
+                return imageView
+            }
+            
+            owner.heartCountLabel.text = String(data.likes.count)
+            owner.heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
+        }
+        .disposed(by: disposeBag)
         
         output
             .heartButtonStatus
@@ -121,32 +143,6 @@ final class DetailFeedViewController: RxBaseViewController {
             .heartCount
             .drive(heartCountLabel.rx.text)
             .disposed(by: disposeBag)
-        
-        output.data.drive(with: self) { owner, data in
-            owner.titleLabel.text = data.title
-            owner.contentLabel.text = data.content
-            owner.categoryLabel.text = data.content1
-            owner.addressLabel.text = data.content2
-//            owner.areaLabel.text = data.content3
-            owner.priceLabel.text = data.content4
-            owner.spaceLabel.text = data.content5
-            owner.profileView.setValues(user: data.creator ?? ProfileResponse())
-            
-            guard let files = data.files else { return }
-            owner.imageScrollView.imageViews = files.map {
-                let imageView = UIImageView()
-                imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
-                return imageView
-            }
-            
-            if let likes = data.likes?.count {
-                owner.heartCountLabel.text = String(likes)
-            }
-        }
-        .disposed(by: disposeBag)
-        
-//        output.data.drive(commentTableView.rx.items(cellIdentifier: <#T##String#>,
-//                                                    cellType: <#T##Cell.Type#>))
     }
     
     // MARK: - Configure

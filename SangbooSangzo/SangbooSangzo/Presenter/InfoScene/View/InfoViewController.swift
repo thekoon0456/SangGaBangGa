@@ -49,6 +49,11 @@ final class InfoViewController: RxBaseViewController {
     private lazy var underLineView = UIView().then {
         $0.backgroundColor = UIColor.systemGray
     }
+    
+    private let settingButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "gear")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))), for: .normal)
+        $0.tintColor = .tintColor
+    }
 
     init(viewModel: InfoViewModel) {
         self.viewModel = viewModel
@@ -72,6 +77,7 @@ final class InfoViewController: RxBaseViewController {
 
         let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         segmentTapped: titleSegment.rx.value,
+                                        settingTapped: settingButton.rx.tap,
                                         cellTapped: collectionView.rx.modelSelected(UploadContentResponse.self))
         let output = viewModel.transform(input)
         
@@ -126,7 +132,7 @@ final class InfoViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(detailUserInfoView, segmentContainerView, collectionView)
+        view.addSubviews(detailUserInfoView, segmentContainerView, collectionView, settingButton)
     }
     
     override func configureLayout() {
@@ -136,6 +142,12 @@ final class InfoViewController: RxBaseViewController {
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
             make.height.equalTo(64)
+        }
+        
+        settingButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalToSuperview().offset(-8)
+            make.size.equalTo(64)
         }
         
         segmentContainerView.snp.makeConstraints { make in

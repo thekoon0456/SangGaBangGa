@@ -53,7 +53,7 @@ final class PostsAPIManager {
             .request(.deletePost(queryID: queryID))
             .subscribe { result in
             switch result {
-            case .success(let success):
+            case .success:
                 print("삭제 성공")
             case .failure(let error):
                 print("삭제 실패")
