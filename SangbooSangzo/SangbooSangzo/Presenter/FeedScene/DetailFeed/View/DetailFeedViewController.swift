@@ -90,11 +90,23 @@ final class DetailFeedViewController: RxBaseViewController {
         $0.numberOfLines = 0
     }
     
-//    private lazy var commentCollectionView = UICollectionView(frame: .zero,
-//                                                              collectionViewLayout: createLayout()).then {
-//        $0.register(<#T##cellClass: AnyClass?##AnyClass?#>, forCellWithReuseIdentifier: <#T##String#>)
-//        $0.isScrollEnabled = false
-//    }
+    private let commentsTableView = UITableView().then {
+        $0.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+        $0.isScrollEnabled = false
+    }
+    
+    private let commentTextField = UITextField().then {
+        $0.placeholder = "댓글을 입력하세요"
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 8
+        $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
+    }
+    
+    private let sendButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "paperplane.circle.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30))), for: .normal)
+        $0.tintColor = .tintColor
+    }
     
     // MARK: - Lifecycles
     
@@ -150,7 +162,7 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(profileView, imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel)
+        contentView.addSubviews(profileView, imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel, commentsTableView, commentTextField, sendButton)
     }
     
     override func configureLayout() {
@@ -247,7 +259,27 @@ extension DetailFeedViewController {
             make.top.equalTo(spaceLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
+        }
+        
+        commentsTableView.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+        }
+        
+        commentTextField.snp.makeConstraints { make in
+            make.top.equalTo(commentsTableView.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(8)
             make.bottom.equalToSuperview().offset(-8)
+            make.height.equalTo(44)
+        }
+        
+        sendButton.snp.makeConstraints { make in
+            make.top.equalTo(commentsTableView.snp.bottom).offset(8)
+            make.leading.equalTo(commentTextField.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(-8)
+            make.size.equalTo(44)
         }
     }
 }
