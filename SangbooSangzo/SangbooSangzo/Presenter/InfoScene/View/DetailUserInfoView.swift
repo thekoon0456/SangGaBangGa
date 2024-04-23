@@ -32,9 +32,9 @@ final class DetailUserInfoView: BaseView {
     
     // MARK: - Helpers
     
-    func setValues(user: ProfileResponse) {
-        userNicknameLabel.text = user.nick ?? "닉네임을 설정해주세요"
-        guard let profileURL = user.profileImage else {
+    func setValues(nick: String?, imageURL: String?) {
+        userNicknameLabel.text = nick ?? "닉네임을 설정해주세요"
+        guard let profileURL = imageURL else {
             profileImageView.image = UIImage(named: "person.fill")
             return
         }

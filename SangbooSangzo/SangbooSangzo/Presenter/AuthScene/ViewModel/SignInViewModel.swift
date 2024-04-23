@@ -27,14 +27,12 @@ final class SignInViewModel: ViewModel {
     }
     
     // MARK: - Properties
-    weak var coordinator: Coordinator?
-    private let userInfo: ProfileResponse?
+    weak var coordinator: AuthCoordinator?
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
-    init(coordinator: Coordinator?, userInfo: ProfileResponse? = nil) {
+    init(coordinator: AuthCoordinator?) {
         self.coordinator = coordinator
-        self.userInfo = userInfo
     }
     
     func transform(_ input: Input) -> Output {

@@ -26,8 +26,8 @@ final class ProfileAPIManager {
             .map(ProfileResponse.self)
     }
     
-    func updateMyProfile(imageData: Data) -> Single<ProfileResponse> {
-        provider.rx.request(.updateMyProfile(imageData: imageData))
+    func updateMyProfile(request: ProfileEditRequest) -> Single<ProfileResponse> {
+        provider.rx.request(.updateMyProfile(request: request))
             .map(ProfileResponse.self)
     }
     

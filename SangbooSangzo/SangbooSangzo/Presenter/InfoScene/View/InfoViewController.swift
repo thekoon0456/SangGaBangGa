@@ -84,8 +84,7 @@ final class InfoViewController: RxBaseViewController {
         output
             .userProfile
             .drive(with: self) { owner, value in
-                print(value)
-                owner.detailUserInfoView.setValues(user: value)
+                owner.detailUserInfoView.setValues(nick: value.nick, imageURL: value.profileImage)
             }
             .disposed(by: disposeBag)
         

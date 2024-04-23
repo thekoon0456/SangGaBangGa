@@ -11,7 +11,7 @@ import Moya
 
 enum ProfileRouter {
     case getMyProfile
-    case updateMyProfile(imageData: Data)
+    case updateMyProfile(request: ProfileEditRequest)
     case getOtherProfile(id: String)
 }
 
@@ -47,14 +47,39 @@ extension ProfileRouter: TargetType {
         switch self {
         case .getMyProfile, .getOtherProfile:
             return .requestPlain
-        case .updateMyProfile(let imageData):
-            let data = [Moya.MultipartFormData(
-                provider: .data(imageData),
-                name: "files",
-                fileName: "upload\(imageData).jpeg",
-                mimeType: "image/jpeg"
-            )]
-        return .uploadMultipart(data)
+        case .updateMyProfile(let request):
+            
+            var formData: [Moya.MultipartFormData] = []
+            
+            if let nick = request.nick,
+               let nickData = nick.data(using: .utf8) {
+                let nickFormData = MultipartFormData(provider: .data(nickData), name: "nick")
+                formData.append(nickFormData)
+            }
+            
+            if let phoneNum = request.phoneNum,
+               let phoneNumData = phoneNum.data(using: .utf8) {
+                let phoneNumData = MultipartFormData(provider: .data(phoneNumData), name: "phoneNum")
+                formData.append(phoneNumData)
+            }
+            
+            if let birthDay = request.birthDay,
+               let birthDayData = birthDay.data(using: .utf8) {
+                let birthDayData = MultipartFormData(provider: .data(birthDayData), name: "birthDay")
+                formData.append(birthDayData)
+            }
+            
+            if let imageData = request.profile {
+                let imageData = Moya.MultipartFormData(
+                    provider: .data(imageData),
+                    name: "profile",
+                    fileName: "upload\(imageData).jpeg",
+                    mimeType: "image/jpeg"
+                )
+                formData.append(imageData)
+            }
+            
+            return .uploadMultipart(formData)
         }
     }
     
@@ -66,3 +91,4 @@ extension ProfileRouter: TargetType {
         }
     }
 }
+

@@ -18,7 +18,7 @@ struct UploadContentResponse: Decodable, Hashable {
     let content4: String //보증금, 월세
     let content5: String //평수
     let createdAt: String
-    let creator: ProfileResponse
+    let creator: LoginResponse
     let files: [String]
     let likes: [String]
     let hashTags: [String]
@@ -54,7 +54,7 @@ struct UploadContentResponse: Decodable, Hashable {
         self.content4 = try container.decode(String.self, forKey: .content4)
         self.content5 = try container.decode(String.self, forKey: .content5)
         self.createdAt = try container.decode(String.self, forKey: .createdAt)
-        self.creator = try container.decode(ProfileResponse.self, forKey: .creator)
+        self.creator = try container.decode(LoginResponse.self, forKey: .creator)
         self.files = try container.decode([String].self, forKey: .files)
         self.likes = try container.decode([String].self, forKey: .likes)
         self.hashTags = try container.decode([String].self, forKey: .hashTags)
@@ -72,10 +72,44 @@ struct UploadContentResponse: Decodable, Hashable {
         self.content4 = ""
         self.content5 = ""
         self.createdAt = ""
-        self.creator = ProfileResponse()
+        self.creator = LoginResponse()
         self.files = []
         self.likes = []
         self.hashTags = []
         self.comments = []
     }
 }
+
+//struct UploadContentUserResponse: Decodable, Hashable {
+//    let posdID: String
+//    let createdAt: String
+//    let creator: LoginResponse
+//    let files: [String]
+//    let likes: [String]
+//    let likes2: [String]
+//    let hashTags: [String]
+//    let comments: [PostCommentResponse]
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case posdID = "post_id"
+//        case createdAt
+//        case creator
+//        case files
+//        case likes
+//        case likes2
+//        case hashTags
+//        case comments
+//    }
+//    
+//    init(from decoder: any Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.posdID = try container.decode(String.self, forKey: .posdID)
+//        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+//        self.creator = try container.decode(LoginResponse.self, forKey: .creator)
+//        self.files = try container.decode([String].self, forKey: .files)
+//        self.likes = try container.decode([String].self, forKey: .likes)
+//        self.likes2 = try container.decode([String].self, forKey: .likes2)
+//        self.hashTags = try container.decode([String].self, forKey: .hashTags)
+//        self.comments = try container.decode([PostCommentResponse].self, forKey: .comments)
+//    }
+//}

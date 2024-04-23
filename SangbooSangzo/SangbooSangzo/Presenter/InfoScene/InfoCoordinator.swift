@@ -39,9 +39,13 @@ final class InfoCoordinator: Coordinator {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func presentUserInfo(userInfo: ProfileResponse) {
-        let vm = SignInViewModel(coordinator: self, userInfo: userInfo)
-        let vc = SignInViewController(viewModel: vm)
-        navigationController?.present(vc, animated: true)
+    func pushTo(userInfo: ProfileResponse) {
+        let vm = EditProfileViewModel(coordinator: self, userInfo: userInfo)
+        let vc = EditProfileViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func presentPHPickerView(picker: UIViewController) {
+        navigationController?.present(picker, animated: true)
     }
 }

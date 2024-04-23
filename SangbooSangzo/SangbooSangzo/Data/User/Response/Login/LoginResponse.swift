@@ -33,4 +33,13 @@ struct LoginResponse: Decodable, Hashable {
         self.accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
         self.refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
     }
+    
+    init() {
+        self.userID = nil
+        self.email = nil
+        self.nick = nil
+        self.profileImage = nil
+        self.accessToken = nil
+        self.refreshToken = nil
+    }
 }

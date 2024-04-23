@@ -37,16 +37,16 @@ final class SettingViewModel: ViewModel {
         let list = ["내 정보 수정", "회원 탈퇴"]
         let userProfileRelay = BehaviorRelay(value: ProfileResponse())
         
-        let userProfile = input
+        input
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.profileAPIManager.getMyProfile()
             }
-            .do { value in
+            .subscribe { value in
                 userProfileRelay.accept(value)
             }
-            .asDriver(onErrorJustReturn: ProfileResponse())
+            .disposed(by: disposeBag)
         
         let settingList = input
             .viewWillAppear
@@ -59,7 +59,7 @@ final class SettingViewModel: ViewModel {
             .drive(with: self) { owner, indexPath in
                 switch indexPath.row {
                 case 0:
-                    owner.coordinator?.presentUserInfo(userInfo: userProfileRelay.value)
+                    owner.coordinator?.pushTo(userInfo: userProfileRelay.value)
                 default:
                     owner.coordinator?
                         .navigationController?
