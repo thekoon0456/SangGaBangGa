@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum CommentsRouter {
-    case postComments(queryID: String)
+    case postComments(queryID: String, content: String)
 }
 
 extension CommentsRouter: TargetType {
@@ -21,7 +21,7 @@ extension CommentsRouter: TargetType {
     
     var path: String {
         switch self {
-        case .postComments(let postId):
+        case .postComments(let postId, _):
             "/v1/posts/\(postId)/comments"
         }
     }
@@ -35,8 +35,9 @@ extension CommentsRouter: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .postComments:
-            return .requestPlain
+        case .postComments(_, let content):
+            let params: [String: Any] = ["content": content]
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         }
     }
     

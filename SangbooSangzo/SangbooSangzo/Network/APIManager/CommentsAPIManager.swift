@@ -21,9 +21,9 @@ final class CommentsAPIManager {
     lazy var provider = MoyaProvider<CommentsRouter>(session: Session(interceptor: TokenInterceptor()),
                                                      plugins: [logger])
     
-    func postComments(queryID: String) -> Single<UserJoinResponse> {
-        provider.rx.request(.postComments(queryID: queryID))
-            .map(UserJoinResponse.self)
+    func postComments(queryID: String, content: String) -> Single<PostCommentResponse> {
+        provider.rx.request(.postComments(queryID: queryID, content: content))
+            .map(PostCommentResponse.self)
     }
 }
 

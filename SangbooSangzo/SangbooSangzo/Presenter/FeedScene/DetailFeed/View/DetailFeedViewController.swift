@@ -15,6 +15,7 @@ import Kingfisher
 final class DetailFeedViewController: RxBaseViewController {
     
     private let viewModel: DetailFeedViewModel
+    var heightConstraint: Constraint?
     
     // MARK: - UI
     
@@ -92,7 +93,6 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let commentsTableView = UITableView().then {
         $0.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
-        $0.isScrollEnabled = false
     }
     
     private let commentTextField = UITextField().then {
@@ -119,11 +119,16 @@ final class DetailFeedViewController: RxBaseViewController {
     
     override func bind() {
         super.bind()
+        let heartButtonTapped = heartButton.rx.tap.map { [weak self] in
+            guard let self else { return false }
+            return heartButton.isSelected
+        }
+        
+        let commentSendButtonTapped = sendButton.rx.tap.withLatestFrom(commentTextField.rx.text.orEmpty)
         
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                              heartButtonTapped: heartButton.rx.tap.map { [weak self] in
-            guard let self else { return false }
-            return heartButton.isSelected })
+                                              heartButtonTapped: heartButtonTapped,
+                                              commentSendButtonTapped: commentSendButtonTapped)
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
@@ -134,6 +139,7 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.priceLabel.text = data.content4
             owner.spaceLabel.text = data.content5
             owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
+//            owner.commentCountLabel.text = String(data.comments.count)
             
             owner.imageScrollView.imageViews = data.files.map {
                 let imageView = UIImageView()
@@ -155,6 +161,23 @@ final class DetailFeedViewController: RxBaseViewController {
             .heartCount
             .drive(heartCountLabel.rx.text)
             .disposed(by: disposeBag)
+        
+        output
+            .comments
+            .drive(commentsTableView.rx.items(cellIdentifier: CommentCell.identifier, cellType: CommentCell.self)) { row, element, cell in
+                cell.configureCell(data: element)
+            }
+            .disposed(by: disposeBag)
+        
+        output
+            .comments
+            .drive(with: self) { owner, data in
+                owner.heightConstraint?.update(offset: owner.commentsTableView.contentSize.height)
+                owner.commentsTableView.layoutIfNeeded()
+                owner.commentCountLabel.text = String(data.count)
+            }
+            .disposed(by: disposeBag)
+            
     }
     
     // MARK: - Configure
@@ -265,6 +288,7 @@ extension DetailFeedViewController {
             make.top.equalTo(contentLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
+            heightConstraint = make.height.equalTo(0).constraint
         }
         
         commentTextField.snp.makeConstraints { make in

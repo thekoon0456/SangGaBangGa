@@ -20,7 +20,7 @@ final class EditProfileViewController: RxBaseViewController {
     private let titleLabel = UILabel().then {
         $0.text = "프로필 수정"
         $0.textAlignment = .center
-        $0.font = .systemFont(ofSize: 40, weight: .bold)
+        $0.font = SSFont.titleLarge
         $0.textColor = .tintColor
     }
     
@@ -131,14 +131,14 @@ final class EditProfileViewController: RxBaseViewController {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(100)
+            make.height.equalTo(40)
         }
         
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(40)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.size.equalTo(100)
             
@@ -151,7 +151,7 @@ final class EditProfileViewController: RxBaseViewController {
         }
         
         emailTextField.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(40)
+            make.top.equalTo(profileImageView.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(60)
