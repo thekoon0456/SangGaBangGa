@@ -52,8 +52,15 @@ final class SignInViewModel: ViewModel {
         
         input
             .emailCheckButtonTapped
-            .flatMap { input.email }
+            .withLatestFrom(input.email)
             .subscribe(with: self) { owner, email in
+                guard email.isEmpty == false,
+                      email.contains("@"),
+                      email.contains(".") else {
+                    owner.coordinator?
+                        .showToast(.emailFormValidationFail)
+                    return
+                }
                 owner
                     .userAPIManager
                     .validationEmail(query: UserJoinEmailValidationRequest(email: email))
@@ -63,13 +70,13 @@ final class SignInViewModel: ViewModel {
                             validationEmailRelay.accept(true)
                             print("성공")
                             owner.coordinator?
-                                .showToast(.emailValidation(email: "사용 가능한 이메일입니다."))
+                                .showToast(.emailValidation(email: email))
                         case .failure(let error):
                             print(error)
                             validationEmailRelay.accept(false)
                             print("실패")
                             owner.coordinator?
-                                .showToast(.emailValidation(email: "이미 가입한 이메일입니다."))
+                                .showToast(.emailValidationFail(email: email))
                         }
                     }
                     .disposed(by: owner.disposeBag)
@@ -91,7 +98,9 @@ final class SignInViewModel: ViewModel {
                     .catchAndReturn(nil)
                     .subscribe(with: self) { owner, response in
                         guard response != nil else { return }
-                        owner.coordinator?.dismissViewController()
+                        owner.coordinator?.showToast(.joinSueecss, completion: {
+                            owner.coordinator?.dismissViewController()
+                        })
                     }
                     .disposed(by: owner.disposeBag)
             }

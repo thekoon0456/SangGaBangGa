@@ -61,8 +61,9 @@ final class LoginViewModel: ViewModel {
                             UserDefaultsManager.shared.userData = UserData(userID: response.userID,
                                 accessToken: response.accessToken,
                                                                              refreshToken: response.refreshToken)
-                            owner.coordinator?.showToast(.loginSuccess)
-                            owner.coordinator?.navigationController?.dismiss(animated: true)
+                            owner.coordinator?.showToast(.loginSuccess, completion: {
+                                owner.coordinator?.navigationController?.dismiss(animated: true)
+                            })
                         case .failure(let error):
                             print(error)
                             owner.coordinator?.showToast(.loginFail)

@@ -91,6 +91,7 @@
 		7C92D6E42BD808010021AC66 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92D6E32BD808010021AC66 /* EditProfileViewModel.swift */; };
 		7C92D6E72BD811FD0021AC66 /* ProfileEditRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92D6E62BD811FD0021AC66 /* ProfileEditRequest.swift */; };
 		7C92D6E92BD819C60021AC66 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92D6E82BD819C60021AC66 /* CommentCell.swift */; };
+		7C92D6EE2BD911720021AC66 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92D6ED2BD911720021AC66 /* PaddingLabel.swift */; };
 		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
 		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF992BCFC67900B3641D /* CommentRouter.swift */; };
@@ -193,6 +194,7 @@
 		7C92D6E32BD808010021AC66 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		7C92D6E62BD811FD0021AC66 /* ProfileEditRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditRequest.swift; sourceTree = "<group>"; };
 		7C92D6E82BD819C60021AC66 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		7C92D6ED2BD911720021AC66 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsQuery.swift; sourceTree = "<group>"; };
 		7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostsResponse.swift; sourceTree = "<group>"; };
 		7CCBCF992BCFC67900B3641D /* CommentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRouter.swift; sourceTree = "<group>"; };
@@ -740,6 +742,7 @@
 				7CFC8B032BD108AF00F713E1 /* MenuButton.swift */,
 				7C2ADFFB2BD515D100DA2C1F /* SSFont.swift */,
 				7C62A0B02BD62F9D00296BD7 /* ImageScrollView.swift */,
+				7C92D6ED2BD911720021AC66 /* PaddingLabel.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -946,6 +949,7 @@
 				7C1C501F2BCD000C0066CBCA /* InfoViewController.swift in Sources */,
 				7C18EC932BC677F900F061DE /* AppDelegate.swift in Sources */,
 				7C18EC952BC677F900F061DE /* SceneDelegate.swift in Sources */,
+				7C92D6EE2BD911720021AC66 /* PaddingLabel.swift in Sources */,
 				7C18ECE92BC69A6E00F061DE /* AlertBuilder.swift in Sources */,
 				7C18ECC72BC6978500F061DE /* BaseView.swift in Sources */,
 				7C8EA1E52BD7E12900495981 /* SettingViewController.swift in Sources */,
