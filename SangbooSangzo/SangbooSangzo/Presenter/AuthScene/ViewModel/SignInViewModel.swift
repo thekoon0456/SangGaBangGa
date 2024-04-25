@@ -99,7 +99,7 @@ final class SignInViewModel: ViewModel {
                     .subscribe(with: self) { owner, response in
                         guard response != nil else { return }
                         owner.coordinator?.showToast(.joinSueecss, completion: {
-                            owner.coordinator?.dismissViewController()
+                            owner.coordinator?.popChildNav()
                         })
                     }
                     .disposed(by: owner.disposeBag)

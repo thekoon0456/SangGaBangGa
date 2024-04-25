@@ -32,4 +32,8 @@ final class AuthCoordinator: Coordinator {
         let vc = SignInViewController(viewModel: vm)
         childNav.pushViewController(vc, animated: true)
     }
+    
+    func popChildNav() {
+        childNav.popViewController(animated: true)
+    }
 }
