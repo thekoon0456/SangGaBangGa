@@ -93,6 +93,8 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let commentsTableView = UITableView().then {
         $0.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
+        $0.rowHeight = UITableView.automaticDimension
+        $0.isScrollEnabled = false
     }
     
     private let commentTextField = UITextField().then {

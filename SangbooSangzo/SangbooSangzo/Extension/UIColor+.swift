@@ -8,5 +8,5 @@
 import UIKit
 
 extension UIColor {
-    static let tintColor = UIColor.systemPurple
+    static let tintColor: UIColor = .accent
 }

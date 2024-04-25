@@ -25,6 +25,7 @@ final class CommentCell: BaseTableViewCell {
     
     private let commentLabel = UILabel().then {
         $0.font = SSFont.titleRegular
+        $0.numberOfLines = 0
     }
     
     // MARK: - Helpers

@@ -17,13 +17,15 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     private let backgroundView = UIView().then {
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
+        $0.layer.borderColor = UIColor.tintColor.cgColor
+        $0.layer.borderWidth = 1
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.filterDay
         $0.textColor = .label
         $0.textAlignment = .center
         $0.text = ""
@@ -43,7 +45,7 @@ final class SSAnnotationView: MKAnnotationView {
     
     lazy var stackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [titleLabel, imageView, priceLabel])
-        view.spacing = 5
+        view.spacing = 4
         view.axis = .vertical
         
         imageView.snp.makeConstraints { make in
