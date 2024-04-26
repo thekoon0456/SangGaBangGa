@@ -12,6 +12,7 @@ final class CommentCell: BaseTableViewCell {
     // MARK: - Properties
     
     private lazy var profileImageView = UIImageView().then {
+        $0.image = .ssPerson
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
@@ -34,7 +35,7 @@ final class CommentCell: BaseTableViewCell {
         userNicknameLabel.text = data.creator.nick
         commentLabel.text = data.content
         guard let profileURL = data.creator.profileImage else {
-            profileImageView.image = UIImage(named: "person.fill")
+            profileImageView.image = .ssPerson
             return
         }
         profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + profileURL)

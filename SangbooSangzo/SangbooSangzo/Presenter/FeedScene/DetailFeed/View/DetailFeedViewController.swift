@@ -173,7 +173,6 @@ final class DetailFeedViewController: RxBaseViewController {
                 owner.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)
-            
     }
     
     // MARK: - Configure

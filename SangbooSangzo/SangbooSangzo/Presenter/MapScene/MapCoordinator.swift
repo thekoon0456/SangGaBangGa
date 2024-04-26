@@ -34,9 +34,16 @@ final class MapCoordinator: Coordinator {
     }
     
     func presentDetail(data: UploadContentResponse) {
-        let vm = DetailFeedViewModel(coordinator: self, data: data)
-        let vc = DetailFeedViewController(viewModel: vm)
+        let vm = MapDetailViewModel(coordinator: self, data: data)
+        let vc = MapDetailViewController(viewModel: vm)
         vc.sheetPresentationController?.detents = [.medium()]
         navigationController?.present(vc, animated: true)
+    }
+    
+    func pushToMapDetail(data: UploadContentResponse) {
+        navigationController?.dismiss(animated: true)
+        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let vc = DetailFeedViewController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

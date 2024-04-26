@@ -27,7 +27,7 @@ final class EditProfileViewController: RxBaseViewController {
     private lazy var cameraImage = UIImageView(image: UIImage(named: "SSCameraButton"))
     
     lazy var profileImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "person")
+        $0.image = .ssPerson
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 50
         $0.clipsToBounds = true

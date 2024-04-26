@@ -18,6 +18,7 @@ final class DetailUserInfoView: BaseView {
     private lazy var cameraImage = UIImageView(image: UIImage(named: "SSCameraButton"))
     
     lazy var profileImageView = UIImageView().then {
+        $0.image = .ssPerson
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 48/2
         $0.clipsToBounds = true
@@ -63,6 +64,5 @@ final class DetailUserInfoView: BaseView {
     
     override func configureView() {
         super.configureView()
-        
     }
 }
