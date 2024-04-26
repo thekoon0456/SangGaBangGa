@@ -23,7 +23,7 @@ final class FeedViewController: RxBaseViewController {
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: createLayout()).then {
-        $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
+        $0.register(MainFeedCell.self, forCellWithReuseIdentifier: MainFeedCell.identifier)
     }
     
     private lazy var addButton = UIButton().then {
@@ -73,8 +73,8 @@ final class FeedViewController: RxBaseViewController {
         
         output
             .feeds
-            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier,
-                                           cellType: FeedCell.self)) { item , element, cell in
+            .drive(collectionView.rx.items(cellIdentifier: MainFeedCell.identifier,
+                                           cellType: MainFeedCell.self)) { item , element, cell in
                 cell.configureCellData(element)
                 print(element)
             }
@@ -113,12 +113,12 @@ final class FeedViewController: RxBaseViewController {
     private func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             // MARK: - 높이 계산해서 고정값 주기
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(300))
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.8))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
             
             let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 16
@@ -127,14 +127,12 @@ final class FeedViewController: RxBaseViewController {
     }
 }
 
-
-
 extension FeedViewController {
     enum Section: Int, CaseIterable {
         case feed
     }
     
-    private func feedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, UploadContentResponse> {
+    private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, UploadContentResponse> {
         UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
             cell.configureCellData(itemIdentifier)
         }

@@ -38,12 +38,9 @@ final class DetailFeedViewController: RxBaseViewController {
     private lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .selected)
-        $0.backgroundColor = .white
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .selected)
         $0.tintColor = .tintColor
-        $0.layer.cornerRadius = 15
-        $0.clipsToBounds = true
     }
     
     private let heartCountLabel = UILabel().then {
@@ -52,11 +49,8 @@ final class DetailFeedViewController: RxBaseViewController {
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))), for: .normal)
-        $0.backgroundColor = .white
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
         $0.tintColor = .tintColor
-        $0.layer.cornerRadius = 15
-        $0.clipsToBounds = true
     }
     
     private let commentCountLabel = UILabel().then {
@@ -234,7 +228,7 @@ extension DetailFeedViewController {
         
         heartCountLabel.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalTo(heartButton.snp.trailing).offset(2)
+            make.leading.equalTo(heartButton.snp.trailing).offset(4)
             make.height.equalTo(30)
         }
         
@@ -246,7 +240,7 @@ extension DetailFeedViewController {
         
         commentCountLabel.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalTo(commentButton.snp.trailing).offset(2)
+            make.leading.equalTo(commentButton.snp.trailing).offset(4)
             make.height.equalTo(30)
         }
         
