@@ -41,7 +41,7 @@ final class MapCoordinator: Coordinator {
     }
     
     func pushToMapDetail(data: UploadContentResponse) {
-        navigationController?.dismiss(animated: true)
+//        navigationController?.dismiss(animated: true)
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
