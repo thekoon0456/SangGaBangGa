@@ -111,7 +111,6 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print(#function)
         guard let annotation = view.annotation as? SSAnnotation else { return }
-        print("annotation", annotation)
         dataRelay.accept(annotation.data)
     }
     

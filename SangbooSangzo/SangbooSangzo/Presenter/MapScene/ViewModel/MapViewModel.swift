@@ -35,7 +35,7 @@ final class MapViewModel: ViewModel {
         input
             .selectCell
             .drive(with: self) { owner, data in
-                owner.coordinator?.pushToDetail(data: data)
+                owner.coordinator?.presentDetail(data: data)
             }
             .disposed(by: disposeBag)
         
