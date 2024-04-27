@@ -50,7 +50,7 @@ final class SSAnnotationView: MKAnnotationView {
         
         imageView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(imageView.snp.width).multipliedBy(0.75)
+            make.height.equalTo(imageView.snp.width).multipliedBy(0.8)
         }
         
         return view

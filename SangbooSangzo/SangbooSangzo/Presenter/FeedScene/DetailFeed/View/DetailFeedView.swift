@@ -29,6 +29,8 @@ final class DetailFeedView: BaseView {
         $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
         $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .selected)
         $0.tintColor = .tintColor
+        $0.contentVerticalAlignment = .center
+        $0.contentHorizontalAlignment = .center
     }
     
     let heartCountLabel = UILabel().then {
@@ -39,6 +41,8 @@ final class DetailFeedView: BaseView {
     let commentButton = UIButton().then {
         $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
         $0.tintColor = .tintColor
+        $0.contentVerticalAlignment = .center
+        $0.contentHorizontalAlignment = .center
     }
     
     let commentCountLabel = UILabel().then {
@@ -47,34 +51,49 @@ final class DetailFeedView: BaseView {
     }
     
     let titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
+        $0.font = SSFont.titleMedium
         $0.numberOfLines = 2
     }
     
     let categoryLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.font = SSFont.titleSmall
         $0.textColor = .systemGray
     }
     
     private let descriptionTitle = UILabel().then {
-        $0.text = "정보"
+        $0.text = "매물 정보"
         $0.font = SSFont.titleMedium
     }
     
+    private let addressTitleLabel = UILabel().then {
+        $0.text = "주소: "
+        $0.font = SSFont.titleCard
+    }
+    
     let addressLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16)
+        $0.font = SSFont.titleCard
+    }
+    
+    private let priceTitleLabel = UILabel().then {
+        $0.text = "보증금 / 월세: "
+        $0.font = SSFont.titleCard
     }
     
     let priceLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.font = SSFont.titleCard
+    }
+    
+    private let spaceTitleLabel = UILabel().then {
+        $0.text = "규모: "
+        $0.font = SSFont.titleCard
     }
     
     let spaceLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.font = SSFont.titleCard
     }
     
     private let contentTitle = UILabel().then {
-        $0.text = "설명"
+        $0.text = "상세 설명"
         $0.font = SSFont.titleMedium
     }
     
@@ -123,7 +142,11 @@ final class DetailFeedView: BaseView {
         super.configureHierarchy()
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, descriptionTitle, addressLabel, priceLabel, spaceLabel, contentTitle, contentLabel, mapTitle, mapView, commentTitle, commentsTableView, commentTextField, sendButton)
+        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel,
+                                titleLabel, categoryLabel, descriptionTitle, addressTitleLabel, addressLabel,
+                                priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
+                                contentTitle, contentLabel, mapTitle, mapView,
+                                commentTitle, commentsTableView, commentTextField, sendButton)
     }
     
     override func configureLayout() {
@@ -200,31 +223,46 @@ extension DetailFeedView {
         }
         
         descriptionTitle.snp.makeConstraints { make in
-            make.top.equalTo(categoryLabel.snp.bottom).offset(16)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
+        }
+        
+        addressTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionTitle.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(16)
         }
         
         addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionTitle.snp.bottom).offset(8)
+            make.top.equalTo(addressTitleLabel.snp.top)
+            make.leading.equalTo(addressTitleLabel.snp.trailing).offset(4)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
+        }
+        
+        priceTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(addressTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
         }
         
         priceLabel.snp.makeConstraints { make in
-            make.top.equalTo(addressLabel.snp.bottom).offset(8)
+            make.top.equalTo(priceTitleLabel.snp.top)
+            make.leading.equalTo(priceTitleLabel.snp.trailing).offset(4)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
+        }
+        
+        spaceTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
         }
         
         spaceLabel.snp.makeConstraints { make in
-            make.top.equalTo(priceLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(spaceTitleLabel.snp.top)
+            make.leading.equalTo(spaceTitleLabel.snp.trailing).offset(4)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
         mapTitle.snp.makeConstraints { make in
-            make.top.equalTo(spaceLabel.snp.bottom).offset(16)
+            make.top.equalTo(spaceLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
@@ -237,7 +275,7 @@ extension DetailFeedView {
         }
         
         contentTitle.snp.makeConstraints { make in
-            make.top.equalTo(mapView.snp.bottom).offset(16)
+            make.top.equalTo(mapView.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
@@ -249,7 +287,7 @@ extension DetailFeedView {
         }
         
         commentTitle.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(16)
+            make.top.equalTo(contentLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }

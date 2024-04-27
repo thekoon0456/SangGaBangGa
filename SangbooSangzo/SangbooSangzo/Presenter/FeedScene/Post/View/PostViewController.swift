@@ -272,7 +272,7 @@ extension PostViewController {
         }
         
         imageCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalTo(imageButton.snp.top)
             make.leading.equalTo(imageButton.snp.trailing).offset(8)
             make.trailing.equalToSuperview()
             make.height.equalTo(100)
