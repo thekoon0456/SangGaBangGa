@@ -41,5 +41,6 @@ final class FeedCoordinator: Coordinator {
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
+        setClearNavigationBar()
     }
 }

@@ -25,15 +25,9 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let contentView = UIView()
     
-    private let profileView = DetailUserInfoView().then {
-        $0.isUserInteractionEnabled = true
-    }
-    
-    private let imageView = UIImageView().then {
-        $0.layer.cornerRadius = 4
-        $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFill
-    }
+//    private let profileView = DetailUserInfoView().then {
+//        $0.isUserInteractionEnabled = true
+//    }
     
     private lazy var imageScrollView = ImageScrollView()
     
@@ -134,7 +128,7 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.addressLabel.text = data.content2
             owner.priceLabel.text = data.content4
             owner.spaceLabel.text = data.content5
-            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
+//            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
 //            owner.commentCountLabel.text = String(data.comments.count)
             
             owner.imageScrollView.imageViews = data.files.map {
@@ -180,7 +174,7 @@ final class DetailFeedViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(profileView, imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel, commentsTableView, commentTextField, sendButton)
+        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel, commentsTableView, commentTextField, sendButton)
     }
     
     override func configureLayout() {
@@ -197,24 +191,28 @@ extension DetailFeedViewController {
     
     private func setLayout() {
         
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        
         scrollView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.verticalEdges.equalToSuperview()
+//            make.verticalEdges.equalToSuperview()
+            make.top.equalToSuperview().offset(-60)
+            make.bottom.equalToSuperview()
         }
         
-        profileView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.height.equalTo(64)
-        }
+//        profileView.snp.makeConstraints { make in
+//            make.top.equalToSuperview()
+//            make.leading.equalToSuperview().offset(8)
+//            make.trailing.equalToSuperview().offset(-8)
+//            make.height.equalTo(64)
+//        }
         
         imageScrollView.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.bottom)
+            make.top.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalTo(view.snp.width)
         }

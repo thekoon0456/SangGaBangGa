@@ -56,19 +56,19 @@ extension Coordinator {
 
 // MARK: - SetNavigation
 
-//extension Coordinator {
-//    //투명 네비게이션 바
-//    func setClearNavigationBar() {
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithTransparentBackground()
-//        appearance.backgroundImage = UIImage()
-//        appearance.shadowImage = UIImage()
-//        appearance.backgroundColor = .clear
-//        navigationController?.navigationBar.standardAppearance = appearance
-//        navigationController?.navigationBar.compactAppearance = appearance
-//        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-//    }
-//}
+extension Coordinator {
+    //투명 네비게이션 바
+    func setClearNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundImage = UIImage()
+        appearance.shadowImage = UIImage()
+        appearance.backgroundColor = .clear
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+}
 
 // MARK: - Auth
 
