@@ -45,11 +45,21 @@ final class PostViewController: RxBaseViewController {
         $0.layer.borderWidth = 1
     }
     
+    private let titleLabel = UILabel().then {
+        $0.text = "제목"
+        $0.font = SSFont.titleSmall
+    }
+    
     private let titleTextField = UITextField().then {
         $0.placeholder = "제목을 입력해주세요"
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.borderStyle = .roundedRect
+    }
+    
+    private let contentTitleLabel = UILabel().then {
+        $0.text = "상세 내용"
+        $0.font = SSFont.titleSmall
     }
     
     private let contentTextView = UITextView().then {
@@ -64,10 +74,15 @@ final class PostViewController: RxBaseViewController {
                                               menus: ["공실", "카페", "음식점", "기타"])
     
     private let addressTextField = UITextField().then {
-        $0.placeholder = "주소를 입력해주세요 (시군구)"
+        $0.placeholder = "해당 물건의 주소를 입력해주세요"
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.borderStyle = .roundedRect
+    }
+    
+    private let priceTitleLabel = UILabel().then {
+        $0.text = "보증금 / 월세"
+        $0.font = SSFont.titleSmall
     }
     
     private let depositTextField = UITextField().then {
@@ -78,12 +93,22 @@ final class PostViewController: RxBaseViewController {
         $0.borderStyle = .roundedRect
     }
     
+    private let depositPriceLabel = UILabel().then {
+        $0.text = "만원"
+        $0.font = SSFont.titleSmall
+    }
+    
     private let rentTextField = UITextField().then {
         $0.placeholder = "월세"
         $0.keyboardType = .numberPad
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
         $0.borderStyle = .roundedRect
+    }
+    
+    private let rentPriceLabel = UILabel().then {
+        $0.text = "만원"
+        $0.font = SSFont.titleSmall
     }
     
     private let spaceTextField = UITextField().then {

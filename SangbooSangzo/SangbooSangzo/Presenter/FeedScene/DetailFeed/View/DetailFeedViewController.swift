@@ -66,7 +66,7 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.baseView.heartCountLabel.text = String(data.likes.count)
             owner.baseView.heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
             
-            owner.setAnnotaion(coordinate: data.content3, title: data.content1)
+            owner.setAnnotaion(coordinate: data.content3, title: "상가 위치")
         }
         .disposed(by: disposeBag)
         

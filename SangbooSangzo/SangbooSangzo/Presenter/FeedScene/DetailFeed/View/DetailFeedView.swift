@@ -146,7 +146,6 @@ extension DetailFeedView {
         
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            //            make.verticalEdges.equalToSuperview()
             make.top.equalToSuperview().offset(-100)
             make.bottom.equalToSuperview()
         }
@@ -161,7 +160,7 @@ extension DetailFeedView {
         imageScrollView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(self.snp.width)
+            make.height.equalTo(self.snp.width).multipliedBy(0.8)
         }
         
         heartButton.snp.makeConstraints { make in
