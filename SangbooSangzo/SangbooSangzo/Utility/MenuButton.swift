@@ -22,10 +22,9 @@ final class SSMenuButton: UIButton {
         super.init(frame: .zero)
         configureUI(buttonTitle: buttonTitle, menus: menus)
         
-        menuButtonRelay.subscribe { [weak self] title in
-            guard let self,
-                  let title else { return }
-            setTitle(title, for: .normal)
+        menuButtonRelay.subscribe(with: self) { owner, title in
+            guard let title else { return }
+            owner.setTitle(title, for: .normal)
         }.disposed(by: disposeBag)
     }
 

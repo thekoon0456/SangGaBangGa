@@ -38,6 +38,11 @@ final class PostViewController: RxBaseViewController {
         return layout
     }
     
+    private let imageTitleLabel = UILabel().then {
+        $0.text = "사진 (최대 5장)"
+        $0.font = SSFont.titleRegular
+    }
+    
     private let imageButton = UIButton().then {
         $0.setImage(UIImage(systemName: "photo"), for: .normal)
         $0.layer.cornerRadius = 10
@@ -46,15 +51,18 @@ final class PostViewController: RxBaseViewController {
     }
     
     private let titleLabel = UILabel().then {
-        $0.text = "제목"
-        $0.font = SSFont.titleSmall
+        $0.text = "카테고리 / 제목"
+        $0.font = SSFont.titleRegular
     }
     
     private let titleTextField = UITextField().then {
         $0.placeholder = "제목을 입력해주세요"
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
     }
     
     private let contentTitleLabel = UILabel().then {
@@ -68,21 +76,31 @@ final class PostViewController: RxBaseViewController {
         $0.font = .systemFont(ofSize: 18)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
     }
     
     private let categoryButton = SSMenuButton(buttonTitle: "카테고리",
                                               menus: ["공실", "카페", "음식점", "기타"])
     
+    private let addressTitleLabel = UILabel().then {
+        $0.text = "주소"
+        $0.font = SSFont.titleRegular
+    }
+    
     private let addressTextField = UITextField().then {
-        $0.placeholder = "해당 물건의 주소를 입력해주세요"
+        $0.placeholder = "해당 매물의 주소를 입력해주세요"
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
     }
     
     private let priceTitleLabel = UILabel().then {
         $0.text = "보증금 / 월세"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.titleRegular
     }
     
     private let depositTextField = UITextField().then {
@@ -90,7 +108,10 @@ final class PostViewController: RxBaseViewController {
         $0.keyboardType = .numberPad
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
     }
     
     private let depositPriceLabel = UILabel().then {
@@ -103,7 +124,10 @@ final class PostViewController: RxBaseViewController {
         $0.keyboardType = .numberPad
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
     }
     
     private let rentPriceLabel = UILabel().then {
@@ -116,7 +140,10 @@ final class PostViewController: RxBaseViewController {
         $0.keyboardType = .numberPad
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
     }
     
     private let postButton = UIButton().then {
@@ -126,6 +153,8 @@ final class PostViewController: RxBaseViewController {
         $0.setTitleColor(.lightGray, for: .disabled)
         $0.backgroundColor = .tintColor
         $0.isEnabled = false
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
     }
     
     init(viewModel: PostViewModel) {
@@ -182,9 +211,10 @@ final class PostViewController: RxBaseViewController {
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(imageButton, imageCollectionView, titleTextField,
-                                contentTextView, categoryButton, addressTextField,
-                                depositTextField, rentTextField, spaceTextField, postButton)
+        contentView.addSubviews(imageTitleLabel, imageButton, imageCollectionView, titleLabel, categoryButton, titleTextField,
+                                contentTextView, addressTitleLabel, addressTextField,
+                                priceTitleLabel, depositTextField, depositPriceLabel, rentTextField, rentPriceLabel,
+                                spaceTextField, postButton)
     }
     
     override func configureLayout() {
@@ -231,9 +261,14 @@ extension PostViewController {
             make.verticalEdges.equalToSuperview()
         }
         
-        imageButton.snp.makeConstraints { make in
-            make.size.equalTo(100)
+        imageTitleLabel.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().offset(20)
+        }
+        
+        imageButton.snp.makeConstraints { make in
+            make.top.equalTo(imageTitleLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(100)
         }
         
         imageCollectionView.snp.makeConstraints { make in
@@ -243,39 +278,71 @@ extension PostViewController {
             make.height.equalTo(100)
         }
         
-        titleTextField.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.top.equalTo(imageButton.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(60)
         }
         
         categoryButton.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(20)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(60)
             make.width.equalTo(120)
+        }
+        
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(categoryButton.snp.trailing).offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(60)
+        }
+        
+        addressTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(categoryButton.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
         addressTextField.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(20)
-            make.leading.equalTo(categoryButton.snp.trailing).offset(20)
+            make.top.equalTo(addressTitleLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(60)
+        }
+        
+        priceTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(addressTextField.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
         depositTextField.snp.makeConstraints { make in
-            make.top.equalTo(categoryButton.snp.bottom).offset(20)
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(60)
-            make.width.equalTo(120)
+        }
+        
+        depositPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(depositTextField.snp.trailing).offset(8)
+            make.height.equalTo(60)
+            make.width.equalTo(30)
         }
         
         rentTextField.snp.makeConstraints { make in
-            make.top.equalTo(categoryButton.snp.bottom).offset(20)
-            make.leading.equalTo(categoryButton.snp.trailing).offset(20)
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(depositPriceLabel.snp.trailing).offset(20)
+            make.height.equalTo(60)
+            make.width.equalTo(depositTextField.snp.width)
+        }
+        
+        rentPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(rentTextField.snp.trailing).offset(8)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(60)
+            make.width.equalTo(30)
         }
         
         spaceTextField.snp.makeConstraints { make in
