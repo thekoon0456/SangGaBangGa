@@ -5,6 +5,7 @@
 //  Created by Deokhun KIM on 4/19/24.
 //
 
+import MapKit
 import UIKit
 
 import RxCocoa
@@ -19,15 +20,12 @@ final class DetailFeedViewController: RxBaseViewController {
     
     // MARK: - UI
     
-    private lazy var scrollView = UIScrollView().then {
-        $0.addSubview(contentView)
-    }
-    
+    private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-//    private let profileView = DetailUserInfoView().then {
-//        $0.isUserInteractionEnabled = true
-//    }
+    //    private let profileView = DetailUserInfoView().then {
+    //        $0.isUserInteractionEnabled = true
+    //    }
     
     private lazy var imageScrollView = ImageScrollView()
     
@@ -65,7 +63,7 @@ final class DetailFeedViewController: RxBaseViewController {
     private let addressLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
     }
-
+    
     private let priceLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 18, weight: .bold)
     }
@@ -77,6 +75,10 @@ final class DetailFeedViewController: RxBaseViewController {
     private let contentLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
+    }
+    
+    private let mapView = MKMapView().then {
+        $0.isScrollEnabled = false
     }
     
     private let commentsTableView = UITableView().then {
@@ -128,8 +130,8 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.addressLabel.text = data.content2
             owner.priceLabel.text = data.content4
             owner.spaceLabel.text = data.content5
-//            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
-//            owner.commentCountLabel.text = String(data.comments.count)
+            //            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
+            //            owner.commentCountLabel.text = String(data.comments.count)
             
             owner.imageScrollView.imageViews = data.files.map {
                 let imageView = UIImageView()
@@ -139,8 +141,12 @@ final class DetailFeedViewController: RxBaseViewController {
             
             owner.heartCountLabel.text = String(data.likes.count)
             owner.heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
+            
+            owner.setAnnotaion(coordinate: data.content3, title: data.content1)
         }
         .disposed(by: disposeBag)
+        
+        
         
         output
             .heartButtonStatus
@@ -163,7 +169,7 @@ final class DetailFeedViewController: RxBaseViewController {
             .comments
             .drive(with: self) { owner, data in
                 owner.heightConstraint?.update(offset: owner.commentsTableView.contentSize.height)
-                owner.commentsTableView.layoutIfNeeded()
+                //                owner.commentsTableView.layoutIfNeeded()
                 owner.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)
@@ -171,10 +177,28 @@ final class DetailFeedViewController: RxBaseViewController {
     
     // MARK: - Configure
     
+    func setAnnotaion(coordinate: String?, title: String) {
+        guard let latitude = Double(coordinate?.components(separatedBy: " / ").first ?? ""),
+              let longitude = Double(coordinate?.components(separatedBy: " / ").last ?? "") else { return }
+        print(latitude, longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = title
+        
+        mapView.addAnnotation(annotation)
+        
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 100,
+                                        longitudinalMeters: 100)
+        mapView.setRegion(region, animated: true)
+    }
+    
     override func configureHierarchy() {
         super.configureHierarchy()
         view.addSubview(scrollView)
-        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel, commentsTableView, commentTextField, sendButton)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel, titleLabel, categoryLabel, addressLabel, priceLabel, spaceLabel, contentLabel, mapView, commentsTableView, commentTextField, sendButton)
     }
     
     override func configureLayout() {
@@ -191,25 +215,23 @@ extension DetailFeedViewController {
     
     private func setLayout() {
         
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-//            make.verticalEdges.equalToSuperview()
-            make.top.equalToSuperview().offset(-60)
+            //            make.verticalEdges.equalToSuperview()
+            make.top.equalToSuperview().offset(-100)
             make.bottom.equalToSuperview()
         }
         
-//        profileView.snp.makeConstraints { make in
-//            make.top.equalToSuperview()
-//            make.leading.equalToSuperview().offset(8)
-//            make.trailing.equalToSuperview().offset(-8)
-//            make.height.equalTo(64)
-//        }
+        //        profileView.snp.makeConstraints { make in
+        //            make.top.equalToSuperview()
+        //            make.leading.equalToSuperview().offset(8)
+        //            make.trailing.equalToSuperview().offset(-8)
+        //            make.height.equalTo(64)
+        //        }
         
         imageScrollView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -277,8 +299,15 @@ extension DetailFeedViewController {
             make.trailing.equalToSuperview().offset(-8)
         }
         
-        commentsTableView.snp.makeConstraints { make in
+        mapView.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.height.equalTo(180)
+        }
+        
+        commentsTableView.snp.makeConstraints { make in
+            make.top.equalTo(mapView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
             heightConstraint = make.height.equalTo(0).constraint

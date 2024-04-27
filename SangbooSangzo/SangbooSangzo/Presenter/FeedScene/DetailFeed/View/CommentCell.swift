@@ -55,7 +55,7 @@ final class CommentCell: BaseTableViewCell {
         }
         
         userNicknameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
+            make.top.equalToSuperview().offset(8)
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             make.trailing.equalToSuperview()
         }
@@ -64,7 +64,7 @@ final class CommentCell: BaseTableViewCell {
             make.top.equalTo(userNicknameLabel.snp.bottom).offset(4)
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalToSuperview().offset(-4)
+            make.bottom.equalToSuperview().offset(-8)
         }
     }
     

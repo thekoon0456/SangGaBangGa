@@ -18,7 +18,7 @@ final class ImageScrollView: BaseView {
     }
     
     private let pageControl = UIPageControl().then {
-        $0.backgroundColor = .systemGray
+        $0.backgroundColor = .clear
         $0.alpha = 0.8
         $0.currentPage = 0
         $0.layer.cornerRadius = 8
