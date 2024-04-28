@@ -69,8 +69,6 @@ final class DetailFeedViewController: RxBaseViewController {
         }
         .disposed(by: disposeBag)
         
-        
-        
         output
             .heartButtonStatus
             .drive(baseView.heartButton.rx.isSelected)
@@ -96,6 +94,46 @@ final class DetailFeedViewController: RxBaseViewController {
                 owner.baseView.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)
+        
+        Observable.zip(baseView.commentsTableView.rx.itemDeleted.asObservable(),
+                       output.comments.asObservable())
+            .subscribe(with: self) { owner, data in
+                let comment = data.1[data.0.row].creator.userID
+                guard comment == UserDefaultsManager.shared.userData.userID ?? "" else { return }
+                   
+                   // 사용자 ID 체크
+                if comment == UserDefaultsManager.shared.userData.userID ?? "" {
+                    print("본인")
+//                       self.viewWillAppear.onNext()
+                   } else {
+                       // 삭제 불가 토스트 메시지 또는 알림
+                       print("본인아님")
+                   }
+        }
+        .disposed(by: disposeBag)
+        
+        baseView.commentsTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
+//        baseView.commentsTableView.rx.itemDeleted { indexPath in
+//                return (indexPath, data.0, data.1)
+//            }
+//            .subscribe(onNext: { [weak self] indexPath, comments, currentUserId in
+//                guard let self = self else { return }
+//                let comment = comments[indexPath.row]
+//                
+//                // 사용자 ID 체크
+//                if comment.userId == currentUserId {
+//                    var newComments = comments
+//                    newComments.remove(at: indexPath.row)
+//                    self.comments.onNext(newComments)
+//                } else {
+//                    // 삭제 불가 토스트 메시지 또는 알림
+//                    print("삭제할 수 없습니다.")
+//                }
+//            })
+//            .disposed(by: disposeBag)
     }
     
     // MARK: - Configure
@@ -127,5 +165,20 @@ final class DetailFeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+    }
+}
+
+// MARK: - 여기서 delete 막기
+
+extension DetailFeedViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+//        guard let comment = try? output.comments.value()[indexPath.row],
+//              let userID = UserDefaultsManager.shared.userData.userID else {
+//            return .none
+//        }
+//        
+//        return comment.creator.userID == userID ? .delete : .none
+        print("됨?")
+        return .none
     }
 }
