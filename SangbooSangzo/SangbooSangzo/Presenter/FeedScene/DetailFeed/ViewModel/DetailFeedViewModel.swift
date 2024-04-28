@@ -89,9 +89,19 @@ final class DetailFeedViewModel: ViewModel {
             }
             .subscribe { value in
                 data.accept(value)
-                comments.accept(value.comments)
+                comments.accept(sortComments(value.comments))
             }
             .disposed(by: disposeBag)
+        
+        func sortComments(_ input: [PostCommentResponse]) -> [PostCommentResponse] {
+            let formatter = ISO8601DateFormatter()
+
+            return input.sorted { item1, item2 in
+                let date1 = formatter.date(from: item1.createdAt ?? "") ?? Date()
+                let date2 = formatter.date(from: item2.createdAt ?? "") ?? Date()
+                return date1 < date2
+            }
+        }
         
         return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
@@ -99,5 +109,7 @@ final class DetailFeedViewModel: ViewModel {
                       comments: comments.asDriver(onErrorJustReturn: [])
         )
     }
+    
+
 }
 

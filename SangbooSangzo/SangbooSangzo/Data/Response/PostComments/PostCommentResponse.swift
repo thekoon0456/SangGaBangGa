@@ -10,7 +10,7 @@ import Foundation
 struct PostCommentResponse: Decodable, Hashable {
     let commentID: String
     let content: String
-    let createAt: String?
+    let createdAt: String?
     let creator: CommentCreatorResponse
     
     enum CodingKeys: String, CodingKey {
@@ -24,14 +24,14 @@ struct PostCommentResponse: Decodable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.commentID = try container.decode(String.self, forKey: .commentID)
         self.content = try container.decode(String.self, forKey: .content)
-        self.createAt = try container.decodeIfPresent(String.self, forKey: .createAt) ?? ""
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createAt) ?? ""
         self.creator = try container.decode(CommentCreatorResponse.self, forKey: .creator)
     }
     
     init() {
         self.commentID = ""
         self.content = ""
-        self.createAt = nil
+        self.createdAt = nil
         self.creator = CommentCreatorResponse()
     }
 }
