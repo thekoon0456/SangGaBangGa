@@ -51,7 +51,7 @@ final class InfoViewController: RxBaseViewController {
     }
     
     private let settingButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "gear")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))), for: .normal)
+        $0.setImage(.ssSetting, for: .normal)
         $0.tintColor = .tintColor
     }
 

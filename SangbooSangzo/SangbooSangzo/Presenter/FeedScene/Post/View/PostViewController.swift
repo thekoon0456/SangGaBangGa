@@ -135,8 +135,13 @@ final class PostViewController: RxBaseViewController {
         $0.font = SSFont.titleSmall
     }
     
+    private let spaceTitleLabel  = UILabel().then {
+        $0.text = "규모"
+        $0.font = SSFont.titleRegular
+    }
+    
     private let spaceTextField = UITextField().then {
-        $0.placeholder = "평수 (약 -평)"
+        $0.placeholder = "약 -평"
         $0.keyboardType = .numberPad
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.systemGray.cgColor
@@ -144,6 +149,32 @@ final class PostViewController: RxBaseViewController {
         $0.clipsToBounds = true
         $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
         $0.leftViewMode = .always
+    }
+    
+    private let spaceLabel = UILabel().then {
+        $0.text = "평"
+        $0.font = SSFont.titleSmall
+    }
+    
+    private let space33Field = UITextField().then {
+        $0.placeholder = "약 -㎡"
+        $0.keyboardType = .numberPad
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.systemGray.cgColor
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+        $0.leftView = UIView(frame: .init(x: 0, y: 0, width: 12, height: 0))
+        $0.leftViewMode = .always
+    }
+    
+    private let m2Label = UILabel().then {
+        $0.text = "㎡"
+        $0.font = SSFont.titleSmall
+    }
+
+    private let detailTitleLabel  = UILabel().then {
+        $0.text = "상세 내용"
+        $0.font = SSFont.titleRegular
     }
     
     private let postButton = UIButton().then {
@@ -171,7 +202,8 @@ final class PostViewController: RxBaseViewController {
                                         address: addressTextField.rx.text.orEmpty,
                                         deposit: depositTextField.rx.text.orEmpty,
                                         rent: rentTextField.rx.text.orEmpty,
-                                        space: rentTextField.rx.text.orEmpty,
+                                        space: spaceTextField.rx.text.orEmpty,
+                                        spaceM2: space33Field.rx.text.orEmpty,
                                         content: contentTextView.rx.text.orEmpty,
                                         post: postButton.rx.tap)
         let output = viewModel.transform(input)
@@ -196,6 +228,16 @@ final class PostViewController: RxBaseViewController {
                 cell.configureCell(image: UIImage(data: element) ?? UIImage())
             }
             .disposed(by: disposeBag)
+        
+        output
+            .space
+            .drive(spaceTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        output
+            .spaceM2
+            .drive(space33Field.rx.text)
+            .disposed(by: disposeBag)
     }
     
     private func configurePHPicker() {
@@ -214,7 +256,7 @@ final class PostViewController: RxBaseViewController {
         contentView.addSubviews(imageTitleLabel, imageButton, imageCollectionView, titleLabel, categoryButton, titleTextField,
                                 contentTextView, addressTitleLabel, addressTextField,
                                 priceTitleLabel, depositTextField, depositPriceLabel, rentTextField, rentPriceLabel,
-                                spaceTextField, postButton)
+                                spaceTitleLabel, spaceTextField, spaceLabel, space33Field,m2Label, detailTitleLabel, postButton)
     }
     
     override func configureLayout() {
@@ -345,15 +387,48 @@ extension PostViewController {
             make.width.equalTo(30)
         }
         
-        spaceTextField.snp.makeConstraints { make in
+        spaceTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(depositTextField.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
+        }
+        
+        spaceTextField.snp.makeConstraints { make in
+            make.top.equalTo(spaceTitleLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(20)
             make.height.equalTo(60)
         }
         
-        contentTextView.snp.makeConstraints { make in
+        spaceLabel.snp.makeConstraints { make in
+            make.top.equalTo(spaceTextField.snp.top)
+            make.leading.equalTo(spaceTextField.snp.trailing).offset(8)
+            make.height.equalTo(60)
+            make.width.equalTo(30)
+        }
+        
+        space33Field.snp.makeConstraints { make in
+            make.top.equalTo(spaceTextField.snp.top)
+            make.leading.equalTo(spaceLabel.snp.trailing).offset(20)
+            make.height.equalTo(60)
+            make.width.equalTo(spaceTextField.snp.width)
+        }
+        
+        m2Label.snp.makeConstraints { make in
+            make.top.equalTo(space33Field.snp.top)
+            make.leading.equalTo(space33Field.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(60)
+            make.width.equalTo(30)
+        }
+        
+        detailTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(spaceTextField.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+        }
+        
+        contentTextView.snp.makeConstraints { make in
+            make.top.equalTo(detailTitleLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.greaterThanOrEqualTo(200)

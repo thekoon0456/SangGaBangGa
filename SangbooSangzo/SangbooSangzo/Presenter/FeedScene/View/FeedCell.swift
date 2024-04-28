@@ -144,7 +144,7 @@ extension FeedCell {
         
         commentButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
+            make.leading.equalTo(heartCountLabel.snp.trailing).offset(12)
             make.size.equalTo(30)
         }
         

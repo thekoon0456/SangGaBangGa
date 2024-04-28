@@ -88,7 +88,7 @@ struct UploadContentResponse: Decodable, Hashable {
                       address: content2,
                       coordinate: content3,
                       price: toPrice(),
-                      space: content5,
+                      space: "약 " + content5 + "평",
                       createdAt: createdAt,
                       creator: creator.toEntity,
                       files: files,
@@ -101,42 +101,6 @@ struct UploadContentResponse: Decodable, Hashable {
         guard let deposit = Int(content4.components(separatedBy: " / ").first ?? "")?.formatted(),
               let price = Int(content4.components(separatedBy: " / ").last ?? "")?.formatted()
         else { return "" }
-        return "보증금: \(deposit)만원 / 월세: \(price)만원"
-    }
-}
-
-struct ContentEntity: Decodable, Hashable {
-    let postID: String
-    let productID: String
-    let title: String //제목
-    let content: String //내용
-    let category: String //카테고리 (공실, 카페, 음식점, 기타)
-    let address: String //주소
-    let coordinate: String? //위, 경도
-    let price: String //보증금, 월세
-    let space: String //평수
-    let createdAt: String
-    let creator: LoginEntity
-    let files: [String]
-    let likes: [String]
-    let hashTags: [String]
-    let comments: [PostCommentResponse]
-    
-    static var defaultsEntity: ContentEntity {
-        ContentEntity(postID: "",
-                      productID: "",
-                      title: "",
-                      content: "",
-                      category: "",
-                      address: "",
-                      coordinate: "",
-                      price: "",
-                      space: "",
-                      createdAt: "",
-                      creator: LoginResponse().toEntity,
-                      files: [],
-                      likes: [],
-                      hashTags: [],
-                      comments: [])
+        return "\(deposit)만원 / \(price)만원"
     }
 }

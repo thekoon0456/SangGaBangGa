@@ -60,15 +60,15 @@ final class InfoViewModel: ViewModel {
                 if index.1 == 0 {
                     owner.likeAPIManager.ReadLikePosts(query: .init(next: "",
                                                                     limit: "20"))
-                    .map { $0.toEntity.data }
+                    .map { $0.toEntity }
                 } else {
                     owner.postAPIRepository.readUserPosts(queryID: userProfileRelay.value.userID,
                                                        query: ReadPostsQuery(next: "",
                                                                              limit: "20",
                                                                              productID: "SangbooSangzo"))
-                    .map { $0.data }
                 }
             }
+            .map { $0.data }
             .asDriver(onErrorJustReturn: [ContentEntity]())
         
         input

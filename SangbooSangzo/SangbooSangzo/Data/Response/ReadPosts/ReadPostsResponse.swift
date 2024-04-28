@@ -32,8 +32,3 @@ struct ReadPostsResponse: Decodable {
                         nextCursor: nextCursor)
     }
 }
-
-struct ReadPostsEntity {
-    let data: [ContentEntity]
-    let nextCursor: String?
-}

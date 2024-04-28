@@ -14,7 +14,3 @@ struct UploadImageResponse: Decodable {
         UploadImageEntity(files: files)
     }
 }
-
-struct UploadImageEntity {
-    let files: [String]
-}

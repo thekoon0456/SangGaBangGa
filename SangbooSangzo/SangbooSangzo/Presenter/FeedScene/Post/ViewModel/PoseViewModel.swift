@@ -21,12 +21,15 @@ final class PostViewModel: ViewModel {
         let deposit: ControlProperty<String>
         let rent: ControlProperty<String>
         let space: ControlProperty<String>
+        let spaceM2: ControlProperty<String>
         let content: ControlProperty<String>
         let post: ControlEvent<Void>
     }
     
     struct Output {
         let selectedPhotos: Driver<[Data]>
+        let space: Driver<String>
+        let spaceM2: Driver<String>
         let buttonEnable: Driver<Bool>
     }
     
@@ -49,6 +52,9 @@ final class PostViewModel: ViewModel {
                                            content5: nil,
                                            productID: "SangbooSangzo",
                                            files: nil)
+        
+        let space = BehaviorRelay(value: "")
+        let spaceM2 = BehaviorRelay(value: "")
         
         let buttonEnable = Observable.combineLatest(
             [
@@ -121,6 +127,16 @@ final class PostViewModel: ViewModel {
             .space
             .subscribe { value in
                 request.content5 = value
+                space.accept(value)
+                to33Space(value)
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .spaceM2
+            .subscribe { value in
+                spaceM2.accept(value)
+                toSpace(value)
             }
             .disposed(by: disposeBag)
         
@@ -153,7 +169,30 @@ final class PostViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        
+        func toSpace(_ input: String) {
+            if input == "0" || input == "" {
+                space.accept("")
+            }
+            if let spaceDouble = Double(input){
+                let newValue = String(Int(spaceDouble / 3.3))
+                space.accept(newValue)
+            }
+        }
+        
+        func to33Space(_ input: String) {
+            if input == "0" || input == "" {
+                spaceM2.accept("")
+            }
+            if let spaceDouble = Double(input) {
+                let newValue = String(spaceDouble * 3.3)
+                spaceM2.accept(newValue)
+            }
+        }
+        
         return Output(selectedPhotos: input.selectedPhotos.asDriver(onErrorJustReturn: []),
+                      space: space.asDriver(onErrorJustReturn: ""),
+                      spaceM2: spaceM2.asDriver(onErrorJustReturn: ""),
                       buttonEnable: buttonEnable.asDriver(onErrorJustReturn: false))
     }
 }

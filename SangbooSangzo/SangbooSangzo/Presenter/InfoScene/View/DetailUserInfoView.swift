@@ -15,7 +15,7 @@ final class DetailUserInfoView: BaseView {
     // MARK: - Properties
     
     //설정버튼 카메라
-    private lazy var cameraImage = UIImageView(image: UIImage(named: "SSCameraButton"))
+    private lazy var cameraImage = UIImageView(image: UIImage(systemName: "camera"))
     
     lazy var profileImageView = UIImageView().then {
         $0.image = .ssUser
@@ -36,7 +36,7 @@ final class DetailUserInfoView: BaseView {
     func setValues(nick: String?, imageURL: String?) {
         userNicknameLabel.text = nick ?? "닉네임을 설정해주세요"
         guard let profileURL = imageURL else {
-            profileImageView.image = UIImage(named: "person.fill")
+            profileImageView.image = .ssUser
             return
         }
         profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + profileURL)
