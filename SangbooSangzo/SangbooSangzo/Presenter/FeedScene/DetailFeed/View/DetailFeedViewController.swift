@@ -54,8 +54,7 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.baseView.addressLabel.text = data.address
             owner.baseView.priceLabel.text = data.price
             owner.baseView.spaceLabel.text = data.space
-            //            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
-            //            owner.commentCountLabel.text = String(data.comments.count)
+            owner.baseView.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
             
             owner.baseView.imageScrollView.imageViews = data.files.map {
                 let imageView = UIImageView()

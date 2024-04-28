@@ -19,9 +19,7 @@ final class DetailFeedView: BaseView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    //    private let profileView = DetailUserInfoView().then {
-    //        $0.isUserInteractionEnabled = true
-    //    }
+    let profileView = DetailUserInfoView()
     
     lazy var imageScrollView = ImageScrollView()
     
@@ -142,7 +140,7 @@ final class DetailFeedView: BaseView {
         super.configureHierarchy()
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel,
+        contentView.addSubviews(imageScrollView, profileView, heartButton, heartCountLabel, commentButton, commentCountLabel,
                                 titleLabel, categoryLabel, descriptionTitle, addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
@@ -173,22 +171,21 @@ extension DetailFeedView {
             make.bottom.equalToSuperview()
         }
         
-        //        profileView.snp.makeConstraints { make in
-        //            make.top.equalToSuperview()
-        //            make.leading.equalToSuperview().offset(8)
-        //            make.trailing.equalToSuperview().offset(-8)
-        //            make.height.equalTo(64)
-        //        }
-        
         imageScrollView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalTo(self.snp.width).multipliedBy(0.8)
         }
+    
+        profileView.snp.makeConstraints { make in
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(16)
+            make.height.equalTo(30)
+        }
         
         heartButton.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
+            make.leading.greaterThanOrEqualTo(profileView.snp.trailing).offset(16)
             make.size.equalTo(30)
         }
         
@@ -207,11 +204,12 @@ extension DetailFeedView {
         commentCountLabel.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
             make.leading.equalTo(commentButton.snp.trailing).offset(4)
+            make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(30)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.bottom).offset(16)
+            make.top.equalTo(profileView.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
