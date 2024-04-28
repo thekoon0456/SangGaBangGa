@@ -16,26 +16,31 @@ final class SSAnnotationView: MKAnnotationView {
         self.description()
     }
     
+    private let shadowView = UIView().then {
+        $0.backgroundColor = .clear
+        $0.layer.shadowOffset = CGSize(width: 5, height: 5)
+        $0.layer.shadowColor = UIColor.systemGray.cgColor
+        $0.layer.shadowOpacity = 0.8
+        $0.layer.shadowRadius = 4
+        $0.clipsToBounds = false
+    }
+    
     private let backgroundView = UIView().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = .systemGray6
         $0.layer.cornerRadius = 8
         $0.clipsToBounds = true
-        $0.layer.borderColor = UIColor.tintColor.cgColor
-        $0.layer.borderWidth = 1
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.filterDay
+        $0.font = SSFont.filterMedium
         $0.textColor = .label
         $0.textAlignment = .center
-        $0.text = ""
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.filterDay
+        $0.font = SSFont.filterMedium
         $0.textColor = .label
         $0.textAlignment = .center
-        $0.text = ""
     }
     
     lazy var imageView = UIImageView().then {
@@ -45,7 +50,8 @@ final class SSAnnotationView: MKAnnotationView {
     
     lazy var stackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [titleLabel, imageView, priceLabel])
-        view.spacing = 4
+        view.spacing = 2
+        view.distribution = .fill
         view.axis = .vertical
         
         imageView.snp.makeConstraints { make in
@@ -67,12 +73,18 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     func configureUI() {
-        addSubview(backgroundView)
+        addSubview(shadowView)
+        shadowView.addSubview(backgroundView)
         backgroundView.addSubview(stackView)
         
+        shadowView.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(84)
+        }
+        
         backgroundView.snp.makeConstraints { make in
-            make.width.equalTo(70)
-            make.height.equalTo(100)
+            make.width.equalTo(64)
+            make.height.equalTo(84)
         }
         
         stackView.snp.makeConstraints { make in

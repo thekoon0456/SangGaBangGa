@@ -31,9 +31,9 @@ final class AppCoordinator: Coordinator {
         tabBarController.tabBar.backgroundColor = .systemBackground
         
         let feedNav = UINavigationController()
-        let feedcoordinator = FeedCoordinator(navigationController: feedNav)
-        childCoordinators.append(feedcoordinator)
-        feedcoordinator.start()
+        let feedCoordinator = FeedCoordinator(navigationController: feedNav)
+        childCoordinators.append(feedCoordinator)
+        feedCoordinator.start()
         
         let mapNav = UINavigationController()
         let mapCoordinator = MapCoordinator(navigationController: mapNav)
