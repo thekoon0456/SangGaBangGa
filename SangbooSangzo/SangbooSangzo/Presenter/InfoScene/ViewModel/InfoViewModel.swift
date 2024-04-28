@@ -16,17 +16,17 @@ final class InfoViewModel: ViewModel {
         let viewWillAppear: Observable<Void>
         let segmentTapped: ControlProperty<Int>
         let settingTapped: ControlEvent<Void>
-        let cellTapped: ControlEvent<UploadContentResponse>
+        let cellTapped: ControlEvent<ContentEntity>
     }
     
     struct Output {
         let userProfile: Driver<ProfileResponse>
         let underBarIndex: Driver<Int>
-        let feeds: Driver<[UploadContentResponse]>
+        let feeds: Driver<[ContentEntity]>
     }
     
     weak var coordinator: InfoCoordinator?
-    private let postAPIManager = PostsAPIManager.shared
+    private let postAPIRepository = PostsAPIRepository()
     private let likeAPIManager = LikeAPIManager.shared
     private let profileAPIManager = ProfileAPIManager.shared
     var disposeBag = DisposeBag()
@@ -60,15 +60,16 @@ final class InfoViewModel: ViewModel {
                 if index.1 == 0 {
                     owner.likeAPIManager.ReadLikePosts(query: .init(next: "",
                                                                     limit: "20"))
+                    .map { $0.toEntity.data }
                 } else {
-                    owner.postAPIManager.readUserPosts(queryID: userProfileRelay.value.userID,
+                    owner.postAPIRepository.readUserPosts(queryID: userProfileRelay.value.userID,
                                                        query: ReadPostsQuery(next: "",
                                                                              limit: "20",
                                                                              productID: "SangbooSangzo"))
+                    .map { $0.data }
                 }
             }
-            .compactMap { $0.data }
-            .asDriver(onErrorJustReturn: [UploadContentResponse]())
+            .asDriver(onErrorJustReturn: [ContentEntity]())
         
         input
             .settingTapped

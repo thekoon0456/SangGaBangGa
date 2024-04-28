@@ -15,18 +15,18 @@ final class FeedViewModel: ViewModel {
     struct Input {
         let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: Observable<Void>
-        let cellSelected: ControlEvent<UploadContentResponse>
+        let cellSelected: ControlEvent<ContentEntity>
         let addButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        let feeds: Driver<[UploadContentResponse]>
+        let feeds: Driver<[ContentEntity]>
     }
     
     // MARK: - Properties
     
     weak var coordinator: FeedCoordinator?
-    private let postsAPIManager = PostsAPIManager.shared
+    private let postAPIRepository = PostsAPIRepository()
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
@@ -57,11 +57,10 @@ final class FeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
-                    .postsAPIManager
+                    .postAPIRepository
                     .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
-            .compactMap { $0.data }
-            .debug()
+            .map { $0.data }
             .asDriver(onErrorJustReturn: [])
         
         TokenInterceptor

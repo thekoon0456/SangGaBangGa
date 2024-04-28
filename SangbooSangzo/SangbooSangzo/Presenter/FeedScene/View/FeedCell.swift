@@ -16,7 +16,7 @@ final class FeedCell: RxBaseCollectionViewCell {
     // MARK: - Properties
     
     private let viewModel = FeedCellViewModel()
-    private let dataSubject = BehaviorSubject(value: UploadContentResponse())
+    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultsEntity)
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 5
@@ -115,11 +115,11 @@ final class FeedCell: RxBaseCollectionViewCell {
 
 extension FeedCell {
 
-    func configureCellData(_ data: UploadContentResponse) {
+    func configureCellData(_ data: ContentEntity) {
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files.first ?? ""))
-        categoryLabel.text = data.content1
+        categoryLabel.text = data.category
         titleLabel.text = data.title
-        priceLabel.text = data.content4
+        priceLabel.text = data.price
         commentCountLabel.text = String(data.comments.count)
         dataSubject.onNext(data)
     }

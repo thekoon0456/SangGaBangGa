@@ -22,8 +22,8 @@ final class FeedCoordinator: Coordinator {
         let vm = FeedViewModel(coordinator: self)
         let vc = FeedViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
-                                     image: UIImage(systemName: "house"),
-                                     selectedImage: UIImage(systemName: "house.fill"))
+                                     image: .ssHome,
+                                     selectedImage: .ssHomeSelected)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -37,7 +37,7 @@ final class FeedCoordinator: Coordinator {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func pushToDetail(data: UploadContentResponse) {
+    func pushToDetail(data: ContentEntity) {
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)

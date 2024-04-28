@@ -15,8 +15,8 @@ final class FeedViewController: RxBaseViewController {
     
     // MARK: - Properties
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, UploadContentResponse>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UploadContentResponse>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, ContentEntity>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ContentEntity>
     
     private let viewModel: FeedViewModel
     private var dataSource: DataSource?
@@ -67,7 +67,7 @@ final class FeedViewController: RxBaseViewController {
         
         let input = FeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
                                         viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                        cellSelected: collectionView.rx.modelSelected(UploadContentResponse.self),
+                                        cellSelected: collectionView.rx.modelSelected(ContentEntity.self),
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
         
@@ -132,7 +132,7 @@ extension FeedViewController {
         case feed
     }
     
-    private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, UploadContentResponse> {
+    private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, ContentEntity> {
         UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
             cell.configureCellData(itemIdentifier)
         }
@@ -158,7 +158,7 @@ extension FeedViewController {
         dataSource?.apply(snapshot)
     }
     
-    private func updateSnapshot(withItems items: [UploadContentResponse], toSection section: Section) {
+    private func updateSnapshot(withItems items: [ContentEntity], toSection section: Section) {
         var snapshot = dataSource?.snapshot() ?? Snapshot()
         snapshot.appendItems(items, toSection: section)
         dataSource?.apply(snapshot)

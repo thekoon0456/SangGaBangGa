@@ -22,12 +22,12 @@ final class InfoCoordinator: Coordinator {
         let vm = InfoViewModel(coordinator: self)
         let vc = InfoViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
-                                     image: UIImage(systemName: "person"),
-                                     selectedImage: UIImage(systemName: "person.fill"))
+                                     image: .ssUser,
+                                     selectedImage: .ssUserSelected)
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func pushToDetail(data: UploadContentResponse) {
+    func pushToDetail(data: ContentEntity) {
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)

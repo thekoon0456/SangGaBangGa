@@ -147,8 +147,8 @@ extension MapViewController {
         guard let userLocation else { return }
         
         let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 5000,
-                                        longitudinalMeters: 5000)
+                                        latitudinalMeters: 1000,
+                                        longitudinalMeters: 1000)
         mapView.setRegion(region, animated: true)
         setAnnotation(coordinate: userLocation)
     }

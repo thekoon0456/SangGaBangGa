@@ -78,7 +78,7 @@ final class InfoViewController: RxBaseViewController {
         let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         segmentTapped: titleSegment.rx.value,
                                         settingTapped: settingButton.rx.tap,
-                                        cellTapped: collectionView.rx.modelSelected(UploadContentResponse.self))
+                                        cellTapped: collectionView.rx.modelSelected(ContentEntity.self))
         let output = viewModel.transform(input)
         
         output

@@ -19,7 +19,7 @@ final class MapDetailViewModel: ViewModel {
     }
     
     struct Output {
-        let data: Driver<UploadContentResponse>
+        let data: Driver<ContentEntity>
         let heartButtonStatus: Driver<Bool>
         let heartCount: Driver<String>
         let comments: Driver<[PostCommentResponse]>
@@ -27,7 +27,7 @@ final class MapDetailViewModel: ViewModel {
     
     private weak var coordinator: MapCoordinator?
     private let data: UploadContentResponse
-    private let postAPIManager = PostsAPIManager.shared
+    private let postAPIRepository = PostsAPIRepository()
     private let likeAPIManager = LikeAPIManager.shared
     private let commentAPIManager = CommentsAPIManager.shared
     var disposeBag = DisposeBag()
@@ -39,7 +39,7 @@ final class MapDetailViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-        let data = BehaviorRelay<UploadContentResponse>(value: UploadContentResponse())
+        let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultsEntity)
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
         let comments = BehaviorRelay<[PostCommentResponse]>(value: [])
@@ -48,7 +48,7 @@ final class MapDetailViewModel: ViewModel {
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postAPIManager.readPost(queryID: owner.data.postID)
+                owner.postAPIRepository.readPost(queryID: owner.data.postID)
             }
             .subscribe { value in
                 data.accept(value)
@@ -84,7 +84,7 @@ final class MapDetailViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(data: data.asDriver(onErrorJustReturn: UploadContentResponse()),
+        return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""),
                       comments: comments.asDriver(onErrorJustReturn: [])

@@ -42,4 +42,22 @@ struct LoginResponse: Decodable, Hashable {
         self.accessToken = nil
         self.refreshToken = nil
     }
+    
+    var toEntity: LoginEntity {
+        LoginEntity(userID: userID ?? "",
+                    email: email ?? "",
+                    nick: nick ?? "",
+                    profileImage: profileImage,
+                    accessToken: accessToken ?? "",
+                    refreshToken: refreshToken ?? "")
+    }
+}
+
+struct LoginEntity: Decodable, Hashable {
+    let userID: String
+    let email: String
+    let nick: String
+    let profileImage: String?
+    let accessToken: String
+    let refreshToken: String
 }

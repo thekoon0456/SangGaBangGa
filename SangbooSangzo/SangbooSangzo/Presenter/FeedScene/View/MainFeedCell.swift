@@ -18,7 +18,7 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     let view = MainFeedBaseView()
     
     private let viewModel = MainFeedCellViewModel()
-    private let dataSubject = BehaviorSubject(value: UploadContentResponse())
+    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultsEntity)
     
     // MARK: - Lifecycles
     
@@ -72,7 +72,7 @@ final class MainFeedCell: RxBaseCollectionViewCell {
 
 extension MainFeedCell {
 
-    func configureCellData(_ data: UploadContentResponse) {
+    func configureCellData(_ data: ContentEntity) {
         view.configureCellData(data)
         dataSubject.onNext(data)
     }

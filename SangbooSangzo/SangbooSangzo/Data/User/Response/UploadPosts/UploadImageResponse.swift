@@ -9,5 +9,12 @@ import Foundation
 
 struct UploadImageResponse: Decodable {
     let files: [String]
+    
+    var toEntity: UploadImageEntity {
+        UploadImageEntity(files: files)
+    }
 }
 
+struct UploadImageEntity {
+    let files: [String]
+}

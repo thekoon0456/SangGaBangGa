@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReadPostsResponse: Decodable {
-    let data: [UploadContentResponse]?
+    let data: [UploadContentResponse]
     let nextCursor: String?
     
     enum CodingKeys: String, CodingKey {
@@ -18,12 +18,22 @@ struct ReadPostsResponse: Decodable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.data = try container.decodeIfPresent([UploadContentResponse].self, forKey: .data) ?? []
+        self.data = try container.decode([UploadContentResponse].self, forKey: .data)
         self.nextCursor = try container.decodeIfPresent(String.self, forKey: .nextCursor) ?? ""
     }
     
     init() {
-        self.data = nil
+        self.data = []
         self.nextCursor = nil
     }
+    
+    var toEntity: ReadPostsEntity {
+        ReadPostsEntity(data: data.map { $0.toEntity },
+                        nextCursor: nextCursor)
+    }
+}
+
+struct ReadPostsEntity {
+    let data: [ContentEntity]
+    let nextCursor: String?
 }

@@ -78,38 +78,65 @@ struct UploadContentResponse: Decodable, Hashable {
         self.hashTags = []
         self.comments = []
     }
+    
+    var toEntity: ContentEntity {
+        ContentEntity(postID: postID,
+                      productID: productID,
+                      title: title,
+                      content: content,
+                      category: content1,
+                      address: content2,
+                      coordinate: content3,
+                      price: toPrice(),
+                      space: content5,
+                      createdAt: createdAt,
+                      creator: creator.toEntity,
+                      files: files,
+                      likes: likes,
+                      hashTags: hashTags,
+                      comments: comments)
+    }
+    
+    func toPrice() -> String {
+        guard let deposit = Int(content4.components(separatedBy: " / ").first ?? "")?.formatted(),
+              let price = Int(content4.components(separatedBy: " / ").last ?? "")?.formatted()
+        else { return "" }
+        return "보증금: \(deposit)만원 / 월세: \(price)만원"
+    }
 }
 
-//struct UploadContentUserResponse: Decodable, Hashable {
-//    let posdID: String
-//    let createdAt: String
-//    let creator: LoginResponse
-//    let files: [String]
-//    let likes: [String]
-//    let likes2: [String]
-//    let hashTags: [String]
-//    let comments: [PostCommentResponse]
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case posdID = "post_id"
-//        case createdAt
-//        case creator
-//        case files
-//        case likes
-//        case likes2
-//        case hashTags
-//        case comments
-//    }
-//    
-//    init(from decoder: any Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        self.posdID = try container.decode(String.self, forKey: .posdID)
-//        self.createdAt = try container.decode(String.self, forKey: .createdAt)
-//        self.creator = try container.decode(LoginResponse.self, forKey: .creator)
-//        self.files = try container.decode([String].self, forKey: .files)
-//        self.likes = try container.decode([String].self, forKey: .likes)
-//        self.likes2 = try container.decode([String].self, forKey: .likes2)
-//        self.hashTags = try container.decode([String].self, forKey: .hashTags)
-//        self.comments = try container.decode([PostCommentResponse].self, forKey: .comments)
-//    }
-//}
+struct ContentEntity: Decodable, Hashable {
+    let postID: String
+    let productID: String
+    let title: String //제목
+    let content: String //내용
+    let category: String //카테고리 (공실, 카페, 음식점, 기타)
+    let address: String //주소
+    let coordinate: String? //위, 경도
+    let price: String //보증금, 월세
+    let space: String //평수
+    let createdAt: String
+    let creator: LoginEntity
+    let files: [String]
+    let likes: [String]
+    let hashTags: [String]
+    let comments: [PostCommentResponse]
+    
+    static var defaultsEntity: ContentEntity {
+        ContentEntity(postID: "",
+                      productID: "",
+                      title: "",
+                      content: "",
+                      category: "",
+                      address: "",
+                      coordinate: "",
+                      price: "",
+                      space: "",
+                      createdAt: "",
+                      creator: LoginResponse().toEntity,
+                      files: [],
+                      likes: [],
+                      hashTags: [],
+                      comments: [])
+    }
+}

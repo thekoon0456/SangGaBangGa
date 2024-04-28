@@ -78,11 +78,11 @@ final class MainFeedBaseView: BaseView {
 
 extension MainFeedBaseView {
     
-    func configureCellData(_ data: UploadContentResponse) {
+    func configureCellData(_ data: ContentEntity) {
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files.first ?? ""))
-        categoryLabel.text = data.content1
+        categoryLabel.text = data.category
         titleLabel.text = data.title
-        priceLabel.text = data.content4
+        priceLabel.text = data.price
         commentCountLabel.text = String(data.comments.count)
     }
     

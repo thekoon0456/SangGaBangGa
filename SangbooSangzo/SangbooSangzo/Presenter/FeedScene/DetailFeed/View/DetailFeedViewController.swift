@@ -50,10 +50,10 @@ final class DetailFeedViewController: RxBaseViewController {
         output.data.drive(with: self) { owner, data in
             owner.baseView.titleLabel.text = data.title
             owner.baseView.contentLabel.text = data.content
-            owner.baseView.categoryLabel.text = data.content1
-            owner.baseView.addressLabel.text = data.content2
-            owner.baseView.priceLabel.text = data.content4
-            owner.baseView.spaceLabel.text = data.content5
+            owner.baseView.categoryLabel.text = data.category
+            owner.baseView.addressLabel.text = data.address
+            owner.baseView.priceLabel.text = data.price
+            owner.baseView.spaceLabel.text = data.space
             //            owner.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
             //            owner.commentCountLabel.text = String(data.comments.count)
             
@@ -66,7 +66,7 @@ final class DetailFeedViewController: RxBaseViewController {
             owner.baseView.heartCountLabel.text = String(data.likes.count)
             owner.baseView.heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
             
-            owner.setAnnotaion(coordinate: data.content3, title: "상가 위치")
+            owner.setAnnotaion(coordinate: data.coordinate, title: "상가 위치")
         }
         .disposed(by: disposeBag)
         

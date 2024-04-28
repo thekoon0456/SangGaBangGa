@@ -13,7 +13,7 @@ import RxSwift
 final class MainFeedCellViewModel: ViewModel {
     
     struct Input {
-        let inputData: Observable<UploadContentResponse>
+        let inputData: Observable<ContentEntity>
         let heartButtonTapped: Observable<Bool>
     }
     
@@ -26,7 +26,7 @@ final class MainFeedCellViewModel: ViewModel {
     var disposeBag = DisposeBag()
     
     func transform(_ input: Input) -> Output {
-        var inputData = UploadContentResponse()
+        var inputData = ContentEntity.defaultsEntity
         let buttonStatus = BehaviorRelay(value: false)
         let heartCount = BehaviorRelay(value: 0)
         

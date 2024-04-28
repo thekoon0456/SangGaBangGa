@@ -117,6 +117,8 @@
 		7CE9168A2BDBA21F007B1431 /* MainFeedBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE916892BDBA21F007B1431 /* MainFeedBaseView.swift */; };
 		7CE9168C2BDBA31F007B1431 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE9168B2BDBA31F007B1431 /* MapDetailViewController.swift */; };
 		7CE9168E2BDBA563007B1431 /* MapDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE9168D2BDBA563007B1431 /* MapDetailViewModel.swift */; };
+		7CEFD0DF2BDE20D6002583E9 /* DefaultsAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD0DE2BDE20D6002583E9 /* DefaultsAnnotation.swift */; };
+		7CEFD0E12BDE2D4F002583E9 /* PostsAPIRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD0E02BDE2D4F002583E9 /* PostsAPIRepository.swift */; };
 		7CFC8B042BD108AF00F713E1 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFC8B032BD108AF00F713E1 /* MenuButton.swift */; };
 /* End PBXBuildFile section */
 
@@ -226,6 +228,8 @@
 		7CE916892BDBA21F007B1431 /* MainFeedBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedBaseView.swift; sourceTree = "<group>"; };
 		7CE9168B2BDBA31F007B1431 /* MapDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		7CE9168D2BDBA563007B1431 /* MapDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewModel.swift; sourceTree = "<group>"; };
+		7CEFD0DE2BDE20D6002583E9 /* DefaultsAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsAnnotation.swift; sourceTree = "<group>"; };
+		7CEFD0E02BDE2D4F002583E9 /* PostsAPIRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsAPIRepository.swift; sourceTree = "<group>"; };
 		7CFC8B032BD108AF00F713E1 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -461,6 +465,7 @@
 		7C18ECCD2BC697F800F061DE /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				7CEFD0E02BDE2D4F002583E9 /* PostsAPIRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -605,6 +610,7 @@
 				7C1C50162BCCFF2C0066CBCA /* MapViewController.swift */,
 				7CE9168B2BDBA31F007B1431 /* MapDetailViewController.swift */,
 				7C1C502A2BCD0A980066CBCA /* SSAnnotation.swift */,
+				7CEFD0DE2BDE20D6002583E9 /* DefaultsAnnotation.swift */,
 				7C1C502C2BCD0B280066CBCA /* SSAnnotationView.swift */,
 			);
 			path = View;
@@ -899,6 +905,7 @@
 				7C1C50312BCD26E30066CBCA /* SignInViewController.swift in Sources */,
 				7C21F5FB2BD28C5C00D52383 /* DetailFeedViewModel.swift in Sources */,
 				7C0ADCB12BC92067002DAEA7 /* UserJoinResponse.swift in Sources */,
+				7CEFD0DF2BDE20D6002583E9 /* DefaultsAnnotation.swift in Sources */,
 				7C18ECC42BC67EC200F061DE /* UIView+.swift in Sources */,
 				7C1C502D2BCD0B280066CBCA /* SSAnnotationView.swift in Sources */,
 				7C0ADCB92BC920B4002DAEA7 /* LoginResponse.swift in Sources */,
@@ -922,6 +929,7 @@
 				7C21F5FD2BD28F1700D52383 /* KF+.swift in Sources */,
 				7C0ADCC32BC92183002DAEA7 /* PostsRouter.swift in Sources */,
 				7C0ADCCC2BC92B76002DAEA7 /* UploadImageResponse.swift in Sources */,
+				7CEFD0E12BDE2D4F002583E9 /* PostsAPIRepository.swift in Sources */,
 				7C21F5F22BD23E9A00D52383 /* Reactive+.swift in Sources */,
 				7C0ADCAF2BC9203D002DAEA7 /* UserJoinRequest.swift in Sources */,
 				7C1C500B2BCCFE310066CBCA /* FeedCoordinator.swift in Sources */,
@@ -1048,7 +1056,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1105,7 +1113,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1129,6 +1137,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1160,6 +1169,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
