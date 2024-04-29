@@ -13,7 +13,6 @@ import RxSwift
 final class FeedViewModel: ViewModel {
     
     struct Input {
-        let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: Observable<Void>
         let cellSelected: ControlEvent<ContentEntity>
         let addButtonTapped: ControlEvent<Void>

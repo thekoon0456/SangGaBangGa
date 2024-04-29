@@ -52,7 +52,7 @@ final class FeedViewController: RxBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "피드"
+        navigationItem.title = "새로 올라온 매물"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -65,8 +65,7 @@ final class FeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
-        let input = FeedViewModel.Input(viewDidLoad: self.rx.viewDidLoad,
-                                        viewWillAppear: self.rx.viewWillAppear.map { _ in },
+        let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.modelSelected(ContentEntity.self),
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)

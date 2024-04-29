@@ -38,7 +38,6 @@ final class SettingCell: BaseTableViewCell {
             make.leading.equalToSuperview().offset(20)
             make.bottom.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
-            make.height.equalTo(20)
         }
     }
     
