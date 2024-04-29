@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class DetailUserInfoView: BaseView {
+final class UserProfileView: BaseView {
     
     // MARK: - Properties
     
@@ -29,7 +29,7 @@ final class DetailUserInfoView: BaseView {
     
     private let userNicknameLabel = UILabel().then {
         $0.text = "닉네임"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
         $0.tintColor = .tintColor
     }
     

@@ -19,7 +19,7 @@ final class DetailFeedView: BaseView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    let profileView = DetailUserInfoView()
+    let profileView = UserProfileView()
     
     lazy var imageScrollView = ImageScrollView()
     
@@ -32,7 +32,7 @@ final class DetailFeedView: BaseView {
     }
     
     let heartCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     
@@ -44,55 +44,55 @@ final class DetailFeedView: BaseView {
     }
     
     let commentCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
         $0.numberOfLines = 2
     }
     
     let categoryLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textColor = .systemGray
     }
     
     private let descriptionTitle = UILabel().then {
         $0.text = "매물 정보"
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
     }
     
     private let addressTitleLabel = UILabel().then {
         $0.text = "주소: "
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     let addressLabel = UILabel().then {
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     private let priceTitleLabel = UILabel().then {
         $0.text = "보증금 / 월세: "
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     private let spaceTitleLabel = UILabel().then {
         $0.text = "규모: "
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     let spaceLabel = UILabel().then {
-        $0.font = SSFont.titleCard
+        $0.font = SSFont.semiBold16
     }
     
     private let contentTitle = UILabel().then {
         $0.text = "상세 설명"
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
     }
     
     let contentLabel = UILabel().then {
@@ -102,7 +102,7 @@ final class DetailFeedView: BaseView {
     
     private let mapTitle = UILabel().then {
         $0.text = "지도"
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
     }
     
     let mapView = MKMapView().then {
@@ -112,7 +112,7 @@ final class DetailFeedView: BaseView {
     
     private let commentTitle = UILabel().then {
         $0.text = "댓글"
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
     }
     
     let commentsTableView = UITableView().then {

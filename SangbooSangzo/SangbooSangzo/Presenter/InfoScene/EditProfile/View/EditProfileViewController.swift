@@ -20,7 +20,7 @@ final class EditProfileViewController: RxBaseViewController {
     private let titleLabel = UILabel().then {
         $0.text = "프로필 수정"
         $0.textAlignment = .center
-        $0.font = SSFont.titleLarge
+        $0.font = SSFont.bold28
         $0.textColor = .tintColor
     }
     

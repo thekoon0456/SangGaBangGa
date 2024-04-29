@@ -20,12 +20,12 @@ final class CommentCell: BaseTableViewCell {
     }
     
     private let userNicknameLabel = UILabel().then {
-        $0.font = SSFont.filterRegular
+        $0.font = SSFont.regular12
         $0.textColor = .systemGray
     }
     
     private let commentLabel = UILabel().then {
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
         $0.numberOfLines = 0
     }
     

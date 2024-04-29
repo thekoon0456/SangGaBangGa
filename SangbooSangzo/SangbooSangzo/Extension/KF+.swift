@@ -32,6 +32,5 @@ extension KingfisherWrapper<UIImageView> {
             .requestModifier(modifier)
         ]
         self.setImage(with: url, options: options)
-//        return (with: url, options: options)
     }
 }

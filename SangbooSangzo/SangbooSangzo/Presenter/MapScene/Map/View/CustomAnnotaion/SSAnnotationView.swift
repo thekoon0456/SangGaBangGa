@@ -32,13 +32,13 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.filterMedium
+        $0.font = SSFont.medium12
         $0.textColor = .label
         $0.textAlignment = .center
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.filterMedium
+        $0.font = SSFont.medium12
         $0.textColor = .label
         $0.textAlignment = .center
     }

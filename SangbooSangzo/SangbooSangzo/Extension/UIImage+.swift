@@ -19,8 +19,8 @@ extension UIImage {
     }
     
     func resizedAnnotation() -> UIImage? {
-        UIGraphicsBeginImageContext(CGSize(width: 70, height: 100))
-        self.draw(in: CGRect(x: 0, y: 0, width: 70, height: 100))
+        UIGraphicsBeginImageContext(CGSize(width: 64, height: 84))
+        self.draw(in: CGRect(x: 0, y: 0, width: 64, height: 84))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage

@@ -31,7 +31,7 @@ final class FeedCell: RxBaseCollectionViewCell {
     }
     
     private let heartCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     
@@ -44,7 +44,7 @@ final class FeedCell: RxBaseCollectionViewCell {
     }
     
     private let commentCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     

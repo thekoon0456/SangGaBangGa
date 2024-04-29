@@ -22,7 +22,7 @@ final class MapDetailViewController: RxBaseViewController {
     }
     
     private let titleLabel = UILabel().then {
-        $0.font = SSFont.titleMedium
+        $0.font = SSFont.semiBold24
     }
     
     init(viewModel: MapDetailViewModel) {

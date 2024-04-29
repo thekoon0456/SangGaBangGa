@@ -27,7 +27,7 @@ final class MainFeedBaseView: BaseView {
     }
     
     let heartCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     
@@ -40,7 +40,7 @@ final class MainFeedBaseView: BaseView {
     }
     
     let commentCountLabel = UILabel().then {
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
         $0.textAlignment = .left
     }
     

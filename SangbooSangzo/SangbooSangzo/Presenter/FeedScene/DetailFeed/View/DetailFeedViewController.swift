@@ -178,7 +178,6 @@ extension DetailFeedViewController: UITableViewDelegate {
 //        }
 //        
 //        return comment.creator.userID == userID ? .delete : .none
-        print("됨?")
         return .none
     }
 }

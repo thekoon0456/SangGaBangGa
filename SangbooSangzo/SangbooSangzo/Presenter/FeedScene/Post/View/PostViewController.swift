@@ -40,7 +40,7 @@ final class PostViewController: RxBaseViewController {
     
     private let imageTitleLabel = UILabel().then {
         $0.text = "사진 (최대 5장)"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let imageButton = UIButton().then {
@@ -52,7 +52,7 @@ final class PostViewController: RxBaseViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "카테고리 / 제목"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let titleTextField = UITextField().then {
@@ -67,7 +67,7 @@ final class PostViewController: RxBaseViewController {
     
     private let contentTitleLabel = UILabel().then {
         $0.text = "상세 내용"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
     }
     
     private let contentTextView = UITextView().then {
@@ -85,7 +85,7 @@ final class PostViewController: RxBaseViewController {
     
     private let addressTitleLabel = UILabel().then {
         $0.text = "주소"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let addressTextField = UITextField().then {
@@ -100,7 +100,7 @@ final class PostViewController: RxBaseViewController {
     
     private let priceTitleLabel = UILabel().then {
         $0.text = "보증금 / 월세"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let depositTextField = UITextField().then {
@@ -116,7 +116,7 @@ final class PostViewController: RxBaseViewController {
     
     private let depositPriceLabel = UILabel().then {
         $0.text = "만원"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
     }
     
     private let rentTextField = UITextField().then {
@@ -132,12 +132,12 @@ final class PostViewController: RxBaseViewController {
     
     private let rentPriceLabel = UILabel().then {
         $0.text = "만원"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
     }
     
     private let spaceTitleLabel  = UILabel().then {
         $0.text = "규모"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let spaceTextField = UITextField().then {
@@ -153,7 +153,7 @@ final class PostViewController: RxBaseViewController {
     
     private let spaceLabel = UILabel().then {
         $0.text = "평"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
     }
     
     private let space33Field = UITextField().then {
@@ -169,12 +169,12 @@ final class PostViewController: RxBaseViewController {
     
     private let m2Label = UILabel().then {
         $0.text = "㎡"
-        $0.font = SSFont.titleSmall
+        $0.font = SSFont.semiBold14
     }
 
     private let detailTitleLabel  = UILabel().then {
         $0.text = "상세 내용"
-        $0.font = SSFont.titleRegular
+        $0.font = SSFont.semiBold18
     }
     
     private let postButton = UIButton().then {

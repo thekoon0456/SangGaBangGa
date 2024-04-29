@@ -16,7 +16,7 @@ final class InfoViewController: RxBaseViewController {
     
     // MARK: - UI
     
-    private let detailUserInfoView = DetailUserInfoView()
+    private let detailUserInfoView = UserProfileView()
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
         $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
@@ -38,12 +38,12 @@ final class InfoViewController: RxBaseViewController {
         $0.selectedSegmentIndex = 0
         $0.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.systemGray,
-            NSAttributedString.Key.font: SSFont.titleRegular as Any
+            NSAttributedString.Key.font: SSFont.semiBold18 as Any
         ], for: .normal)
         
         $0.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.label,
-            NSAttributedString.Key.font: SSFont.titleRegular as Any], for: .selected)
+            NSAttributedString.Key.font: SSFont.semiBold18 as Any], for: .selected)
     }
     
     private lazy var underLineView = UIView().then {
