@@ -8,6 +8,7 @@
 import MapKit
 import UIKit
 
+import Kingfisher
 import SnapKit
 
 final class DetailFeedView: BaseView {
@@ -24,8 +25,10 @@ final class DetailFeedView: BaseView {
     lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
+                    for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
+                    for: .selected)
         $0.tintColor = .tintColor
         $0.contentVerticalAlignment = .center
         $0.contentHorizontalAlignment = .center
@@ -37,7 +40,8 @@ final class DetailFeedView: BaseView {
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))), for: .normal)
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
+                    for: .normal)
         $0.tintColor = .tintColor
         $0.contentVerticalAlignment = .center
         $0.contentHorizontalAlignment = .center
@@ -110,6 +114,31 @@ final class DetailFeedView: BaseView {
         $0.layer.cornerRadius = 16
     }
     
+    private let inquiryTitle = UILabel().then {
+        $0.text = "문의하기"
+        $0.font = SSFont.semiBold24
+    }
+    
+    lazy var inquiryStackView = UIStackView(arrangedSubviews: [phoneButton, messageButton]).then {
+        $0.axis = .horizontal
+        $0.spacing = 80
+        $0.distribution = .fillEqually
+    }
+    
+    let phoneButton = UIButton().then {
+        $0.setTitle("전화하기", for: .normal)
+        $0.setTitleColor(.tintColor, for: .normal)
+        $0.setImage(UIImage(systemName: "phone.fill"), for: .normal)
+        $0.titleEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
+    }
+    
+    let messageButton = UIButton().then {
+        $0.setTitle("문자하기", for: .normal)
+        $0.setTitleColor(.tintColor, for: .normal)
+        $0.setImage(UIImage(systemName: "message.fill"), for: .normal)
+        $0.titleEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
+    }
+    
     private let commentTitle = UILabel().then {
         $0.text = "댓글"
         $0.font = SSFont.semiBold24
@@ -144,7 +173,8 @@ final class DetailFeedView: BaseView {
                                 titleLabel, categoryLabel, descriptionTitle, addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
-                                commentTitle, commentsTableView, commentTextField, sendButton)
+                                commentTitle, commentsTableView, commentTextField, sendButton,
+                                inquiryTitle, inquiryStackView)
     }
     
     override func configureLayout() {
@@ -154,6 +184,25 @@ final class DetailFeedView: BaseView {
     
     override func configureView() {
         super.configureView()
+    }
+    
+    func configureViewData(_ data: ContentEntity) {
+       titleLabel.text = data.title
+       contentLabel.text = data.content
+       categoryLabel.text = data.category
+       addressLabel.text = data.address
+       priceLabel.text = data.price
+       spaceLabel.text = data.space
+       profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
+        
+        imageScrollView.imageViews = data.files.map {
+            let imageView = UIImageView()
+            imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
+            return imageView
+        }
+        
+        heartCountLabel.text = String(data.likes.count)
+        heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
     }
 }
 
@@ -284,8 +333,21 @@ extension DetailFeedView {
             make.trailing.equalToSuperview().offset(-16)
         }
         
-        commentTitle.snp.makeConstraints { make in
+        inquiryTitle.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+        }
+        
+        inquiryStackView.snp.makeConstraints { make in
+            make.top.equalTo(inquiryTitle.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(40)
+            make.width.equalTo(300)
+        }
+        
+        commentTitle.snp.makeConstraints { make in
+            make.top.equalTo(inquiryStackView.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }

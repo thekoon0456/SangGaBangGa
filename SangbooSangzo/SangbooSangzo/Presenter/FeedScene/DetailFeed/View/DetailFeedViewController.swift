@@ -6,6 +6,7 @@
 //
 
 import MapKit
+import MessageUI
 import UIKit
 
 import RxCocoa
@@ -48,23 +49,7 @@ final class DetailFeedViewController: RxBaseViewController {
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
-            owner.baseView.titleLabel.text = data.title
-            owner.baseView.contentLabel.text = data.content
-            owner.baseView.categoryLabel.text = data.category
-            owner.baseView.addressLabel.text = data.address
-            owner.baseView.priceLabel.text = data.price
-            owner.baseView.spaceLabel.text = data.space
-            owner.baseView.profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
-            
-            owner.baseView.imageScrollView.imageViews = data.files.map {
-                let imageView = UIImageView()
-                imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + $0)
-                return imageView
-            }
-            
-            owner.baseView.heartCountLabel.text = String(data.likes.count)
-            owner.baseView.heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
-            
+            owner.baseView.configureViewData(data)
             owner.setAnnotaion(coordinate: data.coordinate, title: data.address)
         }
         .disposed(by: disposeBag)
@@ -181,3 +166,7 @@ extension DetailFeedViewController: UITableViewDelegate {
         return .none
     }
 }
+
+//extension DetailFeedViewController: MFMessageComposeViewControllerDelegate {
+//    
+//}
