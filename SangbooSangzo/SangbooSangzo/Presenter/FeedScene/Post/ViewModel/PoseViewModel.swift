@@ -101,18 +101,20 @@ final class PostViewModel: ViewModel {
         
         input
             .address
-            .do { [weak self] value in
-                guard let self else { return }
-                //입력한 주소를 좌표로 변환해 content3에 저장
-                convertAddressToCoordinates(address: value)
-                    .subscribe { location in
-                        request.content3 = location
-                    }
-                    .disposed(by: disposeBag)
-            }
             .subscribe { value in
                 request.content2 = value
-                
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .address
+            .withUnretained(self)
+            .flatMap { owner, value in
+                owner.convertAddressToCoordinates(address: value)
+                    .catchAndReturn("")
+            }
+            .subscribe { value in
+                request.content3 = value
             }
             .disposed(by: disposeBag)
         
@@ -139,36 +141,32 @@ final class PostViewModel: ViewModel {
                 toSpace(value)
             }
             .disposed(by: disposeBag)
-        
+
         input
             .post
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                input
-                    .selectedPhotos
-                    .flatMap { data in
-                        owner
-                            .postAPIManager
-                            .uploadImages(query: .init(datas: data))
-                    }
+            .flatMap {
+                input .selectedPhotos
             }
-            .subscribe(with: self) { owner, response in
+            .withUnretained(self)
+            .flatMap { owner, data in
+                owner
+                    .postAPIManager
+                    .uploadImages(query: .init(datas: data))
+            }
+            .withUnretained(self)
+            .flatMap { owner, response in
                 owner
                     .postAPIManager
                     .uploadContents(images: response.files, query: request)
-                    .subscribe { response in
-                        switch response {
-                        case .success(let response):
-                            print(response)
-                            owner.coordinator?.popViewController()
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
-                    }
-                    .disposed(by: owner.disposeBag)
+            }
+            .catch { error in
+                print(error.localizedDescription)
+                return Observable.just(UploadContentResponse.defaultResponse())
+            }
+            .subscribe(with: self) { owner, value in
+                owner.coordinator?.popViewController()
             }
             .disposed(by: disposeBag)
-        
         
         func toSpace(_ input: String) {
             if input == "0" || input == "" {
@@ -200,6 +198,7 @@ final class PostViewModel: ViewModel {
 extension PostViewModel {
     //위도 / 경도
     func convertAddressToCoordinates(address: String) -> Observable<String> {
+        print(#function)
         return Observable.create { observer in
             let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(address) { (placemarks, error) in

@@ -15,6 +15,7 @@ import SnapKit
 final class PostViewController: RxBaseViewController {
     
     private let viewModel: PostViewModel
+    // MARK: - Data 분리
     var data: [Data] = []
     private lazy var selectedImagesRelay = BehaviorRelay<[Data]>(value: [])
     

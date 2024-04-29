@@ -7,6 +7,8 @@
 
 import Foundation
 
+//TODO: - Repository 프로토콜 개선
+
 protocol Repository {
     associatedtype T
     
