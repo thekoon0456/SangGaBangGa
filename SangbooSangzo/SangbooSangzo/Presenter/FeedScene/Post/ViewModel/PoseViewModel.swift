@@ -159,12 +159,15 @@ final class PostViewModel: ViewModel {
                     .postAPIManager
                     .uploadContents(images: response.files, query: request)
             }
-            .catch { error in
-                print(error.localizedDescription)
-                return Observable.just(UploadContentResponse.defaultResponse())
+            .catch { [weak self] error in
+                guard let self else { return Observable.just(UploadContentResponse()) }
+                coordinator?.showToast(.uploadFail)
+                return Observable.just(UploadContentResponse())
             }
             .subscribe(with: self) { owner, value in
-                owner.coordinator?.popViewController()
+                owner.coordinator?.showToast(.uploadSuccess) {
+                    owner.coordinator?.popViewController()
+                }
             }
             .disposed(by: disposeBag)
         

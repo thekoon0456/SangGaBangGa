@@ -16,6 +16,9 @@ enum Toast {
     case emailValidationFail(email: String)
     case emailFormValidationFail
     
+    case uploadSuccess
+    case uploadFail
+    
     var message: String {
         switch self {
         case .joinSueecss:
@@ -30,6 +33,10 @@ enum Toast {
             "\(email)은 이미 가입된 이메일입니다"
         case .emailFormValidationFail:
             "올바른 이메일 형식을 입력해주세요"
+        case .uploadSuccess:
+            "게시글 업로드에 성공했습니다"
+        case .uploadFail:
+            "게시글 업로드에 실패했습니다. 다시 시도해주세요"
         }
     }
 }
