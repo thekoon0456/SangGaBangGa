@@ -21,7 +21,7 @@ final class DetailFeedViewController: RxBaseViewController {
     private let baseView = DetailFeedView()
     
     // MARK: - Lifecycles
-
+    
     init(viewModel: DetailFeedViewModel) {
         self.viewModel = viewModel
         super.init()
@@ -66,7 +66,8 @@ final class DetailFeedViewController: RxBaseViewController {
         
         output
             .comments
-            .drive(baseView.commentsTableView.rx.items(cellIdentifier: CommentCell.identifier, cellType: CommentCell.self)) { row, element, cell in
+            .drive(baseView.commentsTableView.rx.items(cellIdentifier: CommentCell.identifier,
+                                                       cellType: CommentCell.self)) { row, element, cell in
                 cell.configureCell(data: element)
             }
             .disposed(by: disposeBag)
@@ -75,25 +76,25 @@ final class DetailFeedViewController: RxBaseViewController {
             .comments
             .drive(with: self) { owner, data in
                 owner.baseView.heightConstraint?.update(offset: owner.baseView.commentsTableView.contentSize.height)
-                //                owner.commentsTableView.layoutIfNeeded()
+//                owner.commentsTableView.layoutIfNeeded()
                 owner.baseView.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)
         
         Observable.zip(baseView.commentsTableView.rx.itemDeleted.asObservable(),
                        output.comments.asObservable())
-            .subscribe(with: self) { owner, data in
-                let comment = data.1[data.0.row].creator.userID
-                guard comment == UserDefaultsManager.shared.userData.userID ?? "" else { return }
-                   
-                   // 사용자 ID 체크
-                if comment == UserDefaultsManager.shared.userData.userID ?? "" {
-                    print("본인")
-//                       self.viewWillAppear.onNext()
-                   } else {
-                       // 삭제 불가 토스트 메시지 또는 알림
-                       print("본인아님")
-                   }
+        .subscribe(with: self) { owner, data in
+            let comment = data.1[data.0.row].creator.userID
+            guard comment == UserDefaultsManager.shared.userData.userID ?? "" else { return }
+            
+            // 사용자 ID 체크
+            if comment == UserDefaultsManager.shared.userData.userID ?? "" {
+                print("본인")
+                //                       self.viewWillAppear.onNext()
+            } else {
+                // 삭제 불가 토스트 메시지 또는 알림
+                print("본인아님")
+            }
         }
         .disposed(by: disposeBag)
         
@@ -101,24 +102,39 @@ final class DetailFeedViewController: RxBaseViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-//        baseView.commentsTableView.rx.itemDeleted { indexPath in
-//                return (indexPath, data.0, data.1)
-//            }
-//            .subscribe(onNext: { [weak self] indexPath, comments, currentUserId in
-//                guard let self = self else { return }
-//                let comment = comments[indexPath.row]
-//                
-//                // 사용자 ID 체크
-//                if comment.userId == currentUserId {
-//                    var newComments = comments
-//                    newComments.remove(at: indexPath.row)
-//                    self.comments.onNext(newComments)
-//                } else {
-//                    // 삭제 불가 토스트 메시지 또는 알림
-//                    print("삭제할 수 없습니다.")
-//                }
-//            })
-//            .disposed(by: disposeBag)
+        //        baseView.commentsTableView.rx.itemDeleted { indexPath in
+        //                return (indexPath, data.0, data.1)
+        //            }
+        //            .subscribe(onNext: { [weak self] indexPath, comments, currentUserId in
+        //                guard let self = self else { return }
+        //                let comment = comments[indexPath.row]
+        //
+        //                // 사용자 ID 체크
+        //                if comment.userId == currentUserId {
+        //                    var newComments = comments
+        //                    newComments.remove(at: indexPath.row)
+        //                    self.comments.onNext(newComments)
+        //                } else {
+        //                    // 삭제 불가 토스트 메시지 또는 알림
+        //                    print("삭제할 수 없습니다.")
+        //                }
+        //            })
+        //            .disposed(by: disposeBag)
+        
+        baseView.messageButton.rx.tap
+            .flatMap { output.data }
+            .asDriver(onErrorJustReturn: ContentEntity.defaultsEntity)
+            .drive(with: self) { owner, data in
+                print(data)
+                let messageComposer = MFMessageComposeViewController()
+                messageComposer.messageComposeDelegate = self
+                if MFMessageComposeViewController.canSendText(){
+                    messageComposer.recipients = [data.creator.phoneNum ?? "번호없음"]
+//                    messageComposer.body = "메세지를 입력해주세요"
+                    owner.present(messageComposer, animated: true, completion: nil)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Configure
@@ -157,16 +173,33 @@ final class DetailFeedViewController: RxBaseViewController {
 
 extension DetailFeedViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//        guard let comment = try? output.comments.value()[indexPath.row],
-//              let userID = UserDefaultsManager.shared.userData.userID else {
-//            return .none
-//        }
-//        
-//        return comment.creator.userID == userID ? .delete : .none
+        //        guard let comment = try? output.comments.value()[indexPath.row],
+        //              let userID = UserDefaultsManager.shared.userData.userID else {
+        //            return .none
+        //        }
+        //
+        //        return comment.creator.userID == userID ? .delete : .none
         return .none
     }
 }
 
-//extension DetailFeedViewController: MFMessageComposeViewControllerDelegate {
-//    
-//}
+extension DetailFeedViewController: MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        switch result {
+        case MessageComposeResult.sent:
+            print("전송 완료")
+            break
+        case MessageComposeResult.cancelled:
+            print("취소")
+            break
+        case MessageComposeResult.failed:
+            print("전송 실패")
+            break
+        default:
+            print("error")
+            break
+        }
+        controller.dismiss(animated: true, completion: nil)
+    }
+}

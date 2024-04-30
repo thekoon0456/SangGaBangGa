@@ -87,21 +87,11 @@ final class DetailFeedViewModel: ViewModel {
             .flatMap { owner, _ in
                 owner.postAPIRepository.readPost(queryID: owner.data.postID)
             }
-            .subscribe { value in
+            .subscribe(with: self) { owner, value in
                 data.accept(value)
-                comments.accept(sortComments(value.comments))
+                comments.accept(owner.sortedComments(value.comments))
             }
             .disposed(by: disposeBag)
-        
-        func sortComments(_ input: [PostCommentResponse]) -> [PostCommentResponse] {
-            let formatter = ISO8601DateFormatter()
-
-            return input.sorted { item1, item2 in
-                let date1 = formatter.date(from: item1.createdAt ?? "") ?? Date()
-                let date2 = formatter.date(from: item2.createdAt ?? "") ?? Date()
-                return date1 < date2
-            }
-        }
         
         return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
@@ -110,6 +100,16 @@ final class DetailFeedViewModel: ViewModel {
         )
     }
     
+    // MARK: - 댓글 sorted
+    
+    func sortedComments(_ input: [PostCommentResponse]) -> [PostCommentResponse] {
+        let formatter = DateFormatterManager.shared
 
+        return input.sorted { item1, item2 in
+            let date1 = formatter.formattedISO8601ToDate(item1.createdAt ?? "") ?? Date()
+            let date2 = formatter.formattedISO8601ToDate(item2.createdAt ?? "") ?? Date()
+            return date1 < date2
+        }
+    }
 }
 

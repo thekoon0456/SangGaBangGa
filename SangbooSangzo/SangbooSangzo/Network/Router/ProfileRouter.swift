@@ -27,7 +27,7 @@ extension ProfileRouter: TargetType {
             "/v1/users/me/profile"
         case .updateMyProfile:
             "/v1/users/me/profile"
-        case .getOtherProfile(id: let id):
+        case .getOtherProfile(let id):
             "/v1/users/\(id)/profile"
         }
     }

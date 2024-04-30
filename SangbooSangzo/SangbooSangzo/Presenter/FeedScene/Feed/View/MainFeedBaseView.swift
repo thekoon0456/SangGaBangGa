@@ -45,23 +45,29 @@ final class MainFeedBaseView: BaseView {
     }
     
     let categoryLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 13)
+        $0.font =  SSFont.medium12
+        $0.textColor = .systemGray
     }
     
     let titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
+        $0.font = SSFont.semiBold16
         $0.numberOfLines = 2
     }
     
     let priceLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16, weight: .bold)
+        $0.font = SSFont.semiBold16
+    }
+    
+    let dateLabel = UILabel().then {
+        $0.font = SSFont.light11
+        $0.textColor = .systemGray
     }
     
     override func configureHierarchy() {
         super.configureHierarchy()
         addSubviews(imageView, heartButton, heartCountLabel,
                                 commentButton, commentCountLabel,
-                                categoryLabel, titleLabel, priceLabel)
+                                categoryLabel, titleLabel, priceLabel, dateLabel)
     }
     
     override func configureLayout() {
@@ -84,6 +90,8 @@ extension MainFeedBaseView {
         titleLabel.text = data.title
         priceLabel.text = data.price
         commentCountLabel.text = String(data.comments.count)
+        let formatter = DateFormatterManager.shared
+        dateLabel.text =  formatter.iso8601DateToString(data.createdAt, format: .date)
     }
     
     private func setLayout() {
@@ -133,8 +141,15 @@ extension MainFeedBaseView {
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
             make.bottom.equalToSuperview().offset(-4).priority(.low)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(priceLabel.snp.top)
+            make.leading.greaterThanOrEqualTo(priceLabel.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-12)
+            make.bottom.equalTo(priceLabel.snp.bottom)
+            
         }
     }
 }

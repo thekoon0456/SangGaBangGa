@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상가 구할땐?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdT-yN-zCW">
-                                <rect key="frame" x="136" y="376" width="225" height="24"/>
+                                <rect key="frame" x="136" y="388" width="225" height="24"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -43,9 +43,9 @@
                         <constraints>
                             <constraint firstItem="iKj-Fz-7m7" firstAttribute="bottom" secondItem="Cto-j2-HEP" secondAttribute="bottom" id="03I-9y-GmO"/>
                             <constraint firstItem="WdT-yN-zCW" firstAttribute="leading" secondItem="Cto-j2-HEP" secondAttribute="trailing" constant="4" id="1SR-jH-NGh"/>
-                            <constraint firstItem="WdT-yN-zCW" firstAttribute="top" secondItem="Cto-j2-HEP" secondAttribute="top" id="38J-kR-mRM"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WdT-yN-zCW" secondAttribute="trailing" constant="32" id="MEE-20-ix1"/>
                             <constraint firstItem="iKj-Fz-7m7" firstAttribute="leading" secondItem="Cto-j2-HEP" secondAttribute="trailing" constant="4" id="MUA-1T-H6M"/>
+                            <constraint firstItem="iKj-Fz-7m7" firstAttribute="top" secondItem="WdT-yN-zCW" secondAttribute="bottom" constant="4" id="gUL-Vt-WSL"/>
                             <constraint firstItem="Cto-j2-HEP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="nGY-j4-8z4"/>
                             <constraint firstItem="Cto-j2-HEP" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="rPA-qh-EDc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iKj-Fz-7m7" secondAttribute="trailing" constant="32" id="zkA-x1-kqm"/>

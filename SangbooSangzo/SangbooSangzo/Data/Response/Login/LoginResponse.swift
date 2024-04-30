@@ -12,6 +12,7 @@ struct LoginResponse: Decodable, Hashable {
     let email: String?
     let nick: String?
     let profileImage: String?
+    let phoneNum: String?
     let accessToken: String?
     let refreshToken: String?
     
@@ -20,6 +21,7 @@ struct LoginResponse: Decodable, Hashable {
         case email
         case nick
         case profileImage
+        case phoneNum
         case accessToken
         case refreshToken
     }
@@ -30,6 +32,7 @@ struct LoginResponse: Decodable, Hashable {
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.nick = try container.decodeIfPresent(String.self, forKey: .nick)
         self.profileImage = try container.decodeIfPresent(String.self, forKey: .profileImage)
+        self.phoneNum = try container.decodeIfPresent(String.self, forKey: .phoneNum)
         self.accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
         self.refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
     }
@@ -39,6 +42,7 @@ struct LoginResponse: Decodable, Hashable {
         self.email = nil
         self.nick = nil
         self.profileImage = nil
+        self.phoneNum = nil
         self.accessToken = nil
         self.refreshToken = nil
     }
@@ -48,6 +52,7 @@ struct LoginResponse: Decodable, Hashable {
                     email: email ?? "",
                     nick: nick ?? "",
                     profileImage: profileImage,
+                    phoneNum: phoneNum ?? "",
                     accessToken: accessToken ?? "",
                     refreshToken: refreshToken ?? "")
     }
@@ -58,6 +63,7 @@ struct LoginEntity: Decodable, Hashable {
     let email: String
     let nick: String
     let profileImage: String?
+    let phoneNum: String?
     let accessToken: String
     let refreshToken: String
 }
