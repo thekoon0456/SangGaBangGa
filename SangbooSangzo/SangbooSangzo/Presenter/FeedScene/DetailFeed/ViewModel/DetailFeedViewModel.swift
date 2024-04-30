@@ -5,6 +5,7 @@
 //  Created by Deokhun KIM on 4/19/24.
 //
 
+import UIKit
 import Foundation
 
 import RxCocoa
@@ -15,6 +16,7 @@ final class DetailFeedViewModel: ViewModel {
     struct Input {
         let viewWillAppear: Observable<Void>
         let heartButtonTapped: Observable<Bool>
+        let phoneButtonTapped: ControlEvent<Void>
         let commentSendButtonTapped: Observable<String>
     }
     
@@ -77,6 +79,16 @@ final class DetailFeedViewModel: ViewModel {
             .disposed(by: disposeBag)
         
         input
+            .phoneButtonTapped
+            .map { data.value }
+            .asDriver(onErrorJustReturn: ContentEntity.defaultsEntity)
+            .drive(with: self) { owner, value in
+                owner.call("01083849023")
+            }
+            .disposed(by: disposeBag)
+        
+        
+        input
             .commentSendButtonTapped
             .withUnretained(self)
             .flatMap { owner, value in
@@ -104,11 +116,24 @@ final class DetailFeedViewModel: ViewModel {
     
     func sortedComments(_ input: [PostCommentResponse]) -> [PostCommentResponse] {
         let formatter = DateFormatterManager.shared
-
+        
         return input.sorted { item1, item2 in
             let date1 = formatter.formattedISO8601ToDate(item1.createdAt ?? "") ?? Date()
             let date2 = formatter.formattedISO8601ToDate(item2.createdAt ?? "") ?? Date()
             return date1 < date2
+        }
+    }
+    
+    // MARK: - 전화 걸기 연결
+    
+    func call(_ input: String) {
+        
+        let url = "tel://\(input)"
+        
+        // URLScheme 문자열을 통해 URL 인스턴스를 만들어 줍니다.
+        if let url =  URL(string: url),
+           UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
 }

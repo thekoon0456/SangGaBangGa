@@ -140,4 +140,25 @@ extension Coordinator {
     }
 }
 
+// MARK: - Alert
 
+extension Coordinator {
+    
+    func showAlert(type: UIAlertController.Style = .alert, title: String, message: String, action: @escaping () -> Void) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: type)
+        alert.view.tintColor = .tintColor
+        
+        let defaultButton = UIAlertAction(title: "확인", style: .default) { _ in
+            action()
+        }
+        
+        let cancleButton = UIAlertAction(title: "취소", style: .destructive)
+        
+        alert.addAction(cancleButton)
+        alert.addAction(defaultButton)
+        
+        navigationController?.present(alert, animated: true)
+    }
+}

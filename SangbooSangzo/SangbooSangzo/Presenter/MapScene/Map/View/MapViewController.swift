@@ -220,12 +220,12 @@ extension MapViewController {
     }
     
     func showLocationSettingAlert(title: String, message: String) {
-        showAlert(title: title,
-                  message: message) {
-            //아이폰 설정창으로 이동
-            guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
-            UIApplication.shared.open(settingURL)
-        }
+//        showAlert(title: title,
+//                  message: message) {
+//            //아이폰 설정창으로 이동
+//            guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
+//            UIApplication.shared.open(settingURL)
+//        }
     }
 }
 
@@ -256,28 +256,5 @@ extension MapViewController {
     //사용자 권한 상태가 바뀌었을때
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkDeviceLocationAuthorization()
-    }
-}
-
-// MARK: - Alert
-
-extension UIViewController {
-    
-    func showAlert(title: String, message: String, action: @escaping () -> Void) {
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .tintColor
-        
-        let defaultButton = UIAlertAction(title: "확인", style: .default) { _ in
-            action()
-        }
-        
-        let cancleButton = UIAlertAction(title: "취소", style: .destructive)
-        
-        alert.addAction(cancleButton)
-        alert.addAction(defaultButton)
-        
-        present(alert, animated: true)
     }
 }

@@ -45,6 +45,7 @@ final class DetailFeedViewController: RxBaseViewController {
         
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                               heartButtonTapped: heartButtonTapped,
+                                              phoneButtonTapped: baseView.phoneButton.rx.tap,
                                               commentSendButtonTapped: commentSendButtonTapped)
         let output = viewModel.transform(input)
         

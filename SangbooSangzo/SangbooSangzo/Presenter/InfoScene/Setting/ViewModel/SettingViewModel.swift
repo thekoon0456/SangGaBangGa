@@ -62,7 +62,6 @@ final class SettingViewModel: ViewModel {
                     owner.coordinator?.pushTo(userInfo: userProfileRelay.value)
                 default:
                     owner.coordinator?
-                        .navigationController?
                         .showAlert(title: "회원 탈퇴", message: "정말로 탈퇴하시겠습니까?") {
                             owner.userAPIManager.withdraw()
                                 .subscribe { response in

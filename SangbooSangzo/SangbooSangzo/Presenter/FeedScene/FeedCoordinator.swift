@@ -43,4 +43,10 @@ final class FeedCoordinator: Coordinator {
         navigationController?.pushViewController(vc, animated: true)
         setClearNavigationBar()
     }
+    
+    func presentActionSheet() {
+        
+    }
+    
+    
 }
