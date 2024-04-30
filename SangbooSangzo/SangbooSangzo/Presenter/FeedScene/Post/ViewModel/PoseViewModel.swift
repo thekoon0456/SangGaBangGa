@@ -188,7 +188,7 @@ final class PostViewModel: ViewModel {
         }
         
         func to33Space(_ input: String) {
-            if input == "0" || input == "" {
+            if input == "0" || input.isEmpty {
                 spaceM2.accept("")
             }
             if let spaceDouble = Double(input) {
@@ -207,7 +207,6 @@ final class PostViewModel: ViewModel {
 extension PostViewModel {
     //위도 / 경도
     func convertAddressToCoordinates(address: String) -> Observable<String> {
-        print(#function)
         return Observable.create { observer in
             let geocoder = CLGeocoder()
             geocoder.geocodeAddressString(address) { (placemarks, error) in
@@ -220,9 +219,10 @@ extension PostViewModel {
                     observer.onNext("\(location.coordinate.latitude) / \(location.coordinate.longitude)")
                     observer.onCompleted()
                 } else {
-                    observer.onError(NSError(domain: "LocationError",
-                                             code: 0,
-                                             userInfo: [NSLocalizedDescriptionKey: "No valid coordinates found"]))
+                    let error = NSError(domain: "LocationError",
+                                        code: 0,
+                                        userInfo: [NSLocalizedDescriptionKey: "No valid coordinates found"])
+                    observer.onError(error)
                 }
             }
             

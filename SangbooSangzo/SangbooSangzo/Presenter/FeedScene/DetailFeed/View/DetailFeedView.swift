@@ -66,7 +66,7 @@ final class DetailFeedView: BaseView {
         $0.text = "매물 정보"
         $0.font = SSFont.semiBold24
     }
-    
+        
     private let addressTitleLabel = UILabel().then {
         $0.text = "주소: "
         $0.font = SSFont.semiBold16
@@ -91,6 +91,15 @@ final class DetailFeedView: BaseView {
     }
     
     let spaceLabel = UILabel().then {
+        $0.font = SSFont.semiBold16
+    }
+    
+    private let dateTitleLabel = UILabel().then {
+        $0.text = "등록일: "
+        $0.font = SSFont.semiBold16
+    }
+    
+    let dateLabel = UILabel().then {
         $0.font = SSFont.semiBold16
     }
     
@@ -170,7 +179,8 @@ final class DetailFeedView: BaseView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(imageScrollView, profileView, heartButton, heartCountLabel, commentButton, commentCountLabel,
-                                titleLabel, categoryLabel, descriptionTitle, addressTitleLabel, addressLabel,
+                                titleLabel, categoryLabel, descriptionTitle, dateTitleLabel, dateLabel,
+                                addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
                                 commentTitle, commentsTableView, commentTextField, sendButton,
@@ -203,6 +213,9 @@ final class DetailFeedView: BaseView {
         
         heartCountLabel.text = String(data.likes.count)
         heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
+        
+        let formatter = DateFormatterManager.shared
+        dateLabel.text = formatter.iso8601DateToString(data.createdAt, format: .date)
     }
 }
 
@@ -274,7 +287,7 @@ extension DetailFeedView {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
-        
+
         addressTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionTitle.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
@@ -308,8 +321,19 @@ extension DetailFeedView {
             make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
+        dateTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(spaceLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(16)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(dateTitleLabel.snp.top)
+            make.leading.equalTo(dateTitleLabel.snp.trailing).offset(4)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
+        }
+        
         mapTitle.snp.makeConstraints { make in
-            make.top.equalTo(spaceLabel.snp.bottom).offset(24)
+            make.top.equalTo(dateTitleLabel.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
