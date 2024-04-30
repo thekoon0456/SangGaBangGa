@@ -192,7 +192,7 @@ final class PostViewModel: ViewModel {
                 spaceM2.accept("")
             }
             if let spaceDouble = Double(input) {
-                let newValue = String(spaceDouble * 3.3)
+                let newValue = String(format: "%.2f", spaceDouble * 3.3)
                 spaceM2.accept(newValue)
             }
         }
