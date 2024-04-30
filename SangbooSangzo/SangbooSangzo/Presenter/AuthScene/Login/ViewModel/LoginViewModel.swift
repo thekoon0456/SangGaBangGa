@@ -43,33 +43,26 @@ final class LoginViewModel: ViewModel {
         
         input.loginButtonTapped
             .flatMap { loginInfo }
-            .debug()
-            .subscribe(with: self) { owner, login in
+            .withUnretained(self)
+            .flatMap { (owner, login) -> Single<LoginResponse> in
                 owner
                     .userAPIManager
                     .login(query: LoginRequest(email: login.0, password: login.1))
-                    .catch { [weak self] error in
-                        guard let self else {
-                            return Single<LoginResponse>.never()
-                        }
-                        coordinator?.showToast(.loginFail)
-                        return Single<LoginResponse>.never()
-                    }
-                    .subscribe {result in
-                        switch result {
-                        case .success(let response):
-                            UserDefaultsManager.shared.userData = UserData(userID: response.userID,
-                                accessToken: response.accessToken,
-                                                                             refreshToken: response.refreshToken)
-                            owner.coordinator?.showToast(.loginSuccess, completion: {
-                                owner.coordinator?.navigationController?.dismiss(animated: true)
-                            })
-                        case .failure(let error):
-                            print(error)
+                    .catch { error in
+                        DispatchQueue.main.async {
                             owner.coordinator?.showToast(.loginFail)
                         }
+                        
+                        return Single<LoginResponse>.never()
                     }
-                    .disposed(by: owner.disposeBag)
+            }
+            .subscribe(with: self) { owner, result in
+                UserDefaultsManager.shared.userData = UserData(userID: result.userID,
+                                                               accessToken: result.accessToken,
+                                                               refreshToken: result.refreshToken)
+                owner.coordinator?.showToast(.loginSuccess) {
+                    owner.coordinator?.navigationController?.dismiss(animated: true)
+                }
             }
             .disposed(by: disposeBag)
         

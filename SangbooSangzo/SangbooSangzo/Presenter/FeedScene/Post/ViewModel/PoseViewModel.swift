@@ -152,21 +152,27 @@ final class PostViewModel: ViewModel {
                 owner
                     .postAPIManager
                     .uploadImages(query: .init(datas: data))
+                    .catch { error in
+                        return Single<UploadImageResponse>.never()
+                    }
             }
             .withUnretained(self)
             .flatMap { owner, response in
                 owner
                     .postAPIManager
                     .uploadContents(images: response.files, query: request)
-            }
-            .catch { [weak self] error in
-                guard let self else { return Observable.just(UploadContentResponse()) }
-                coordinator?.showToast(.uploadFail)
-                return Observable.just(UploadContentResponse())
+                    .catch { error in
+                        DispatchQueue.main.async {
+                            owner.coordinator?.showToast(.uploadFail)
+                        }
+                        return Single<(UploadContentResponse)>.never()
+                    }
             }
             .subscribe(with: self) { owner, value in
-                owner.coordinator?.showToast(.uploadSuccess) {
-                    owner.coordinator?.popViewController()
+                DispatchQueue.main.async {
+                    owner.coordinator?.showToast(.uploadSuccess) {
+                        owner.coordinator?.popViewController()
+                    }
                 }
             }
             .disposed(by: disposeBag)
