@@ -18,4 +18,8 @@ struct LikeStatusResponse: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.likeStatus = try container.decode(Bool.self, forKey: .likeStatus)
     }
+    
+    var toEntity: LikeEntity {
+        LikeEntity(likeStatus: likeStatus)
+    }
 }

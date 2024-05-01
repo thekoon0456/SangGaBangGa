@@ -13,10 +13,6 @@ import RxSwift
 
 final class LikeAPIManager {
     
-    static let shared = LikeAPIManager()
-    
-    private init() { }
-    
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<LikeRouter>(session: Session(interceptor: TokenInterceptor()),
                                                  plugins: [logger])

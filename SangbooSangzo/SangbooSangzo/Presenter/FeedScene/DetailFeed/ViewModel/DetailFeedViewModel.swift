@@ -31,7 +31,7 @@ final class DetailFeedViewModel: ViewModel {
     private let data: ContentEntity
     private let postRepository = PostRepository()
     private let commentRepository = CommentRepository()
-    private let likeAPIManager = LikeAPIManager.shared
+    private let likeRepository = LikeRepository()
     var disposeBag = DisposeBag()
     
     init(coordinator: Coordinator?, data: ContentEntity) {
@@ -64,9 +64,9 @@ final class DetailFeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 if value == true {
-                    owner.likeAPIManager.postLike(queryID: owner.data.postID, status: false)
+                    owner.likeRepository.postLike(queryID: owner.data.postID, status: false)
                 } else {
-                    owner.likeAPIManager.postLike(queryID: owner.data.postID, status: true)
+                    owner.likeRepository.postLike(queryID: owner.data.postID, status: true)
                 }
             }
             .subscribe { value in

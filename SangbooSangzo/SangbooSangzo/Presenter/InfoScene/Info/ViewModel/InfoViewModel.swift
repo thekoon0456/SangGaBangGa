@@ -27,7 +27,7 @@ final class InfoViewModel: ViewModel {
     
     weak var coordinator: InfoCoordinator?
     private let postRepository = PostRepository()
-    private let likeAPIManager = LikeAPIManager.shared
+    private let likeRepository = LikeRepository()
     private let profileAPIManager = ProfileAPIManager.shared
     var disposeBag = DisposeBag()
     
@@ -58,9 +58,8 @@ final class InfoViewModel: ViewModel {
             }
             .flatMap { owner, index in
                 if index.1 == 0 {
-                    owner.likeAPIManager.ReadLikePosts(query: .init(next: "",
+                    owner.likeRepository.ReadLikePosts(query: .init(next: "",
                                                                     limit: "20"))
-                    .map { $0.toEntity }
                 } else {
                     owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
                                                        query: ReadPostsQuery(next: "",

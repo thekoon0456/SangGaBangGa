@@ -22,7 +22,7 @@ final class FeedCellViewModel: ViewModel {
         let heartCount: Driver<String>
     }
     
-    private let likeAPIManager = LikeAPIManager.shared
+    private let likeRepository = LikeRepository()
     var disposeBag = DisposeBag()
     
     func transform(_ input: Input) -> Output {
@@ -50,9 +50,9 @@ final class FeedCellViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 if value == true {
-                    owner.likeAPIManager.postLike(queryID: inputData.postID, status: false)
+                    owner.likeRepository.postLike(queryID: inputData.postID, status: false)
                 } else {
-                    owner.likeAPIManager.postLike(queryID: inputData.postID, status: true)
+                    owner.likeRepository.postLike(queryID: inputData.postID, status: true)
                 }
             }
             .subscribe { value in
