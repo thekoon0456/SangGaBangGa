@@ -22,7 +22,7 @@ final class MapViewController: RxBaseViewController {
     private let locationManager = CLLocationManager()
     private let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
     private var userLocation: CLLocationCoordinate2D?
-    private let dataRelay = PublishRelay<UploadContentResponse>()
+    private let dataRelay = PublishRelay<ContentEntity>()
     
     private lazy var currentLocationButton = UIButton().then {
         let image = UIImage(systemName: "mappin.and.ellipse.circle")
@@ -69,7 +69,7 @@ final class MapViewController: RxBaseViewController {
         super.bind()
         
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                       selectCell: dataRelay.asDriver(onErrorJustReturn: UploadContentResponse()))
+                                       selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity))
         let output = viewModel.transform(input)
         
         output
@@ -131,8 +131,8 @@ extension MapViewController: MKMapViewDelegate {
 
 extension MapViewController {
     
-    func setSSAnnotation(data: UploadContentResponse) {
-        guard let site = data.content3,
+    func setSSAnnotation(data: ContentEntity) {
+        guard let site = data.coordinate,
               let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
               let longitude = Double(site.components(separatedBy: " / ").last ?? "")
         else { return }

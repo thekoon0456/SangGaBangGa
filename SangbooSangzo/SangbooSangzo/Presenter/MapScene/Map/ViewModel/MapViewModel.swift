@@ -14,17 +14,17 @@ final class MapViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        let selectCell: Driver<UploadContentResponse>
+        let selectCell: Driver<ContentEntity>
     }
     
     struct Output {
-        let feeds: Driver<[UploadContentResponse]>
+        let feeds: Driver<[ContentEntity]>
     }
     
     // MARK: - Properties
     
     weak var coordinator: MapCoordinator?
-    private let postsAPIManager = PostsAPIManager.shared
+    private let postRepository = PostRepository()
     var disposeBag = DisposeBag()
     
     init(coordinator: MapCoordinator? = nil) {
@@ -44,7 +44,7 @@ final class MapViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
-                    .postsAPIManager
+                    .postRepository
                     .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
             .compactMap { $0.data }

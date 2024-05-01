@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UploadContentResponse: Decodable, Hashable {
+struct UploadContentResponse: Decodable {
     let postID: String
     let productID: String
     let title: String //제목
@@ -94,7 +94,7 @@ struct UploadContentResponse: Decodable, Hashable {
                       files: files,
                       likes: likes,
                       hashTags: hashTags,
-                      comments: comments)
+                      comments: comments.map { $0.toEntity } )
     }
     
     func toPrice() -> String {

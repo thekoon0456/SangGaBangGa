@@ -26,7 +26,7 @@ struct ContentEntity: Hashable {
     let files: [String]
     let likes: [String]
     let hashTags: [String]
-    let comments: [PostCommentResponse]
+    let comments: [PostCommentEntity]
     
     static var defaultsEntity: ContentEntity {
         ContentEntity(postID: "",

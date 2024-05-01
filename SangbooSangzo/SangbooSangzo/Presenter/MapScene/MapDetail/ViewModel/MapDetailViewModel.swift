@@ -22,17 +22,17 @@ final class MapDetailViewModel: ViewModel {
         let data: Driver<ContentEntity>
         let heartButtonStatus: Driver<Bool>
         let heartCount: Driver<String>
-        let comments: Driver<[PostCommentResponse]>
+        let comments: Driver<[PostCommentEntity]>
     }
     
     private weak var coordinator: MapCoordinator?
-    private let data: UploadContentResponse
-    private let postAPIRepository = PostsAPIRepository()
+    private let data: ContentEntity
+    private let postRepository = PostRepository()
     private let likeAPIManager = LikeAPIManager.shared
     private let commentAPIManager = CommentsAPIManager.shared
     var disposeBag = DisposeBag()
     
-    init(coordinator: MapCoordinator?, data: UploadContentResponse) {
+    init(coordinator: MapCoordinator?, data: ContentEntity) {
         self.coordinator = coordinator
         self.data = data
         print("data:", data)
@@ -42,13 +42,13 @@ final class MapDetailViewModel: ViewModel {
         let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultsEntity)
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
-        let comments = BehaviorRelay<[PostCommentResponse]>(value: [])
+        let comments = BehaviorRelay<[PostCommentEntity]>(value: [])
         
         input
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postAPIRepository.readPost(queryID: owner.data.postID)
+                owner.postRepository.readPost(queryID: owner.data.postID)
             }
             .subscribe { value in
                 data.accept(value)

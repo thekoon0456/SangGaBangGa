@@ -1,5 +1,5 @@
 //
-//  PostsAPIRepository.swift
+//  PostRepository.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/28/24.
@@ -11,9 +11,9 @@ import Moya
 import RxMoya
 import RxSwift
 
-final class PostsAPIRepository {
+final class PostRepository {
     
-    private let apiManager = PostsAPIManager.shared
+    private let apiManager = PostsAPIManager()
     
     func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageEntity> {
         apiManager.uploadImages(query: query)

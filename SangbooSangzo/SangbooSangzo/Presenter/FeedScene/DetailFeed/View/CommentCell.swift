@@ -31,14 +31,14 @@ final class CommentCell: BaseTableViewCell {
     
     // MARK: - Helpers
     
-    func configureCell(data: PostCommentResponse) {
+    func configureCell(data: PostCommentEntity) {
         userNicknameLabel.text = data.creator.nick
         commentLabel.text = data.content
-        guard let profileURL = data.creator.profileImage else {
+        guard !data.creator.profileImage.isEmpty else {
             profileImageView.image = .ssUser
             return
         }
-        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + profileURL)
+        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + data.creator.profileImage)
     }
     
     override func configureHierarchy() {

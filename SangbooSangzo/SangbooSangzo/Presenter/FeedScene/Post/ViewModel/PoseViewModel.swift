@@ -34,7 +34,8 @@ final class PostViewModel: ViewModel {
     }
     
     private weak var coordinator: FeedCoordinator?
-    private let postAPIManager = PostsAPIManager.shared
+    private let postRepository = PostRepository()
+
     var disposeBag = DisposeBag()
     
     init(coordinator: FeedCoordinator?) {
@@ -150,22 +151,22 @@ final class PostViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, data in
                 owner
-                    .postAPIManager
+                    .postRepository
                     .uploadImages(query: .init(datas: data))
                     .catch { error in
-                        return Single<UploadImageResponse>.never()
+                        return Single<UploadImageEntity>.never()
                     }
             }
             .withUnretained(self)
             .flatMap { owner, response in
                 owner
-                    .postAPIManager
+                    .postRepository
                     .uploadContents(images: response.files, query: request)
                     .catch { error in
                         DispatchQueue.main.async {
                             owner.coordinator?.showToast(.uploadFail)
                         }
-                        return Single<(UploadContentResponse)>.never()
+                        return Single<ContentEntity>.never()
                     }
             }
             .subscribe(with: self) { owner, value in

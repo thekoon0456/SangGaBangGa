@@ -25,7 +25,7 @@ final class FeedViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: FeedCoordinator?
-    private let postAPIRepository = PostsAPIRepository()
+    private let postRepository = PostRepository()
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
@@ -56,7 +56,7 @@ final class FeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
-                    .postAPIRepository
+                    .postRepository
                     .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
             }
             .map { $0.data }

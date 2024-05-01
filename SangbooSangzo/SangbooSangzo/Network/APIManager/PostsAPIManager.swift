@@ -13,10 +13,7 @@ import RxSwift
 
 final class PostsAPIManager {
     
-    static let shared = PostsAPIManager()
     private let disposeBag = DisposeBag()
-    
-    private init() { }
     
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<PostsRouter>(session: Session(interceptor: TokenInterceptor()),

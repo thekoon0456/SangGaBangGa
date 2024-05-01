@@ -33,7 +33,7 @@ final class MapCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func presentDetail(data: UploadContentResponse) {
+    func presentDetail(data: ContentEntity) {
         let vm = MapDetailViewModel(coordinator: self, data: data)
         let vc = MapDetailViewController(viewModel: vm)
         vc.sheetPresentationController?.detents = [.medium()]

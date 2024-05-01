@@ -24,12 +24,12 @@ final class DetailFeedViewModel: ViewModel {
         let data: Driver<ContentEntity>
         let heartButtonStatus: Driver<Bool>
         let heartCount: Driver<String>
-        let comments: Driver<[PostCommentResponse]>
+        let comments: Driver<[PostCommentEntity]>
     }
     
     private weak var coordinator: Coordinator?
     private let data: ContentEntity
-    private let postAPIRepository = PostsAPIRepository()
+    private let postRepository = PostRepository()
     private let likeAPIManager = LikeAPIManager.shared
     private let commentAPIManager = CommentsAPIManager.shared
     var disposeBag = DisposeBag()
@@ -44,13 +44,13 @@ final class DetailFeedViewModel: ViewModel {
         let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultsEntity)
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
-        let comments = BehaviorRelay<[PostCommentResponse]>(value: [])
+        let comments = BehaviorRelay<[PostCommentEntity]>(value: [])
         
         input
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postAPIRepository.readPost(queryID: owner.data.postID)
+                owner.postRepository.readPost(queryID: owner.data.postID)
             }
             .subscribe { value in
                 data.accept(value)
@@ -97,7 +97,7 @@ final class DetailFeedViewModel: ViewModel {
             }
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postAPIRepository.readPost(queryID: owner.data.postID)
+                owner.postRepository.readPost(queryID: owner.data.postID)
             }
             .subscribe(with: self) { owner, value in
                 data.accept(value)
@@ -114,12 +114,12 @@ final class DetailFeedViewModel: ViewModel {
     
     // MARK: - 댓글 sorted
     
-    func sortedComments(_ input: [PostCommentResponse]) -> [PostCommentResponse] {
+    func sortedComments(_ input: [PostCommentEntity]) -> [PostCommentEntity] {
         let formatter = DateFormatterManager.shared
         
         return input.sorted { item1, item2 in
-            let date1 = formatter.formattedISO8601ToDate(item1.createdAt ?? "") ?? Date()
-            let date2 = formatter.formattedISO8601ToDate(item2.createdAt ?? "") ?? Date()
+            let date1 = formatter.formattedISO8601ToDate(item1.createdAt) ?? Date()
+            let date2 = formatter.formattedISO8601ToDate(item2.createdAt) ?? Date()
             return date1 < date2
         }
     }

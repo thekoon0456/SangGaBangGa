@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostCommentResponse: Decodable, Hashable {
+struct PostCommentResponse: Decodable {
     let commentID: String
     let content: String
     let createdAt: String?
@@ -34,9 +34,16 @@ struct PostCommentResponse: Decodable, Hashable {
         self.createdAt = nil
         self.creator = CommentCreatorResponse()
     }
+    
+    var toEntity: PostCommentEntity {
+        PostCommentEntity(commentID: commentID,
+                          content: content,
+                          createdAt: createdAt ?? "",
+                          creator: creator.toEntity)
+    }
 }
 
-struct CommentCreatorResponse: Decodable, Hashable {
+struct CommentCreatorResponse: Decodable {
     let userID: String
     let nick: String
     let profileImage: String?
@@ -59,4 +66,11 @@ struct CommentCreatorResponse: Decodable, Hashable {
         self.nick = ""
         self.profileImage = nil
     }
+    
+    var toEntity: CommentCreatorEntity {
+        CommentCreatorEntity(userID: userID,
+                             nick: nick,
+                             profileImage: profileImage ?? "")
+    }
 }
+
