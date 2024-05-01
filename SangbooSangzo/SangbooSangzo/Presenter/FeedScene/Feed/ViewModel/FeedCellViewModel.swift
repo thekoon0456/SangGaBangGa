@@ -26,7 +26,7 @@ final class FeedCellViewModel: ViewModel {
     var disposeBag = DisposeBag()
     
     func transform(_ input: Input) -> Output {
-        var inputData = ContentEntity.defaultsEntity
+        var inputData = ContentEntity.defaultData()
         let buttonStatus = BehaviorRelay(value: false)
         let heartCount = BehaviorRelay(value: 0)
         

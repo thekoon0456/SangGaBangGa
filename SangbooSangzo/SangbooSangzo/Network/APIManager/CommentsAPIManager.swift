@@ -13,10 +13,6 @@ import RxSwift
 
 final class CommentsAPIManager {
     
-    static let shared = CommentsAPIManager()
-    
-    private init() { }
-    
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<CommentsRouter>(session: Session(interceptor: TokenInterceptor()),
                                                      plugins: [logger])

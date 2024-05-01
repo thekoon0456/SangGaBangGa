@@ -69,7 +69,7 @@ final class MapViewController: RxBaseViewController {
         super.bind()
         
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                       selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity))
+                                       selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultData()))
         let output = viewModel.transform(input)
         
         output

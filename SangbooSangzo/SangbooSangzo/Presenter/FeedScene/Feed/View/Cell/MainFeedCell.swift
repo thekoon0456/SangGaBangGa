@@ -18,7 +18,7 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     let view = MainFeedBaseView()
     
     private let viewModel = MainFeedCellViewModel()
-    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultsEntity)
+    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
     
     // MARK: - Lifecycles
     

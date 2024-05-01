@@ -30,8 +30,8 @@ final class DetailFeedViewModel: ViewModel {
     private weak var coordinator: Coordinator?
     private let data: ContentEntity
     private let postRepository = PostRepository()
+    private let commentRepository = CommentRepository()
     private let likeAPIManager = LikeAPIManager.shared
-    private let commentAPIManager = CommentsAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: Coordinator?, data: ContentEntity) {
@@ -41,7 +41,7 @@ final class DetailFeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-        let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultsEntity)
+        let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultData())
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
         let comments = BehaviorRelay<[PostCommentEntity]>(value: [])
@@ -81,7 +81,7 @@ final class DetailFeedViewModel: ViewModel {
         input
             .phoneButtonTapped
             .map { data.value }
-            .asDriver(onErrorJustReturn: ContentEntity.defaultsEntity)
+            .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, value in
                 owner.call("01083849023")
             }
@@ -92,8 +92,8 @@ final class DetailFeedViewModel: ViewModel {
             .commentSendButtonTapped
             .withUnretained(self)
             .flatMap { owner, value in
-                owner.commentAPIManager.postComments(queryID: owner.data.postID, content: value)
-                    .catchAndReturn(PostCommentResponse())
+                owner.commentRepository.postComments(queryID: owner.data.postID, content: value)
+                    .catchAndReturn(PostCommentEntity.defaultData())
             }
             .withUnretained(self)
             .flatMap { owner, _ in
@@ -105,7 +105,7 @@ final class DetailFeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity),
+        return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultData()),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""),
                       comments: comments.asDriver(onErrorJustReturn: [])

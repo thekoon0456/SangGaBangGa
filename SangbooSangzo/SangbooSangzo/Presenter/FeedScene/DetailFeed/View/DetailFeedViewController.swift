@@ -124,7 +124,7 @@ final class DetailFeedViewController: RxBaseViewController {
         
         baseView.messageButton.rx.tap
             .flatMap { output.data }
-            .asDriver(onErrorJustReturn: ContentEntity.defaultsEntity)
+            .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, data in
                 print(data)
                 let messageComposer = MFMessageComposeViewController()

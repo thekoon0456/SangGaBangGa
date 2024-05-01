@@ -16,7 +16,7 @@ final class FeedCell: RxBaseCollectionViewCell {
     // MARK: - Properties
     
     private let viewModel = FeedCellViewModel()
-    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultsEntity)
+    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 5

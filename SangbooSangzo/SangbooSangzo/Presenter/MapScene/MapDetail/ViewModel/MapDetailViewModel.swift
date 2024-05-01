@@ -28,8 +28,8 @@ final class MapDetailViewModel: ViewModel {
     private weak var coordinator: MapCoordinator?
     private let data: ContentEntity
     private let postRepository = PostRepository()
+    private let commentRepository = CommentRepository()
     private let likeAPIManager = LikeAPIManager.shared
-    private let commentAPIManager = CommentsAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(coordinator: MapCoordinator?, data: ContentEntity) {
@@ -39,7 +39,7 @@ final class MapDetailViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-        let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultsEntity)
+        let data = BehaviorRelay<ContentEntity>(value: ContentEntity.defaultData())
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
         let comments = BehaviorRelay<[PostCommentEntity]>(value: [])
@@ -84,7 +84,7 @@ final class MapDetailViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultsEntity),
+        return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultData()),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""),
                       comments: comments.asDriver(onErrorJustReturn: [])

@@ -19,7 +19,7 @@ final class MainTabCoordinator: Coordinator {
     init(navigationController: UINavigationController) {
         self.childCoordinators = []
         self.navigationController = navigationController
-        loginFlow()
+        setLoginFlow()
     }
     
     deinit {
@@ -56,7 +56,7 @@ final class MainTabCoordinator: Coordinator {
         navigationController.setViewControllers([tabBarController], animated: false)
     }
     
-    func loginFlow() {
+    func setLoginFlow() {
         TokenInterceptor
             .errorSubject
             .asDriver(onErrorJustReturn: ())
@@ -70,7 +70,7 @@ final class MainTabCoordinator: Coordinator {
 extension MainTabCoordinator: CoordinatorDelegate {
     
     func didFinish(childCoordinator: Coordinator) {
-        self.navigationController.popToRootViewController(animated: false)
-        self.finish()
+        navigationController.popToRootViewController(animated: false)
+        finish()
     }
 }

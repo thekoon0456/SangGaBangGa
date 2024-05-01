@@ -28,7 +28,7 @@ struct ContentEntity: Hashable {
     let hashTags: [String]
     let comments: [PostCommentEntity]
     
-    static var defaultsEntity: ContentEntity {
+    static func defaultData() -> ContentEntity {
         ContentEntity(postID: "",
                       productID: "",
                       title: "",
