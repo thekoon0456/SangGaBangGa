@@ -66,6 +66,8 @@ final class SettingViewModel: ViewModel {
                             owner.userAPIManager.withdraw()
                                 .subscribe { response in
                                     print(response)
+                                    guard let coordinator = owner.coordinator else { return }
+                                    coordinator.didFinish(childCoordinator: coordinator)
                                 } onFailure: { error in
                                     print(error)
                                 }

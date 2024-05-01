@@ -18,8 +18,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         let nav = UINavigationController()
-        nav.isNavigationBarHidden = true
-        
         appCoordinator = AppCoordinator(navigationController: nav)
         appCoordinator?.start()
         window?.rootViewController = nav

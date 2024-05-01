@@ -57,11 +57,12 @@ final class LoginViewModel: ViewModel {
                     }
             }
             .subscribe(with: self) { owner, result in
+                guard let coordinator = owner.coordinator else { return }
                 UserDefaultsManager.shared.userData = UserData(userID: result.userID,
                                                                accessToken: result.accessToken,
                                                                refreshToken: result.refreshToken)
-                owner.coordinator?.showToast(.loginSuccess) {
-                    owner.coordinator?.navigationController?.dismiss(animated: true)
+                coordinator.showToast(.loginSuccess) {
+                    coordinator.didFinish(childCoordinator: coordinator)
                 }
             }
             .disposed(by: disposeBag)
@@ -73,13 +74,13 @@ final class LoginViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        input.xbuttonTapped
-            .asDriver()
-            .drive(with: self) { owner, _ in
-                owner.coordinator?.navigationController?.dismiss(animated: true)
-                owner.coordinator?.finish()
-            }
-            .disposed(by: disposeBag)
+//        input.xbuttonTapped
+//            .asDriver()
+//            .drive(with: self) { owner, _ in
+//                owner.coordinator?.navigationController.dismiss(animated: true)
+//                owner.coordinator?.finish()
+//            }
+//            .disposed(by: disposeBag)
         
         return Output()
     }

@@ -62,16 +62,6 @@ final class FeedViewModel: ViewModel {
             .map { $0.data }
             .asDriver(onErrorJustReturn: [])
         
-        TokenInterceptor
-            .errorSubject
-            .asDriver(onErrorJustReturn: ())
-            .drive(with: self) { owner, _ in
-                owner.coordinator?.presentLoginScene()
-            }
-            .disposed(by: disposeBag)
-        
         return Output(feeds: feeds)
     }
-    
-    
 }

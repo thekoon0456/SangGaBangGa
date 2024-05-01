@@ -11,9 +11,9 @@ final class FeedCoordinator: Coordinator {
 
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
-    var navigationController: UINavigationController?
+    var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController?) {
+    init(navigationController: UINavigationController) {
         self.childCoordinators = []
         self.navigationController = navigationController
     }
@@ -24,29 +24,27 @@ final class FeedCoordinator: Coordinator {
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: .ssHome,
                                      selectedImage: .ssHomeSelected)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func didFinish(childCoordinator: any Coordinator) {
-        childCoordinators = []
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToPost() {
         let vm = PostViewModel(coordinator: self)
         let vc = PostViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToDetail(data: ContentEntity) {
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
         setClearNavigationBar()
     }
+}
+
+extension FeedCoordinator: CoordinatorDelegate {
     
-    func presentActionSheet() {
-        
+    func didFinish(childCoordinator: Coordinator) {
+        self.navigationController.popToRootViewController(animated: false)
+        self.finish()
     }
-    
-    
 }

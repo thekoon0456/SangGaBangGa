@@ -11,29 +11,35 @@ final class AuthCoordinator: Coordinator {
 
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
-    var navigationController: UINavigationController?
-    var childNav = UINavigationController()
+    var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController?) {
+    init(navigationController: UINavigationController) {
         self.childCoordinators = []
         self.navigationController = navigationController
+    }
+    
+    deinit {
+        print("AuthCoordinator deinit")
     }
     
     func start() {
         let vm = LoginViewModel(coordinator: self)
         let vc = LoginViewController(viewModel: vm)
-        childNav.viewControllers = [vc]
-        childNav.modalPresentationStyle = .fullScreen
-        navigationController?.present(childNav, animated: true)
+        setNavigationBarHidden(false)
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToSignInView() {
         let vm = SignInViewModel(coordinator: self)
         let vc = SignInViewController(viewModel: vm)
-        childNav.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
     }
+}
+
+extension AuthCoordinator: CoordinatorDelegate {
     
-    func popChildNav() {
-        childNav.popViewController(animated: true)
+    func didFinish(childCoordinator: Coordinator) {
+        self.navigationController.popToRootViewController(animated: false)
+        self.finish()
     }
 }

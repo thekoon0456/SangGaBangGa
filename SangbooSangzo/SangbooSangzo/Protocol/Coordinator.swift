@@ -12,10 +12,14 @@ protocol CoordinatorDelegate: AnyObject {
     func didFinish(childCoordinator: Coordinator)
 }
 
+extension CoordinatorDelegate {
+    func didFinish(childCoordinator: Coordinator) { }
+}
+
 protocol Coordinator: AnyObject {
     
     var delegate: CoordinatorDelegate? { get set }
-    var navigationController: UINavigationController? { get set }
+    var navigationController: UINavigationController { get set }
     var childCoordinators: [Coordinator] { get set }
     
     func start()
@@ -35,23 +39,12 @@ extension Coordinator {
     }
     
     func popViewController() {
-        navigationController?.popViewController(animated: true)
+        navigationController.popViewController(animated: true)
     }
     
     func dismissViewController() {
-        navigationController?.dismiss(animated: true)
+        navigationController.dismiss(animated: true)
     }
-    
-    //    func presentErrorAlert(
-    //        title: String? = nil,
-    //        message: String? = "에러 발생",
-    //        handler: (() -> Void)? = nil
-    //    ) {
-    //        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    //            .appendingAction(title: "확인", handler: handler)
-    //
-    //        navigationController?.present(alertController, animated: true)
-    //    }
 }
 
 // MARK: - SetNavigation
@@ -64,9 +57,13 @@ extension Coordinator {
         appearance.backgroundImage = UIImage()
         appearance.shadowImage = UIImage()
         appearance.backgroundColor = .clear
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    func setNavigationBarHidden(_ isHidden: Bool) {
+        navigationController.isNavigationBarHidden = isHidden
     }
 }
 
@@ -74,40 +71,33 @@ extension Coordinator {
 
 extension Coordinator {
     
-    //    func moveToUserSetting() {
-    //        DispatchQueue.main.async { [weak self] in
-    //            guard let self else { return }
-    //            let alert = UIAlertController(title: "Access to Apple Music is required to use the app.",
-    //                                          message:
-    //                                            "Please allow permission in settings to access the music library.",
-    //                                          preferredStyle: .alert)
-    //            alert.view.tintColor = .label
-    //
-    //            let primaryButton = UIAlertAction(title: "Go to Settings", style: .default) { _ in
-    //                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-    //                    return
-    //                }
-    //                if UIApplication.shared.canOpenURL(settingsUrl) {
-    //                    UIApplication.shared.open(settingsUrl, completionHandler: nil)
-    //                }
-    //            }
-    //
-    //            alert.addAction(primaryButton)
-    //
-    //            navigationController?.present(alert, animated: true)
-    //        }
-    //    }
+        func moveToUserSetting() {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                let alert = UIAlertController(title: "아이폰의 위치 설정이 비활성화되어 있어요",
+                                              message:
+                                                "활성화로 설정을 바꿔주세요",
+                                              preferredStyle: .alert)
+                alert.view.tintColor = .label
     
-    func presentLoginScene() {
-        let coordinator = AuthCoordinator(navigationController: self.navigationController)
-        childCoordinators.append(coordinator)
-        coordinator.start()
-    }
+                let primaryButton = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: nil)
+                    }
+                }
+    
+                alert.addAction(primaryButton)
+                navigationController.present(alert, animated: true)
+            }
+        }
     
     func showToast(_ type: Toast,
                    font: UIFont = UIFont.systemFont(ofSize: 14.0),
                    completion: (() -> Void)? = nil) {
-        guard let view = self.navigationController?.visibleViewController?.view else { return }
+        guard let view = self.navigationController.visibleViewController?.view else { return }
         let messageLabel = PaddingLabel().then {
             $0.font = .boldSystemFont(ofSize: 20)
             $0.textColor = .white
@@ -159,6 +149,17 @@ extension Coordinator {
         alert.addAction(cancleButton)
         alert.addAction(defaultButton)
         
-        navigationController?.present(alert, animated: true)
+        navigationController.present(alert, animated: true)
     }
+    
+//    func presentErrorAlert(
+//        title: String? = nil,
+//        message: String? = "에러 발생",
+//        handler: (() -> Void)? = nil
+//    ) {
+//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//            .appendingAction(title: "확인", handler: handler)
+//        
+//        navigationController?.present(alertController, animated: true)
+//    }
 }

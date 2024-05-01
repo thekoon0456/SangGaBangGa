@@ -8,11 +8,11 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
-
+    
     // MARK: - Properties
     
     weak var delegate: CoordinatorDelegate?
-    var navigationController: UINavigationController?
+    var navigationController: UINavigationController
     var childCoordinators: [Coordinator]
     
     init(navigationController: UINavigationController) {
@@ -23,31 +23,38 @@ final class AppCoordinator: Coordinator {
     // MARK: - Helpers
     
     func start() {
-        makeTabbar()
+        if UserDefaultsManager.shared.userData.accessToken == nil {
+            startAuthCoordinator()
+        } else {
+            startMainTabCoordinator()
+        }
     }
     
-    func makeTabbar() {
-        let tabBarController = UITabBarController()
-        tabBarController.tabBar.backgroundColor = .systemBackground
-        
-        let feedNav = UINavigationController()
-        let feedCoordinator = FeedCoordinator(navigationController: feedNav)
-        childCoordinators.append(feedCoordinator)
-        feedCoordinator.start()
-        
-        let mapNav = UINavigationController()
-        let mapCoordinator = MapCoordinator(navigationController: mapNav)
-        childCoordinators.append(mapCoordinator)
-        mapCoordinator.start()
-        
-        let infoNav = UINavigationController()
-        let infoCoordinator = InfoCoordinator(navigationController: infoNav)
-        childCoordinators.append(infoCoordinator)
-        infoCoordinator.start()
-        
-        tabBarController.viewControllers = [feedNav, mapNav, infoNav]
-        tabBarController.tabBar.tintColor = .tintColor
-        navigationController?.setViewControllers([tabBarController], animated: false)
+    func startAuthCoordinator() {
+        let authCoordinator = AuthCoordinator(navigationController: self.navigationController)
+        childCoordinators.append(authCoordinator)
+        authCoordinator.delegate = self
+        authCoordinator.start()
     }
+    
+    func startMainTabCoordinator() {
+        let tabCoordinator = MainTabCoordinator(navigationController: self.navigationController)
+        childCoordinators.append(tabCoordinator)
+        tabCoordinator.delegate = self
+        tabCoordinator.start()
+    }
+}
 
+// MARK: - Coodinator Delegate
+
+extension AppCoordinator: CoordinatorDelegate {
+    
+    func didFinish(childCoordinator: Coordinator) {
+        self.navigationController.popToRootViewController(animated: true)
+        if childCoordinator is AuthCoordinator {
+            startMainTabCoordinator()
+        } else {
+            startAuthCoordinator()
+        }
+    }
 }

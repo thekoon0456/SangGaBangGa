@@ -11,9 +11,9 @@ final class MapCoordinator: Coordinator {
 
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
-    var navigationController: UINavigationController?
+    var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController?) {
+    init(navigationController: UINavigationController) {
         self.childCoordinators = []
         self.navigationController = navigationController
     }
@@ -24,13 +24,13 @@ final class MapCoordinator: Coordinator {
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: "map"),
                                      selectedImage: UIImage(systemName: "map.fill"))
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToDetail(data: ContentEntity) {
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
     }
     
     func presentDetail(data: UploadContentResponse) {
@@ -38,13 +38,13 @@ final class MapCoordinator: Coordinator {
         let vc = MapDetailViewController(viewModel: vm)
         vc.sheetPresentationController?.detents = [.medium()]
         vc.sheetPresentationController?.prefersGrabberVisible = true
-        navigationController?.present(vc, animated: true)
+        navigationController.present(vc, animated: true)
     }
     
     func pushToMapDetail(data: ContentEntity) {
-        navigationController?.dismiss(animated: false)
+        navigationController.dismiss(animated: false)
         let vm = DetailFeedViewModel(coordinator: self, data: data)
         let vc = DetailFeedViewController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController.pushViewController(vc, animated: true)
     }
 }
