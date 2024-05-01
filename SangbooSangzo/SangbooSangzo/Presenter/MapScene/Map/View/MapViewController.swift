@@ -14,6 +14,8 @@ import RxSwift
 
 final class MapViewController: RxBaseViewController {
     
+    // MARK: - Properties
+    
     private let viewModel: MapViewModel
     private let mapView = MKMapView().then {
         $0.register(SSAnnotationView.self,
@@ -33,14 +35,8 @@ final class MapViewController: RxBaseViewController {
         $0.layer.cornerRadius = 25
         $0.clipsToBounds = true
     }
-    
-    @objc func currentLocationButtonTapped() {
-        guard let userLocation else { return }
-        let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 5000,
-                                        longitudinalMeters: 5000)
-        mapView.setRegion(region, animated: true)
-    }
+
+    // MARK: - Lifecycles
     
     init(viewModel: MapViewModel) {
         self.viewModel = viewModel
@@ -80,6 +76,14 @@ final class MapViewController: RxBaseViewController {
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+    @objc func currentLocationButtonTapped() {
+        guard let userLocation else { return }
+        let region = MKCoordinateRegion(center: userLocation,
+                                        latitudinalMeters: 5000,
+                                        longitudinalMeters: 5000)
+        mapView.setRegion(region, animated: true)
     }
     
     override func configureHierarchy() {

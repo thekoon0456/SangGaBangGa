@@ -8,17 +8,16 @@
 import UIKit
 
 import RxCocoa
+import RxGesture
 import RxSwift
 import Kingfisher
 
 final class MapDetailViewController: RxBaseViewController {
     
     private let viewModel: MapDetailViewModel
-    private let cellTapped = PublishRelay<Void>()
     
     private lazy var baseView = MainFeedBaseView().then {
         $0.isUserInteractionEnabled = true
-        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(baseViewTapped)))
     }
     
     private let titleLabel = UILabel().then {
@@ -38,8 +37,10 @@ final class MapDetailViewController: RxBaseViewController {
             return baseView.heartButton.isSelected
         }
         
+        let baseViewTapped = baseView.rx.tapGesture().when(.recognized).map { _ in }
+        
         let input = MapDetailViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                             cellTapped: cellTapped.asObservable(),
+                                             cellTapped: baseViewTapped,
                                              heartButtonTapped: heartButtonTapped)
         let output = viewModel.transform(input)
         
@@ -58,10 +59,6 @@ final class MapDetailViewController: RxBaseViewController {
             .heartCount
             .drive(baseView.heartCountLabel.rx.text)
             .disposed(by: disposeBag)
-    }
-    
-    @objc private func baseViewTapped() {
-        cellTapped.accept(())
     }
     
     override func configureHierarchy() {
