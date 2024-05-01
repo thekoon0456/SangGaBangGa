@@ -16,8 +16,8 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     // MARK: - Properties
     
     let view = MainFeedBaseView()
-    
-    private let viewModel = MainFeedCellViewModel()
+    private let likeRepository = LikeRepositoryImpl()
+    private lazy var viewModel = MainFeedCellViewModel(likeRepository: likeRepository)
     private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
     
     // MARK: - Lifecycles

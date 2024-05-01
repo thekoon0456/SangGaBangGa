@@ -22,8 +22,12 @@ final class FeedCellViewModel: ViewModel {
         let heartCount: Driver<String>
     }
     
-    private let likeRepository = LikeRepository()
+    private let likeRepository: LikeRepository
     var disposeBag = DisposeBag()
+    
+    init(likeRepository: LikeRepository) {
+        self.likeRepository = likeRepository
+    }
     
     func transform(_ input: Input) -> Output {
         var inputData = ContentEntity.defaultData()

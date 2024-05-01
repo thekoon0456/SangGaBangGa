@@ -19,7 +19,8 @@ final class FeedCoordinator: Coordinator {
     }
     
     func start() {
-        let vm = FeedViewModel(coordinator: self)
+        let postRepository = PostRepositoryImpl()
+        let vm = FeedViewModel(coordinator: self, postRepository: postRepository)
         let vc = FeedViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: .ssHome,
@@ -28,13 +29,23 @@ final class FeedCoordinator: Coordinator {
     }
     
     func pushToPost() {
-        let vm = PostViewModel(coordinator: self)
+        let postRepository = PostRepositoryImpl()
+        let vm = PostViewModel(coordinator: self, postRepository: postRepository)
         let vc = PostViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToDetail(data: ContentEntity) {
-        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let postRepository = PostRepositoryImpl()
+        let commentRepository = CommentRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        let vm = DetailFeedViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            commentRepository: commentRepository,
+            likeRepository: likeRepository,
+            data: data
+        )
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
         setClearNavigationBar()

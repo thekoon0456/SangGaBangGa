@@ -8,7 +8,7 @@
 import UIKit
 
 final class InfoCoordinator: Coordinator {
-
+    
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
     var navigationController: UINavigationController
@@ -19,7 +19,13 @@ final class InfoCoordinator: Coordinator {
     }
     
     func start() {
-        let vm = InfoViewModel(coordinator: self)
+        let postRepository = PostRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        let vm = InfoViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            likeRepository: likeRepository
+        )
         let vc = InfoViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: .ssUser,
@@ -28,7 +34,16 @@ final class InfoCoordinator: Coordinator {
     }
     
     func pushToDetail(data: ContentEntity) {
-        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let postRepository = PostRepositoryImpl()
+        let commentRepository = CommentRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        let vm = DetailFeedViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            commentRepository: commentRepository,
+            likeRepository: likeRepository,
+            data: data
+        )
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }

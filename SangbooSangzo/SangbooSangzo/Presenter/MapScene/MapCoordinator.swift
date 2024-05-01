@@ -19,7 +19,8 @@ final class MapCoordinator: Coordinator {
     }
     
     func start() {
-        let vm = MapViewModel(coordinator: self)
+        let postRepository = PostRepositoryImpl()
+        let vm = MapViewModel(coordinator: self, postRepository: postRepository)
         let vc = MapViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: "map"),
@@ -28,13 +29,32 @@ final class MapCoordinator: Coordinator {
     }
     
     func pushToDetail(data: ContentEntity) {
-        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let postRepository = PostRepositoryImpl()
+        let commentRepository = CommentRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        let vm = DetailFeedViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            commentRepository: commentRepository,
+            likeRepository: likeRepository,
+            data: data
+        )
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     
     func presentDetail(data: ContentEntity) {
-        let vm = MapDetailViewModel(coordinator: self, data: data)
+        let postRepository = PostRepositoryImpl()
+        let commentRepository = CommentRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        
+        let vm = MapDetailViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            commentRepository: commentRepository,
+            likeRepository: likeRepository,
+            data: data
+        )
         let vc = MapDetailViewController(viewModel: vm)
         vc.sheetPresentationController?.detents = [.medium()]
         vc.sheetPresentationController?.prefersGrabberVisible = true
@@ -43,7 +63,16 @@ final class MapCoordinator: Coordinator {
     
     func pushToMapDetail(data: ContentEntity) {
         navigationController.dismiss(animated: false)
-        let vm = DetailFeedViewModel(coordinator: self, data: data)
+        let postRepository = PostRepositoryImpl()
+        let commentRepository = CommentRepositoryImpl()
+        let likeRepository = LikeRepositoryImpl()
+        let vm = DetailFeedViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            commentRepository: commentRepository,
+            likeRepository: likeRepository,
+            data: data
+        )
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }

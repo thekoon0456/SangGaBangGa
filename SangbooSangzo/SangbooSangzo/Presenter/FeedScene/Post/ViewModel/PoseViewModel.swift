@@ -34,12 +34,13 @@ final class PostViewModel: ViewModel {
     }
     
     private weak var coordinator: FeedCoordinator?
-    private let postRepository = PostRepository()
+    private let postRepository: PostRepository
 
     var disposeBag = DisposeBag()
     
-    init(coordinator: FeedCoordinator?) {
+    init(coordinator: FeedCoordinator, postRepository: PostRepository) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
     }
     
     func transform(_ input: Input) -> Output {

@@ -26,13 +26,19 @@ final class InfoViewModel: ViewModel {
     }
     
     weak var coordinator: InfoCoordinator?
-    private let postRepository = PostRepository()
-    private let likeRepository = LikeRepository()
+    private let postRepository: PostRepository
+    private let likeRepository: LikeRepository
     private let profileAPIManager = ProfileAPIManager.shared
     var disposeBag = DisposeBag()
     
-    init(coordinator: InfoCoordinator) {
+    init(
+        coordinator: InfoCoordinator,
+        postRepository: PostRepository,
+        likeRepository: LikeRepository
+    ) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
+        self.likeRepository = likeRepository
     }
     
     func transform(_ input: Input) -> Output {

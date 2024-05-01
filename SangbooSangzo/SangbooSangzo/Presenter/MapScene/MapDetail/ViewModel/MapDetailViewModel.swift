@@ -3,7 +3,7 @@
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/26/24.
-//
+//impl, live, defa
 
 import Foundation
 
@@ -27,13 +27,22 @@ final class MapDetailViewModel: ViewModel {
     
     private weak var coordinator: MapCoordinator?
     private let data: ContentEntity
-    private let postRepository = PostRepository()
-    private let commentRepository = CommentRepository()
-    private let likeRepository = LikeRepository()
+    private let postRepository: PostRepository
+    private let commentRepository: CommentRepository
+    private let likeRepository: LikeRepository
     var disposeBag = DisposeBag()
     
-    init(coordinator: MapCoordinator?, data: ContentEntity) {
+    init(
+        coordinator: MapCoordinator,
+        postRepository: PostRepository,
+        commentRepository: CommentRepository,
+        likeRepository: LikeRepository,
+        data: ContentEntity
+    ) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
+        self.commentRepository = commentRepository
+        self.likeRepository = likeRepository
         self.data = data
         print("data:", data)
     }

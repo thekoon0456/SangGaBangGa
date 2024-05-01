@@ -10,7 +10,17 @@ import Foundation
 import RxMoya
 import RxSwift
 
-final class PostRepository {
+protocol PostRepository {
+    func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageEntity>
+    func uploadContents(images: [String], query: UploadContentRequest) -> Single<ContentEntity>
+    func readPosts(query: ReadPostsQuery) -> Single<ReadPostsEntity>
+    func readPost(queryID: String) -> Single<ContentEntity>
+    func fetchPost(queryID: String, request: UploadContentRequest) -> Single<ContentEntity>
+    func deletePost(queryID: String)
+    func readUserPosts(queryID: String, query: ReadPostsQuery) -> Single<ReadPostsEntity>
+}
+
+final class PostRepositoryImpl: PostRepository {
     
     private let apiManager = PostsAPIManager()
     

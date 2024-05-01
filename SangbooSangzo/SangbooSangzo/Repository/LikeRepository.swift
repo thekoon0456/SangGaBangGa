@@ -10,7 +10,12 @@ import Foundation
 import RxMoya
 import RxSwift
 
-final class LikeRepository {
+protocol LikeRepository {
+    func postLike(queryID: String, status: Bool) -> Single<LikeEntity>
+    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity>
+}
+
+final class LikeRepositoryImpl: LikeRepository {
     
     private let apiManager = LikeAPIManager()
     

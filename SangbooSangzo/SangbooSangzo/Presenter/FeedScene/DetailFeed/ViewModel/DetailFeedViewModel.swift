@@ -28,14 +28,22 @@ final class DetailFeedViewModel: ViewModel {
     }
     
     private weak var coordinator: Coordinator?
+    private let postRepository: PostRepository
+    private let commentRepository: CommentRepository
+    private let likeRepository: LikeRepository
     private let data: ContentEntity
-    private let postRepository = PostRepository()
-    private let commentRepository = CommentRepository()
-    private let likeRepository = LikeRepository()
     var disposeBag = DisposeBag()
     
-    init(coordinator: Coordinator?, data: ContentEntity) {
+    init(coordinator: Coordinator,
+         postRepository: PostRepository,
+         commentRepository: CommentRepository,
+         likeRepository: LikeRepository,
+         data: ContentEntity
+    ) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
+        self.commentRepository = commentRepository
+        self.likeRepository = likeRepository
         self.data = data
         print("data:", data)
     }

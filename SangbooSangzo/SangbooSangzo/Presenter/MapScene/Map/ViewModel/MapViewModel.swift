@@ -24,11 +24,12 @@ final class MapViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: MapCoordinator?
-    private let postRepository = PostRepository()
+    private let postRepository: PostRepository
     var disposeBag = DisposeBag()
     
-    init(coordinator: MapCoordinator? = nil) {
+    init(coordinator: MapCoordinator, postRepository: PostRepository) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
     }
     
     func transform(_ input: Input) -> Output {

@@ -10,7 +10,11 @@ import Foundation
 import RxMoya
 import RxSwift
 
-final class CommentRepository {
+protocol CommentRepository {
+    func postComments(queryID: String, content: String) -> Single<PostCommentEntity>
+}
+
+final class CommentRepositoryImpl: CommentRepository {
     
     private let apiManager = CommentsAPIManager()
     

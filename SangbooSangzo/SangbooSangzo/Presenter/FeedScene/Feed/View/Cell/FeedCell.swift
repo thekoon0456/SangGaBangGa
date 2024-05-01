@@ -15,7 +15,8 @@ final class FeedCell: RxBaseCollectionViewCell {
     
     // MARK: - Properties
     
-    private let viewModel = FeedCellViewModel()
+    private let likeRepository = LikeRepositoryImpl()
+    private lazy var viewModel = FeedCellViewModel(likeRepository: likeRepository)
     private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
     
     private let imageView = UIImageView().then {

@@ -25,12 +25,13 @@ final class FeedViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: FeedCoordinator?
-    private let postRepository = PostRepository()
+    private let postRepository: PostRepository
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
-    init(coordinator: FeedCoordinator?) {
+    init(coordinator: FeedCoordinator?, postRepository: PostRepository) {
         self.coordinator = coordinator
+        self.postRepository = postRepository
     }
     
     func transform(_ input: Input) -> Output {
