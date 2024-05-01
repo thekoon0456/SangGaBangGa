@@ -222,19 +222,18 @@ extension DetailFeedView {
     private func setLayout() {
         
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.size.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.top.equalToSuperview().offset(-100)
-            make.bottom.equalToSuperview()
+            make.verticalEdges.equalToSuperview()
+            make.width.equalTo(scrollView)
         }
         
         imageScrollView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(-100)
             make.width.equalToSuperview()
-            make.height.equalTo(self.snp.width).multipliedBy(0.8)
+            make.height.equalTo(imageScrollView.snp.width).multipliedBy(0.8)
         }
     
         profileView.snp.makeConstraints { make in
@@ -244,28 +243,28 @@ extension DetailFeedView {
         }
         
         heartButton.snp.makeConstraints { make in
-            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.top.equalTo(profileView.snp.top)
             make.leading.equalTo(profileView.snp.trailing).offset(16)
-            make.size.equalTo(30)
+            make.bottom.equalTo(profileView.snp.bottom)
         }
         
         heartCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.top.equalTo(heartButton.snp.top)
             make.leading.equalTo(heartButton.snp.trailing).offset(4)
-            make.height.equalTo(30)
+            make.bottom.equalTo(profileView.snp.bottom)
         }
         
         commentButton.snp.makeConstraints { make in
-            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.top.equalTo(heartButton.snp.top)
             make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
-            make.size.equalTo(30)
+            make.bottom.equalTo(profileView.snp.bottom)
         }
         
         commentCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.top.equalTo(commentButton.snp.top)
             make.leading.equalTo(commentButton.snp.trailing).offset(4)
             make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(30)
+            make.bottom.equalTo(profileView.snp.bottom)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -385,7 +384,7 @@ extension DetailFeedView {
             make.top.equalTo(commentsTableView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
             make.bottom.equalToSuperview().offset(-16)
-            make.height.equalTo(44)
+            make.height.equalTo(40)
         }
         
         sendButton.snp.makeConstraints { make in

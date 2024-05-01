@@ -51,6 +51,7 @@ final class DetailFeedViewController: RxBaseViewController {
         
         output.data.drive(with: self) { owner, data in
             owner.baseView.configureViewData(data)
+            owner.baseView.layoutIfNeeded()
             owner.setAnnotaion(coordinate: data.coordinate, title: data.address)
         }
         .disposed(by: disposeBag)
@@ -77,7 +78,6 @@ final class DetailFeedViewController: RxBaseViewController {
             .comments
             .drive(with: self) { owner, data in
                 owner.baseView.heightConstraint?.update(offset: owner.baseView.commentsTableView.contentSize.height)
-//                owner.commentsTableView.layoutIfNeeded()
                 owner.baseView.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)

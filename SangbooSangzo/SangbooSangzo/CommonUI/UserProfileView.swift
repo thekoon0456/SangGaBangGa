@@ -52,15 +52,14 @@ final class UserProfileView: BaseView {
     override func configureLayout() {
         super.configureLayout()
         profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.size.equalTo(30)
+            make.top.leading.bottom.equalToSuperview()
+            make.width.equalTo(profileImageView.snp.height)
         }
         
         userNicknameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView.snp.centerY)
+            make.centerY.equalToSuperview()
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.trailing.equalToSuperview()
+            make.trailing.greaterThanOrEqualToSuperview()
         }
     }
     
