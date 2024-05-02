@@ -35,7 +35,7 @@ final class SettingViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
-        let list = ["내 정보 수정", "회원 탈퇴"]
+        let list = ["내 정보 수정", "로그아웃", "회원 탈퇴"]
         let userProfileRelay = BehaviorRelay(value: ProfileEntity.defaultData())
         
         input
@@ -61,6 +61,13 @@ final class SettingViewModel: ViewModel {
                 switch indexPath.row {
                 case 0:
                     owner.coordinator?.pushTo(userInfo: userProfileRelay.value)
+                case 1:
+                    owner.coordinator?
+                        .showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?") {
+                            UserDefaultsManager.shared.userData = UserData()
+                            guard let coordinator = owner.coordinator else { return }
+                            coordinator.didFinish(childCoordinator: coordinator)
+                        }
                 default:
                     owner.coordinator?
                         .showAlert(title: "회원 탈퇴", message: "정말로 탈퇴하시겠습니까?") {
