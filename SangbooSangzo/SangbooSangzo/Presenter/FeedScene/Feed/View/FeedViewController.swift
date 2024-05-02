@@ -159,8 +159,13 @@ extension FeedViewController {
     }
     
     private func updateSnapshot(withItems items: [ContentEntity], toSection section: Section) {
-        var snapshot = dataSource?.snapshot()
-        snapshot?.appendItems(items, toSection: section)
-        dataSource?.apply(snapshot ?? Snapshot())
+        guard var snapshot = dataSource?.snapshot() else { return }
+        
+        if snapshot.sectionIdentifiers.contains(section) {
+            snapshot.deleteItems(snapshot.itemIdentifiers(inSection: section))
+        }
+        
+        snapshot.appendItems(items, toSection: section)
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
