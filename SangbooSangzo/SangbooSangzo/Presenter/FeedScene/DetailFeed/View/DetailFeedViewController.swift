@@ -129,8 +129,7 @@ final class DetailFeedViewController: RxBaseViewController {
                 let messageComposer = MFMessageComposeViewController()
                 messageComposer.messageComposeDelegate = self
                 if MFMessageComposeViewController.canSendText(){
-                    messageComposer.recipients = [data.creator.phoneNum ?? "번호없음"]
-//                    messageComposer.body = "메세지를 입력해주세요"
+                    messageComposer.recipients = [data.creator.phoneNum]
                     owner.present(messageComposer, animated: true, completion: nil)
                 }
             }

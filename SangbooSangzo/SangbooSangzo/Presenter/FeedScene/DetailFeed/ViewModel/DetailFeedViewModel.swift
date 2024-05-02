@@ -91,7 +91,7 @@ final class DetailFeedViewModel: ViewModel {
             .map { data.value }
             .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, value in
-                owner.call("01083849023")
+                owner.call(value.creator.phoneNum)
             }
             .disposed(by: disposeBag)
         
