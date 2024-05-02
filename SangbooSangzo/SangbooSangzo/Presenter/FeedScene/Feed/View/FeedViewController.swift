@@ -45,14 +45,14 @@ final class FeedViewController: RxBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//                configureDataSource()
-//                configureSnapshot()
+        
+        configureDataSource()
+        configureSnapshot()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "새로 올라온 매물"
+        navigationItem.title = "상가방가"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -66,25 +66,25 @@ final class FeedViewController: RxBaseViewController {
         super.bind()
         
         let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                        cellSelected: collectionView.rx.modelSelected(ContentEntity.self),
+                                        cellSelected: collectionView.rx.itemSelected,
                                         addButtonTapped: addButton.rx.tap)
         let output = viewModel.transform(input)
         
+        //        output
+        //            .feeds
+        //            .drive(collectionView.rx.items(cellIdentifier: MainFeedCell.identifier,
+        //                                           cellType: MainFeedCell.self)) { item , element, cell in
+        //                cell.configureCellData(element)
+        //                print(element)
+        //            }
+        //            .disposed(by: disposeBag)
+        
         output
             .feeds
-            .drive(collectionView.rx.items(cellIdentifier: MainFeedCell.identifier,
-                                           cellType: MainFeedCell.self)) { item , element, cell in
-                cell.configureCellData(element)
-                print(element)
+            .drive(with: self) { owner, item in
+                owner.updateSnapshot(withItems: item, toSection: .feed)
             }
             .disposed(by: disposeBag)
-        
-//                output
-//                    .feeds
-//                    .drive(with: self) { owner, item in
-//                        owner.updateSnapshot(withItems: item, toSection: .feed)
-//                    }
-//                    .disposed(by: disposeBag)
         
     }
     
@@ -111,7 +111,7 @@ final class FeedViewController: RxBaseViewController {
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            // MARK: - 높이 계산해서 고정값 주기
+            
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
@@ -127,6 +127,7 @@ final class FeedViewController: RxBaseViewController {
 }
 
 extension FeedViewController {
+    
     enum Section: Int, CaseIterable {
         case feed
     }
@@ -158,8 +159,8 @@ extension FeedViewController {
     }
     
     private func updateSnapshot(withItems items: [ContentEntity], toSection section: Section) {
-        var snapshot = dataSource?.snapshot() ?? Snapshot()
-        snapshot.appendItems(items, toSection: section)
-        dataSource?.apply(snapshot)
+        var snapshot = dataSource?.snapshot()
+        snapshot?.appendItems(items, toSection: section)
+        dataSource?.apply(snapshot ?? Snapshot())
     }
 }

@@ -14,7 +14,7 @@ final class FeedViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        let cellSelected: ControlEvent<ContentEntity>
+        let cellSelected: ControlEvent<IndexPath>
         let addButtonTapped: ControlEvent<Void>
     }
     
@@ -35,6 +35,20 @@ final class FeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
+    
+        let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
+        
+        input
+            .viewWillAppear
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner
+                    .postRepository
+                    .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
+            }
+            .map { $0.data }
+            .subscribe { dataRelay.accept($0) }
+            .disposed(by: disposeBag)
         
         input
             .addButtonTapped
@@ -46,23 +60,11 @@ final class FeedViewModel: ViewModel {
         
         input
             .cellSelected
-            .subscribe(with: self) { owner, model in
-                print("cell.model", model)
-                owner.coordinator?.pushToDetail(data: model)
+            .subscribe(with: self) { owner, indexPath in
+                owner.coordinator?.pushToDetail(data: dataRelay.value[indexPath.item])
             }
             .disposed(by: disposeBag)
         
-        let feeds = input
-            .viewWillAppear
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner
-                    .postRepository
-                    .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
-            }
-            .map { $0.data }
-            .asDriver(onErrorJustReturn: [])
-        
-        return Output(feeds: feeds)
+        return Output(feeds: dataRelay.asDriver())
     }
 }
