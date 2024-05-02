@@ -25,23 +25,24 @@ final class SettingViewModel: ViewModel {
     
     weak var coordinator: InfoCoordinator?
     var disposeBag = DisposeBag()
-    private let profileAPIManager = ProfileAPIManager.shared
+    private let profileRepository: ProfileRepository
     private let userAPIManager = UserAPIManager.shared
     
-    init(coordinator: InfoCoordinator) {
+    init(coordinator: InfoCoordinator, profileRepository: ProfileRepository) {
         self.coordinator = coordinator
+        self.profileRepository = profileRepository
     }
     
     func transform(_ input: Input) -> Output {
         
         let list = ["내 정보 수정", "회원 탈퇴"]
-        let userProfileRelay = BehaviorRelay(value: ProfileResponse())
+        let userProfileRelay = BehaviorRelay(value: ProfileEntity.defaultData())
         
         input
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.profileAPIManager.getMyProfile()
+                owner.profileRepository.getMyProfile()
             }
             .subscribe { value in
                 userProfileRelay.accept(value)

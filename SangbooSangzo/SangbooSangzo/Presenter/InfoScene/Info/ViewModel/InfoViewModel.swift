@@ -20,7 +20,7 @@ final class InfoViewModel: ViewModel {
     }
     
     struct Output {
-        let userProfile: Driver<ProfileResponse>
+        let userProfile: Driver<ProfileEntity>
         let underBarIndex: Driver<Int>
         let feeds: Driver<[ContentEntity]>
     }
@@ -28,33 +28,35 @@ final class InfoViewModel: ViewModel {
     weak var coordinator: InfoCoordinator?
     private let postRepository: PostRepository
     private let likeRepository: LikeRepository
-    private let profileAPIManager = ProfileAPIManager.shared
+    private let profileRepository: ProfileRepository
     var disposeBag = DisposeBag()
     
     init(
         coordinator: InfoCoordinator,
         postRepository: PostRepository,
-        likeRepository: LikeRepository
+        likeRepository: LikeRepository,
+        profileRepository: ProfileRepository
     ) {
         self.coordinator = coordinator
         self.postRepository = postRepository
         self.likeRepository = likeRepository
+        self.profileRepository = profileRepository
     }
     
     func transform(_ input: Input) -> Output {
-        let userProfileRelay = BehaviorRelay<ProfileResponse>(value: ProfileResponse())
+        let userProfileRelay = BehaviorRelay<ProfileEntity>(value: ProfileEntity.defaultData())
         let updateBar = PublishRelay<Int>()
         
         let userProfile = input
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.profileAPIManager.getMyProfile()
+                owner.profileRepository.getMyProfile()
             }
             .do { value in
                 userProfileRelay.accept(value)
             }
-            .asDriver(onErrorJustReturn: ProfileResponse())
+            .asDriver(onErrorJustReturn: ProfileEntity.defaultData())
         
         let feeds = Observable.combineLatest(input.viewWillAppear,
                                              input.segmentTapped)

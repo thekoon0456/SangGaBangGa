@@ -92,7 +92,7 @@ final class SignInViewModel: ViewModel {
                     .userAPIManager
                     .join(query: UserJoinRequest(email: login.0,
                                                  password: login.1,
-                                                 nick: login.2,
+                                                 nick: login.2 + " / " + login.3,
                                                  phoneNum: login.3,
                                                  birthDay: nil))
                     .catchAndReturn(nil)

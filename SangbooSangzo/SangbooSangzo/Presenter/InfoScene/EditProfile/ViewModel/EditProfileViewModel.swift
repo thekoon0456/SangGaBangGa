@@ -22,19 +22,20 @@ final class EditProfileViewModel: ViewModel {
     }
     
     struct Output {
-        let userInfo: Driver<ProfileResponse>
+        let userInfo: Driver<ProfileEntity>
         let buttonEnabled: Driver<Bool>
     }
     
     // MARK: - Properties
     weak var coordinator: InfoCoordinator?
-    private let userInfo: ProfileResponse
+    private let userInfo: ProfileEntity
     private let userAPIManager = UserAPIManager.shared
-    private let profileAPIManager = ProfileAPIManager.shared
+    private let profileRepository: ProfileRepository
     var disposeBag = DisposeBag()
     
-    init(coordinator: InfoCoordinator?, userInfo: ProfileResponse) {
+    init(coordinator: InfoCoordinator?, profileRepository: ProfileRepository, userInfo: ProfileEntity) {
         self.coordinator = coordinator
+        self.profileRepository = profileRepository
         self.userInfo = userInfo
     }
     
@@ -58,12 +59,12 @@ final class EditProfileViewModel: ViewModel {
             .flatMap { validationObservable }
             .subscribe(with: self) { owner, login in
                 owner
-                    .profileAPIManager
+                    .profileRepository
                     .updateMyProfile(request: .init(nick: login.1,
                                                     phoneNum: login.2,
                                                     birthDay: nil,
                                                     profile: login.3))
-                    .catchAndReturn(ProfileResponse())
+                    .catchAndReturn(ProfileEntity.defaultData())
                     .subscribe(with: self) { owner, response in
                         owner.coordinator?.popViewController()
                     }
@@ -77,7 +78,7 @@ final class EditProfileViewModel: ViewModel {
             .map { owner, _ in
                 owner.userInfo
             }
-            .asDriver(onErrorJustReturn: ProfileResponse())
+            .asDriver(onErrorJustReturn: ProfileEntity.defaultData())
         
         return Output(userInfo: userInfo,
                       buttonEnabled: buttonRelay.asDriver(onErrorJustReturn: false))

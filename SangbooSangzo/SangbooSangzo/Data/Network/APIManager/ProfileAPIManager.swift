@@ -13,10 +13,6 @@ import RxSwift
 
 final class ProfileAPIManager {
     
-    static let shared = ProfileAPIManager()
-    
-    private init() { }
-    
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<ProfileRouter>(session: Session(interceptor: TokenInterceptor()),
                                                     plugins: [logger])

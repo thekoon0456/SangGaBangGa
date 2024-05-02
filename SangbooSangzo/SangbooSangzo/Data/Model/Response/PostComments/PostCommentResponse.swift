@@ -67,10 +67,18 @@ struct CommentCreatorResponse: Decodable {
         self.profileImage = nil
     }
     
-    var toEntity: CommentCreatorEntity {
-        CommentCreatorEntity(userID: userID,
-                             nick: nick,
-                             profileImage: profileImage ?? "")
+    var toEntity: ProfileEntity {
+        let nickName = nick.components(separatedBy: " / ").first ?? ""
+        let phoneNum = nick.components(separatedBy: " / ").last ?? ""
+        
+        return ProfileEntity(userID: userID,
+                             email: nil,
+                             nick: nickName,
+                             phoneNum: phoneNum,
+                             profileImage: profileImage,
+                             followers: [],
+                             following: [],
+                             posts: [])
     }
 }
 

@@ -34,11 +34,11 @@ final class CommentCell: BaseTableViewCell {
     func configureCell(data: PostCommentEntity) {
         userNicknameLabel.text = data.creator.nick
         commentLabel.text = data.content
-        guard !data.creator.profileImage.isEmpty else {
+        guard let imagePath = data.creator.profileImage else {
             profileImageView.image = .ssUser
             return
         }
-        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + data.creator.profileImage)
+        profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + imagePath)
     }
     
     override func configureHierarchy() {

@@ -21,10 +21,12 @@ final class InfoCoordinator: Coordinator {
     func start() {
         let postRepository = PostRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
+        let profileRepository = ProfileRepositoryImpl()
         let vm = InfoViewModel(
             coordinator: self,
             postRepository: postRepository,
-            likeRepository: likeRepository
+            likeRepository: likeRepository,
+            profileRepository: profileRepository
         )
         let vc = InfoViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
@@ -49,13 +51,18 @@ final class InfoCoordinator: Coordinator {
     }
     
     func pushToSetting() {
-        let vm = SettingViewModel(coordinator: self)
+        let profileRepository = ProfileRepositoryImpl()
+        let vm = SettingViewModel(coordinator: self, profileRepository: profileRepository)
         let vc = SettingViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func pushTo(userInfo: ProfileResponse) {
-        let vm = EditProfileViewModel(coordinator: self, userInfo: userInfo)
+    func pushTo(userInfo: ProfileEntity) {
+        let profileRepository = ProfileRepositoryImpl()
+        let vm = EditProfileViewModel(
+            coordinator: self,
+            profileRepository: profileRepository,
+            userInfo: userInfo)
         let vc = EditProfileViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }

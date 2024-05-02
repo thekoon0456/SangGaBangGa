@@ -9,4 +9,13 @@ import Foundation
 
 struct UserJoinEmailValidationRequest: Encodable {
     let email: String
+    
+    enum CodingKeys: CodingKey {
+        case email
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.email, forKey: .email)
+    }
 }
