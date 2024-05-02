@@ -293,7 +293,7 @@ extension DetailFeedView {
         addressLabel.snp.makeConstraints { make in
             make.top.equalTo(addressTitleLabel.snp.top)
             make.leading.equalTo(addressTitleLabel.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
         priceTitleLabel.snp.makeConstraints { make in
@@ -304,7 +304,7 @@ extension DetailFeedView {
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(priceTitleLabel.snp.top)
             make.leading.equalTo(priceTitleLabel.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
         spaceTitleLabel.snp.makeConstraints { make in
@@ -315,7 +315,7 @@ extension DetailFeedView {
         spaceLabel.snp.makeConstraints { make in
             make.top.equalTo(spaceTitleLabel.snp.top)
             make.leading.equalTo(spaceTitleLabel.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
         dateTitleLabel.snp.makeConstraints { make in
@@ -326,7 +326,7 @@ extension DetailFeedView {
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(dateTitleLabel.snp.top)
             make.leading.equalTo(dateTitleLabel.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
         }
         
         mapTitle.snp.makeConstraints { make in
