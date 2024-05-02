@@ -13,8 +13,6 @@ import SnapKit
 
 final class DetailFeedView: BaseView {
     
-    var heightConstraint: Constraint?
-    
     // MARK: - UI
     
     private let scrollView = UIScrollView()
@@ -153,7 +151,6 @@ final class DetailFeedView: BaseView {
     
     let commentsTableView = UITableView().then {
         $0.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
-        $0.rowHeight = UITableView.automaticDimension
         $0.isScrollEnabled = false
     }
     
@@ -214,6 +211,10 @@ final class DetailFeedView: BaseView {
         
         let formatter = DateFormatterManager.shared
         dateLabel.text = formatter.iso8601DateToString(data.createdAt, format: .date)
+        
+        commentsTableView.snp.updateConstraints { make in
+            make.height.equalTo(data.comments.count * 56)
+        }
     }
 }
 
@@ -222,12 +223,12 @@ extension DetailFeedView {
     private func setLayout() {
         
         scrollView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+            make.size.equalTo(UIScreen.main.bounds.size)
         }
         
         contentView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview()
-            make.width.equalTo(scrollView)
+            make.width.equalToSuperview()
         }
         
         imageScrollView.snp.makeConstraints { make in
@@ -377,7 +378,7 @@ extension DetailFeedView {
             make.top.equalTo(commentTitle.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            heightConstraint = make.height.equalTo(0).constraint
+            make.height.equalTo(0)
         }
         
         commentTextField.snp.makeConstraints { make in

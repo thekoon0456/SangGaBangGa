@@ -77,7 +77,6 @@ final class DetailFeedViewController: RxBaseViewController {
         output
             .comments
             .drive(with: self) { owner, data in
-                owner.baseView.heightConstraint?.update(offset: owner.baseView.commentsTableView.contentSize.height)
                 owner.baseView.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)

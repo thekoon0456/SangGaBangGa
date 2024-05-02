@@ -138,7 +138,6 @@ final class DetailFeedViewModel: ViewModel {
         
         let url = "tel://\(input)"
         
-        // URLScheme 문자열을 통해 URL 인스턴스를 만들어 줍니다.
         if let url =  URL(string: url),
            UIApplication.shared.canOpenURL(url as URL) {
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
