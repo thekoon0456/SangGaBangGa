@@ -89,7 +89,7 @@ final class CommentViewController: RxBaseViewController {
         commentTextField.snp.makeConstraints { make in
             make.top.equalTo(commentsTableView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-8)
             make.height.equalTo(40)
         }
         

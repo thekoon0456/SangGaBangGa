@@ -7,11 +7,13 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+import IQKeyboardManagerSwift
 
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
@@ -21,16 +23,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator = AppCoordinator(navigationController: nav)
         appCoordinator?.start()
         window?.rootViewController = nav
+        setKeyboard()
     }
-
+    
     func sceneDidDisconnect(_ scene: UIScene) { }
-
+    
     func sceneDidBecomeActive(_ scene: UIScene) { }
-
+    
     func sceneWillResignActive(_ scene: UIScene) { }
-
+    
     func sceneWillEnterForeground(_ scene: UIScene) { }
-
+    
     func sceneDidEnterBackground(_ scene: UIScene) { }
 }
 
+extension SceneDelegate {
+    
+    func setKeyboard() {
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.resignOnTouchOutside = true
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses = [CommentViewController.self]
+        IQKeyboardManager.shared.disabledToolbarClasses = [CommentViewController.self]
+    }
+}
