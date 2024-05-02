@@ -40,7 +40,7 @@ final class InfoCoordinator: Coordinator {
         let commentRepository = CommentRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
         let vm = DetailFeedViewModel(
-            coordinator: self,
+            coordinator: FeedCoordinator(navigationController: self.navigationController),
             postRepository: postRepository,
             commentRepository: commentRepository,
             likeRepository: likeRepository,

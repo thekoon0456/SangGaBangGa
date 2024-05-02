@@ -144,29 +144,6 @@ final class DetailFeedView: BaseView {
         $0.titleEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
     }
     
-    private let commentTitle = UILabel().then {
-        $0.text = "댓글"
-        $0.font = SSFont.semiBold24
-    }
-    
-    let commentsTableView = UITableView().then {
-        $0.register(CommentCell.self, forCellReuseIdentifier: CommentCell.identifier)
-        $0.isScrollEnabled = false
-    }
-    
-    let commentTextField = UITextField().then {
-        $0.placeholder = "댓글을 입력하세요"
-        $0.layer.borderWidth = 1
-        $0.layer.cornerRadius = 8
-        $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 0))
-        $0.leftViewMode = .always
-    }
-    
-    let sendButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "paperplane.circle.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30))), for: .normal)
-        $0.tintColor = .tintColor
-    }
-    
     // MARK: - Configure
     
     override func configureHierarchy() {
@@ -178,7 +155,6 @@ final class DetailFeedView: BaseView {
                                 addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
-                                commentTitle, commentsTableView, commentTextField, sendButton,
                                 inquiryTitle, inquiryStackView)
     }
     
@@ -211,10 +187,6 @@ final class DetailFeedView: BaseView {
         
         let formatter = DateFormatterManager.shared
         dateLabel.text = formatter.iso8601DateToString(data.createdAt, format: .date)
-        
-        commentsTableView.snp.updateConstraints { make in
-            make.height.equalTo(data.comments.count * 56)
-        }
     }
 }
 
@@ -366,34 +338,7 @@ extension DetailFeedView {
             make.centerX.equalToSuperview()
             make.height.equalTo(40)
             make.width.equalTo(300)
-        }
-        
-        commentTitle.snp.makeConstraints { make in
-            make.top.equalTo(inquiryStackView.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-        }
-        
-        commentsTableView.snp.makeConstraints { make in
-            make.top.equalTo(commentTitle.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(0)
-        }
-        
-        commentTextField.snp.makeConstraints { make in
-            make.top.equalTo(commentsTableView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.height.equalTo(40)
-        }
-        
-        sendButton.snp.makeConstraints { make in
-            make.top.equalTo(commentTextField.snp.top)
-            make.leading.equalTo(commentTextField.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.bottom.equalTo(commentTextField.snp.bottom)
-            make.width.equalTo(44)
+            make.bottom.equalToSuperview().offset(-8)
         }
     }
 }

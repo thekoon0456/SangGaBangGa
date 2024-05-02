@@ -23,13 +23,6 @@ final class LoginViewController: RxBaseViewController {
         $0.font = .systemFont(ofSize: 40, weight: .bold)
         $0.textColor = .tintColor
     }
-    
-    private let xButton = UIButton().then {
-        let image = UIImage(systemName: "xmark")?
-            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20)))
-        $0.setImage(image, for: .normal)
-        $0.tintColor = .tintColor
-    }
 
     private let emailTextField = UITextField().then {
         $0.placeholder = "이메일을 입력해주세요"
@@ -63,11 +56,6 @@ final class LoginViewController: RxBaseViewController {
         super.init()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setDismissGesture()
-    }
-    
     // MARK: - Helpers
     
     override func bind() {
@@ -76,8 +64,7 @@ final class LoginViewController: RxBaseViewController {
         let input = LoginViewModel.Input(email: emailTextField.rx.text.orEmpty,
                                          password: passwordTextField.rx.text.orEmpty,
                                          loginButtonTapped: loginButton.rx.tap,
-                                         singInButtonTapped: signInButton.rx.tap,
-                                         xbuttonTapped: xButton.rx.tap)
+                                         singInButtonTapped: signInButton.rx.tap)
         let output = viewModel.transform(input)
     }
     
@@ -132,43 +119,5 @@ final class LoginViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: xButton)
-    }
-}
-
-extension LoginViewController {
-    
-    func setDismissGesture() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(dismissGesture))
-        view.addGestureRecognizer(panGesture)
-    }
-    
-    // 팬 제스처를 처리하는 메소드
-    @objc func dismissGesture(sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: view)
-        
-        switch sender.state {
-        case .changed:
-            if translation.y > 0 {
-                view.transform = CGAffineTransform(translationX: 0, y: translation.y)
-            }
-            break
-        case .ended:
-            if translation.y > 100 {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
-                }) { [weak self] _ in
-                    guard let self else { return }
-                    dismiss(animated: true)
-                }
-            } else {
-                UIView.animate(withDuration: 0.3) { [weak self] in
-                    guard let self else { return }
-                    view.transform = .identity
-                }
-            }
-        default:
-            break
-        }
     }
 }

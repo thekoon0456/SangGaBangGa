@@ -7,8 +7,11 @@
 
 import UIKit
 
-final class FeedCoordinator: Coordinator {
+import RxCocoa
+import RxSwift
 
+final class FeedCoordinator: Coordinator {
+    
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
     var navigationController: UINavigationController
@@ -49,6 +52,18 @@ final class FeedCoordinator: Coordinator {
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
         setClearNavigationBar()
+    }
+    
+    func presentComment(data: ContentEntity, commentsRelay: BehaviorRelay<[PostCommentEntity]>) {
+        let commentRepository = CommentRepositoryImpl()
+        let vm = CommentViewModel(
+            data: data,
+            commentRepository: commentRepository,
+            commentsRelay: commentsRelay
+        )
+        let vc = CommentViewController(viewModel: vm)
+        vc.sheetPresentationController?.detents = [.medium(), .large()]
+        navigationController.present(vc, animated: true)
     }
 }
 

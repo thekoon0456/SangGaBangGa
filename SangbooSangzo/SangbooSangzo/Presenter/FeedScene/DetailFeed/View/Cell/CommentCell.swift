@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Kingfisher
+
 final class CommentCell: BaseTableViewCell {
     
     // MARK: - Properties
@@ -49,8 +51,7 @@ final class CommentCell: BaseTableViewCell {
     override func configureLayout() {
         super.configureLayout()
         profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.top.leading.equalToSuperview()
             make.size.equalTo(40)
         }
         

@@ -17,7 +17,6 @@ final class LoginViewModel: ViewModel {
         let password: ControlProperty<String>
         let loginButtonTapped: ControlEvent<Void>
         let singInButtonTapped: ControlEvent<Void>
-        let xbuttonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -73,14 +72,6 @@ final class LoginViewModel: ViewModel {
                 owner.coordinator?.pushToSignInView()
             }
             .disposed(by: disposeBag)
-        
-//        input.xbuttonTapped
-//            .asDriver()
-//            .drive(with: self) { owner, _ in
-//                owner.coordinator?.navigationController.dismiss(animated: true)
-//                owner.coordinator?.finish()
-//            }
-//            .disposed(by: disposeBag)
         
         return Output()
     }

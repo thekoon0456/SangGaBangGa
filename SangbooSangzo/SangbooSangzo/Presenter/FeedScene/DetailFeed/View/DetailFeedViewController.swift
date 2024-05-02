@@ -41,12 +41,10 @@ final class DetailFeedViewController: RxBaseViewController {
             return baseView.heartButton.isSelected
         }
         
-        let commentSendButtonTapped = baseView.sendButton.rx.tap.withLatestFrom(baseView.commentTextField.rx.text.orEmpty)
-        
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                               heartButtonTapped: heartButtonTapped,
-                                              phoneButtonTapped: baseView.phoneButton.rx.tap,
-                                              commentSendButtonTapped: commentSendButtonTapped)
+                                              commentButtonTapped: baseView.commentButton.rx.tap,
+                                              phoneButtonTapped: baseView.phoneButton.rx.tap)
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
@@ -68,39 +66,28 @@ final class DetailFeedViewController: RxBaseViewController {
         
         output
             .comments
-            .drive(baseView.commentsTableView.rx.items(cellIdentifier: CommentCell.identifier,
-                                                       cellType: CommentCell.self)) { row, element, cell in
-                cell.configureCell(data: element)
-            }
-            .disposed(by: disposeBag)
-        
-        output
-            .comments
             .drive(with: self) { owner, data in
                 owner.baseView.commentCountLabel.text = String(data.count)
             }
             .disposed(by: disposeBag)
         
-        Observable.zip(baseView.commentsTableView.rx.itemDeleted.asObservable(),
-                       output.comments.asObservable())
-        .subscribe(with: self) { owner, data in
-            let comment = data.1[data.0.row].creator.userID
-            guard comment == UserDefaultsManager.shared.userData.userID ?? "" else { return }
-            
-            // 사용자 ID 체크
-            if comment == UserDefaultsManager.shared.userData.userID ?? "" {
-                print("본인")
-                //                       self.viewWillAppear.onNext()
-            } else {
-                // 삭제 불가 토스트 메시지 또는 알림
-                print("본인아님")
-            }
-        }
-        .disposed(by: disposeBag)
+//        Observable.zip(baseView.commentsTableView.rx.itemDeleted.asObservable(),
+//                       output.comments.asObservable())
+//        .subscribe(with: self) { owner, data in
+//            let comment = data.1[data.0.row].creator.userID
+//            guard comment == UserDefaultsManager.shared.userData.userID ?? "" else { return }
+//            
+//            // 사용자 ID 체크
+//            if comment == UserDefaultsManager.shared.userData.userID ?? "" {
+//                print("본인")
+//                //                       self.viewWillAppear.onNext()
+//            } else {
+//                // 삭제 불가 토스트 메시지 또는 알림
+//                print("본인아님")
+//            }
+//        }
+//        .disposed(by: disposeBag)
         
-        baseView.commentsTableView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
         
         //        baseView.commentsTableView.rx.itemDeleted { indexPath in
         //                return (indexPath, data.0, data.1)
