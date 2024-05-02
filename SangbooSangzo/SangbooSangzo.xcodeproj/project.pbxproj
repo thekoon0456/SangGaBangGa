@@ -101,6 +101,7 @@
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
 		7CCB4BC22BE3A9D000A96C7B /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BC12BE3A9D000A96C7B /* CommentViewModel.swift */; };
+		7CCB4BC52BE3B8B700A96C7B /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7CCB4BC42BE3B8B700A96C7B /* IQKeyboardManagerSwift */; };
 		7CCBCF962BCFBBAB00B3641D /* ReadPostsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF952BCFBBAB00B3641D /* ReadPostsQuery.swift */; };
 		7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF972BCFBBFF00B3641D /* ReadPostsResponse.swift */; };
 		7CCBCF9A2BCFC67900B3641D /* CommentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBCF992BCFC67900B3641D /* CommentRouter.swift */; };
@@ -262,6 +263,7 @@
 				7CDCB95D2BE247F200A3ED55 /* RxGesture in Frameworks */,
 				7C18ECA82BC6790600F061DE /* RxCocoa in Frameworks */,
 				7C18ECAF2BC6792600F061DE /* RxMoya in Frameworks */,
+				7CCB4BC52BE3B8B700A96C7B /* IQKeyboardManagerSwift in Frameworks */,
 				7C2AE00A2BD51E4500DA2C1F /* RxDataSources in Frameworks */,
 				7C18ECAD2BC6792600F061DE /* Moya in Frameworks */,
 				7C18ECDB2BC6990E00F061DE /* SnapKit in Frameworks */,
@@ -1043,6 +1045,7 @@
 				7C18ECDD2BC6991B00F061DE /* Kingfisher */,
 				7C2AE0092BD51E4500DA2C1F /* RxDataSources */,
 				7CDCB95C2BE247F200A3ED55 /* RxGesture */,
+				7CCB4BC42BE3B8B700A96C7B /* IQKeyboardManagerSwift */,
 			);
 			productName = SangbooSangzo;
 			productReference = 7C18EC8F2BC677F900F061DE /* SangbooSangzo.app */;
@@ -1079,6 +1082,7 @@
 				7C18ECDC2BC6991B00F061DE /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				7C2AE0082BD51E4500DA2C1F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				7CDCB95B2BE247F200A3ED55 /* XCRemoteSwiftPackageReference "RxGesture" */,
+				7CCB4BC32BE3B8B600A96C7B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 7C18EC902BC677F900F061DE /* Products */;
 			projectDirPath = "";
@@ -1483,6 +1487,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		7CCB4BC32BE3B8B600A96C7B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.2;
+			};
+		};
 		7CDCB95B2BE247F200A3ED55 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
@@ -1528,6 +1540,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C2AE0082BD51E4500DA2C1F /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		7CCB4BC42BE3B8B700A96C7B /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CCB4BC32BE3B8B600A96C7B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 		7CDCB95C2BE247F200A3ED55 /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;
