@@ -11,7 +11,8 @@ struct UploadImageEntity {
     let files: [String]
 }
 
-struct ContentEntity: Hashable {
+struct ContentEntity: Hashable, Identifiable {
+    let id = UUID()
     let postID: String
     let productID: String
     let title: String //제목
@@ -22,7 +23,7 @@ struct ContentEntity: Hashable {
     let price: String //보증금, 월세
     let space: String //평수
     let createdAt: String
-    let creator: LoginEntity
+    let creator: ProfileEntity
     let files: [String]
     let likes: [String]
     let hashTags: [String]
@@ -39,7 +40,7 @@ struct ContentEntity: Hashable {
                       price: "",
                       space: "",
                       createdAt: "",
-                      creator: LoginResponse().toEntity,
+                      creator: ProfileEntity.defaultData(),
                       files: [],
                       likes: [],
                       hashTags: [],
