@@ -8,6 +8,7 @@
 import MapKit
 import UIKit
 
+import MarqueeLabel
 import Kingfisher
 
 final class SSAnnotationView: MKAnnotationView {
@@ -37,10 +38,13 @@ final class SSAnnotationView: MKAnnotationView {
         $0.textAlignment = .center
     }
     
-    let priceLabel = UILabel().then {
+    let priceLabel = MarqueeLabel().then {
         $0.font = SSFont.medium11
         $0.textColor = .label
-        $0.textAlignment = .center
+        $0.type = .leftRight
+        $0.animationCurve = .easeInOut
+        $0.trailingBuffer = 4
+        $0.speed = .duration(10)
     }
     
     lazy var imageView = UIImageView().then {

@@ -27,7 +27,7 @@ extension KingfisherWrapper<UIImageView> {
         let options: KingfisherOptionsInfo = [
             .processor(processor),
             .scaleFactor(UIScreen.main.scale),
-                 .transition(.fade(1)),
+            .transition(.fade(0.5)),
                  .cacheOriginalImage,
             .requestModifier(modifier)
         ]

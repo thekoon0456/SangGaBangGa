@@ -25,6 +25,7 @@ final class MapViewController: RxBaseViewController {
     private let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
     private var userLocation: CLLocationCoordinate2D?
     private let dataRelay = PublishRelay<ContentEntity>()
+    private var updateLocation = true
     
     private lazy var currentLocationButton = UIButton().then {
         let image = UIImage(systemName: "mappin.and.ellipse.circle")
@@ -237,7 +238,8 @@ extension MapViewController {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print(locations)
-        
+        guard updateLocation else { return }
+        updateLocation = false
         if let coordinate = locations.last?.coordinate {
             userLocation = CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                   longitude: coordinate.longitude)
