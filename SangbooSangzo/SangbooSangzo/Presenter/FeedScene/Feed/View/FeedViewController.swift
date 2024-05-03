@@ -65,9 +65,14 @@ final class FeedViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         
+        let fetchContents = collectionView.rx.prefetchItems
+            .compactMap { $0.last?.item }
+        
         let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.itemSelected,
-                                        addButtonTapped: addButton.rx.tap)
+                                        addButtonTapped: addButton.rx.tap,
+        fetchContents: fetchContents)
+        
         let output = viewModel.transform(input)
         
         //        output

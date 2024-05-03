@@ -46,7 +46,9 @@ final class MapViewModel: ViewModel {
             .flatMap { owner, _ in
                 owner
                     .postRepository
-                    .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
+                    .readPosts(query: .init(next: nil,
+                                            limit: APISetting.limit,
+                                            productID: APISetting.productID))
             }
             .compactMap { $0.data }
             .debug()

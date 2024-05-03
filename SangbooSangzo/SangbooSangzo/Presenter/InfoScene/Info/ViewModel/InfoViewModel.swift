@@ -67,12 +67,12 @@ final class InfoViewModel: ViewModel {
             .flatMap { owner, index in
                 if index.1 == 0 {
                     owner.likeRepository.ReadLikePosts(query: .init(next: "",
-                                                                    limit: "20"))
+                                                                    limit: APISetting.limit))
                 } else {
                     owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
                                                        query: ReadPostsQuery(next: "",
-                                                                             limit: "20",
-                                                                             productID: "SangbooSangzo"))
+                                                                             limit: APISetting.limit,
+                                                                             productID: APISetting.productID))
                 }
             }
             .map { $0.data }

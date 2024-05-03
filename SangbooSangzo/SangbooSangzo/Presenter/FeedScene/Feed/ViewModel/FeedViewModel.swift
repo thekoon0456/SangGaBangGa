@@ -16,6 +16,7 @@ final class FeedViewModel: ViewModel {
         let viewWillAppear: Observable<Void>
         let cellSelected: ControlEvent<IndexPath>
         let addButtonTapped: ControlEvent<Void>
+        let fetchContents: Observable<Int>
     }
     
     struct Output {
@@ -35,8 +36,9 @@ final class FeedViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-    
+        
         let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
+        let nextCursorRelay = BehaviorRelay<String?>(value: nil)
         
         input
             .viewWillAppear
@@ -44,10 +46,14 @@ final class FeedViewModel: ViewModel {
             .flatMap { owner, _ in
                 owner
                     .postRepository
-                    .readPosts(query: .init(next: nil, limit: "20", productID: "SangbooSangzo"))
+                    .readPosts(query: .init(next: nil,
+                                            limit: APISetting.limit,
+                                            productID: APISetting.productID))
             }
-            .map { $0.data }
-            .subscribe { dataRelay.accept($0) }
+            .subscribe { value in
+                nextCursorRelay.accept(value.nextCursor)
+                dataRelay.accept(value.data)
+            }
             .disposed(by: disposeBag)
         
         input
@@ -62,6 +68,28 @@ final class FeedViewModel: ViewModel {
             .cellSelected
             .subscribe(with: self) { owner, indexPath in
                 owner.coordinator?.pushToDetail(data: dataRelay.value[indexPath.item])
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .fetchContents
+            .withUnretained(self)
+            .flatMap { owner, index in
+                guard let nextCursor = nextCursorRelay.value,
+                      let lastData = dataRelay.value.last,
+                      nextCursor != "0",
+                      nextCursor == lastData.postID else {
+                    return Single<ReadPostsEntity>.never()
+                }
+                return owner.postRepository.readPosts(query: .init(next: nextCursor,
+                                                                   limit: APISetting.limit,
+                                                                   productID: APISetting.productID))
+            }
+            .subscribe(with: self) { owner, value in
+                var data = dataRelay.value
+                data.append(contentsOf: value.data)
+                dataRelay.accept(data)
+                nextCursorRelay.accept(value.nextCursor)
             }
             .disposed(by: disposeBag)
         
