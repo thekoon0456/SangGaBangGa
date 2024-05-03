@@ -27,6 +27,16 @@ final class MapViewController: RxBaseViewController {
     private let dataRelay = PublishRelay<ContentEntity>()
     private var updateLocation = true
     
+    private let searchBar = UISearchBar().then {
+        $0.searchBarStyle = .minimal
+        $0.backgroundColor = .clear
+        $0.searchTextField.backgroundColor = .white
+        $0.layer.shadowOffset = CGSize(width: 4, height: 4)
+        $0.layer.shadowColor = UIColor.systemGray.cgColor
+        $0.layer.shadowOpacity = 0.8
+        $0.layer.shadowRadius = 16
+    }
+    
     private lazy var currentLocationButton = UIButton().then {
         let image = UIImage(systemName: "mappin.and.ellipse.circle")
         $0.setImage(image, for: .normal)
@@ -89,7 +99,7 @@ final class MapViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(mapView, currentLocationButton)
+        view.addSubviews(mapView, currentLocationButton, searchBar)
     }
     
     override func configureLayout() {
@@ -97,6 +107,12 @@ final class MapViewController: RxBaseViewController {
         mapView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
         currentLocationButton.snp.makeConstraints { make in
