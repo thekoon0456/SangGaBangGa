@@ -21,11 +21,9 @@ final class MapViewController: RxBaseViewController {
         $0.register(SSAnnotationView.self,
                     forAnnotationViewWithReuseIdentifier:SSAnnotationView.identifier)
     }
-    private let locationManager = CLLocationManager()
-    private let defaultLocation = CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893)
-    private var userLocation: CLLocationCoordinate2D?
+    
+    private let locationManager = SSLocationManager.shared
     private let dataRelay = PublishRelay<ContentEntity>()
-    private var updateLocation = true
     
     private let searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
@@ -57,7 +55,7 @@ final class MapViewController: RxBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMap()
-        configureLocation()
+        locationManager.configureLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +72,6 @@ final class MapViewController: RxBaseViewController {
     
     override func bind() {
         super.bind()
-        
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                        selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultData()))
         let output = viewModel.transform(input)
@@ -87,14 +84,26 @@ final class MapViewController: RxBaseViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        locationManager
+            .userLocationRelay
+            .asDriver()
+            .drive(with: self) { owner, location in
+                owner.setCurrentRegionAndAnnotation()
+            }
+            .disposed(by: disposeBag)
+        
+        locationManager
+            .mapRegionRelay
+            .asDriver()
+            .drive(with: self) { owner, region in
+                owner.mapView.setRegion(region, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     @objc func currentLocationButtonTapped() {
-        guard let userLocation else { return }
-        let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 5000,
-                                        longitudinalMeters: 5000)
-        mapView.setRegion(region, animated: true)
+        mapView.setRegion(locationManager.mapRegionRelay.value, animated: true)
     }
     
     override func configureHierarchy() {
@@ -127,6 +136,47 @@ final class MapViewController: RxBaseViewController {
     }
 }
 
+// MARK: - MapView
+
+extension MapViewController {
+    
+    func configureMap() {
+        mapView.delegate = self
+    }
+    
+    //맵 annotaion 리셋
+    func resetMapAnnotation() {
+        mapView.removeAnnotations(mapView.annotations)
+    }
+    
+    func setSSAnnotation(data: ContentEntity) {
+        guard let site = data.coordinate,
+              let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
+              let longitude = Double(site.components(separatedBy: " / ").last ?? "")
+        else { return }
+        
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let annotation = SSAnnotation(coordinate: coordinate,
+                                      data: data)
+        mapView.addAnnotation(annotation)
+    }
+    
+    func setCurrentRegionAndAnnotation() {
+        mapView.setRegion(locationManager.mapRegionRelay.value, animated: true)
+        setAnnotation(coordinate: locationManager.userLocationRelay.value)
+    }
+    
+    func setAnnotation(coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "현재 위치"
+        
+        mapView.addAnnotation(annotation)
+    }
+}
+
+// MARK: - MKMapViewDelegate
+
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -152,131 +202,5 @@ extension MapViewController: MKMapViewDelegate {
 
 extension MapViewController {
     
-    func setSSAnnotation(data: ContentEntity) {
-        guard let site = data.coordinate,
-              let latitude = Double(site.components(separatedBy: " / ").first ?? ""),
-              let longitude = Double(site.components(separatedBy: " / ").last ?? "")
-        else { return }
-        
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let annotation = SSAnnotation(coordinate: coordinate,
-                                      data: data)
-        mapView.addAnnotation(annotation)
-    }
     
-    func setCurrentRegionAndAnnotation() {
-        guard let userLocation else { return }
-        
-        let region = MKCoordinateRegion(center: userLocation,
-                                        latitudinalMeters: 1000,
-                                        longitudinalMeters: 1000)
-        mapView.setRegion(region, animated: true)
-        setAnnotation(coordinate: userLocation)
-    }
-    
-    func setAnnotation(coordinate: CLLocationCoordinate2D) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "현재 위치"
-        
-        mapView.addAnnotation(annotation)
-    }
-}
-
-extension MapViewController: CLLocationManagerDelegate {
-    func configureMap() {
-        mapView.delegate = self
-    }
-    
-    //맵 annotaion 리셋
-    func resetMapAnnotation() {
-        mapView.removeAnnotations(mapView.annotations)
-    }
-}
-
-extension MapViewController {
-    
-    func configureLocation() {
-        locationManager.delegate = self
-        self.checkDeviceLocationAuthorization()
-    }
-    
-    func checkDeviceLocationAuthorization() {
-        //첫 진입시 권한 띄워주거나, 동의 하면 위치 가져오기
-        DispatchQueue.global().async {
-            if CLLocationManager.locationServicesEnabled() {
-                let authorization: CLAuthorizationStatus = self.locationManager.authorizationStatus
-                
-                DispatchQueue.main.async {
-                    self.checkCurrentLocationAuthorization(status: authorization)
-                }
-            } else {
-                //사용자의 아이폰의 위치 서비스가 꺼져있는 경우. alert으로 띄워주기
-                DispatchQueue.main.async {
-                    self.showLocationSettingAlert(title: "위치 서비스 확인",
-                                                  message: "아이폰의 위치 서비스가 꺼져 있어서 위치 권한을 요청할 수 없어요\n기기의 설정 -> 개인 정보 보호에서 위치 서비스를 켜주세요")
-                }
-            }
-        }
-    }
-    
-    func checkCurrentLocationAuthorization(status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            //어느 정도 위치 정확도를 가질지 설정
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestWhenInUseAuthorization() //plist의 권한 요청 문구 띄움
-        case .denied:
-            //위치권한이 거부된 경우. 설정창으로 이동 alert띄우기
-            showLocationSettingAlert(title: "위치 정보 이용",
-                                     message: "위치서비스를 사용할 수 없습니다\n기기의 설정 -> 개인정보 보호 및 보안에서 위치 서비스를 켜주세요")
-        case .authorizedWhenInUse:
-            //사용자가 동의한 경우, 위치 업데이트 시작. didUpdateLocation 메서드 실행
-            locationManager.startUpdatingLocation()
-        default:
-            //사용자의 아이폰의 위치 서비스가 꺼져있는 경우. alert으로 띄워주기
-            showLocationSettingAlert(title: "위치 서비스 확인",
-                                     message: "아이폰의 위치 서비스가 꺼져 있어서 위치 권한을 요청할 수 없어요\n기기의 설정 -> 개인정보 보호 및 보안에서 위치 서비스를 켜주세요")
-        }
-    }
-    
-    func showLocationSettingAlert(title: String, message: String) {
-//        showAlert(title: title,
-//                  message: message) {
-//            //아이폰 설정창으로 이동
-//            guard let settingURL = URL(string: UIApplication.openSettingsURLString) else { return }
-//            UIApplication.shared.open(settingURL)
-//        }
-    }
-}
-
-extension MapViewController {
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations)
-        guard updateLocation else { return }
-        updateLocation = false
-        if let coordinate = locations.last?.coordinate {
-            userLocation = CLLocationCoordinate2D(latitude: coordinate.latitude,
-                                                  longitude: coordinate.longitude)
-        }
-        
-        setCurrentRegionAndAnnotation()
-    }
-    
-    //위치정보 가져오지 못했을 경우. alert이나 default 위치 띄우기
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        showLocationSettingAlert(title: "위치 정보 이용",
-                                 message: "위치서비스를 사용할 수 없습니다\n기기의 설정 -> 개인정보 보호 및 보안에서 위치 서비스를 켜주세요")
-        
-        let region = MKCoordinateRegion(center: defaultLocation,
-                                        latitudinalMeters: 1000,
-                                        longitudinalMeters: 1000)
-        mapView.setRegion(region, animated: true)
-    }
-    
-    //사용자 권한 상태가 바뀌었을때
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkDeviceLocationAuthorization()
-    }
 }
