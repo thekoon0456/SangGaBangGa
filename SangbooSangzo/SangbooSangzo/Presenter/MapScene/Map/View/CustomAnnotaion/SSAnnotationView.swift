@@ -44,7 +44,7 @@ final class SSAnnotationView: MKAnnotationView {
         $0.type = .leftRight
         $0.animationCurve = .easeInOut
         $0.trailingBuffer = 4
-        $0.speed = .duration(10)
+        $0.speed = .duration(5)
     }
     
     lazy var imageView = UIImageView().then {

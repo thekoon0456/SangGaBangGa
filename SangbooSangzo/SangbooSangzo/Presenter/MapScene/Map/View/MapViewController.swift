@@ -60,19 +60,21 @@ final class MapViewController: RxBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "지도"
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationItem.title = "지도"
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationItem.title = ""
-        navigationController?.navigationBar.prefersLargeTitles = false
+//        navigationItem.title = ""
+//        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func bind() {
         super.bind()
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
+                                       searchRegion: searchBar.rx.text.orEmpty,
+//                                       currentButtonTapped: ,
                                        selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultData()))
         let output = viewModel.transform(input)
         

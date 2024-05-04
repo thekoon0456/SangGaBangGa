@@ -10,7 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
-
+import MarqueeLabel
 
 final class MainFeedBaseView: BaseView {
     
@@ -21,41 +21,49 @@ final class MainFeedBaseView: BaseView {
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
     }
     
     let heartCountLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
+        $0.font = SSFont.light11
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
-        $0.backgroundColor = .white
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
-        $0.layer.cornerRadius = 15
-        $0.clipsToBounds = true
     }
     
     let commentCountLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
+        $0.font = SSFont.light11
     }
     
-    let categoryLabel = UILabel().then {
+    let categoryLabel = PaddingLabel().then {
         $0.font =  SSFont.medium12
-        $0.textColor = .systemGray
+        $0.textColor = .white
+        $0.backgroundColor = .tintColor
+        $0.layer.cornerRadius = 4
+        $0.clipsToBounds = true
+        $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)
     }
     
-    let titleLabel = UILabel().then {
+    let titleLabel = MarqueeLabel().then {
         $0.font = SSFont.semiBold16
-        $0.numberOfLines = 2
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
+    }
+    
+    private let addressImageView = UIImageView().then {
+        $0.image = .ssLocation.withTintColor(.systemGray)
+        $0.contentMode = .scaleAspectFill
+    }
+    
+    let addressLabel = UILabel().then {
+        $0.font = SSFont.medium12
+        $0.textColor = .systemGray
     }
     
     let dateLabel = UILabel().then {
@@ -66,8 +74,9 @@ final class MainFeedBaseView: BaseView {
     override func configureHierarchy() {
         super.configureHierarchy()
         addSubviews(imageView, heartButton, heartCountLabel,
-                                commentButton, commentCountLabel,
-                                categoryLabel, titleLabel, priceLabel, dateLabel)
+                    commentButton, commentCountLabel,
+                    categoryLabel, titleLabel, priceLabel,
+                    addressImageView, addressLabel ,dateLabel)
     }
     
     override func configureLayout() {
@@ -90,6 +99,7 @@ extension MainFeedBaseView {
         titleLabel.text = data.title
         priceLabel.text = data.price
         commentCountLabel.text = String(data.comments.count)
+        addressLabel.text = data.address
         let formatter = DateFormatterManager.shared
         dateLabel.text =  formatter.iso8601DateToString(data.createdAt, format: .date)
     }
@@ -104,52 +114,61 @@ extension MainFeedBaseView {
         
         heartButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalTo(commentButton.snp.leading).offset(-12)
             make.size.equalTo(30)
         }
         
         heartCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartButton.snp.trailing).offset(2)
-            make.height.equalTo(30)
+            make.top.equalTo(heartButton.snp.bottom)
+            make.centerX.equalTo(heartButton)
         }
         
         commentButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().offset(-12)
             make.size.equalTo(30)
         }
         
         commentCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(commentButton.snp.trailing).offset(2)
-            make.height.equalTo(30)
+            make.top.equalTo(commentButton.snp.bottom)
+            make.centerX.equalTo(commentButton)
         }
         
         categoryLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.bottom).offset(4)
+            make.top.equalTo(imageView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
+            make.height.equalTo(20)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
+            make.trailing.equalTo(heartButton.snp.leading)
         }
         
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(12)
-            make.bottom.equalToSuperview().offset(-4).priority(.low)
+            make.trailing.equalToSuperview().offset(-12)
+        }
+        
+        addressImageView.snp.makeConstraints { make in
+            make.top.equalTo(priceLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(12)
+            make.bottom.equalToSuperview()
+            make.size.equalTo(16)
+        }
+        
+        addressLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(addressImageView)
+            make.leading.equalTo(addressImageView.snp.trailing).offset(2)
+            make.trailing.lessThanOrEqualTo(dateLabel.snp.leading).offset(-4)
+            make.bottom.equalToSuperview()
         }
         
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(priceLabel.snp.top)
-            make.leading.greaterThanOrEqualTo(priceLabel.snp.trailing).offset(12)
+            make.centerY.equalTo(addressLabel)
             make.trailing.equalToSuperview().offset(-12)
-            make.bottom.equalTo(priceLabel.snp.bottom)
-            
         }
     }
 }

@@ -120,7 +120,7 @@ extension Coordinator {
             make.bottom.equalToSuperview().offset(-100)
         }
         
-        UIView.animate(withDuration: 1, delay: 1.5, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 1, delay: 1.0, options: .curveEaseOut, animations: {
             messageLabel.alpha = 0.0
         }, completion: { isCompleted in
             guard isCompleted == true else { return }

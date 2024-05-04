@@ -21,6 +21,7 @@ final class FeedViewController: RxBaseViewController {
     private let viewModel: FeedViewModel
     private var dataSource: DataSource?
     
+    private let titleView = TitleView()
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: createLayout()).then {
         $0.register(MainFeedCell.self, forCellWithReuseIdentifier: MainFeedCell.identifier)
@@ -52,14 +53,14 @@ final class FeedViewController: RxBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "상가방가"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        //        navigationItem.title = "상가방가"
+        //        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationItem.title = ""
-        navigationController?.navigationBar.prefersLargeTitles = false
+        //        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     override func bind() {
@@ -71,18 +72,9 @@ final class FeedViewController: RxBaseViewController {
         let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.itemSelected,
                                         addButtonTapped: addButton.rx.tap,
-        fetchContents: fetchContents)
+                                        fetchContents: fetchContents)
         
         let output = viewModel.transform(input)
-        
-        //        output
-        //            .feeds
-        //            .drive(collectionView.rx.items(cellIdentifier: MainFeedCell.identifier,
-        //                                           cellType: MainFeedCell.self)) { item , element, cell in
-        //                cell.configureCellData(element)
-        //                print(element)
-        //            }
-        //            .disposed(by: disposeBag)
         
         output
             .feeds
@@ -95,13 +87,20 @@ final class FeedViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(collectionView, addButton)
+        view.addSubviews(titleView, collectionView, addButton)
     }
     
     override func configureLayout() {
         super.configureLayout()
+        titleView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(52)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
         collectionView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(titleView.snp.bottom)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
         
         addButton.snp.makeConstraints { make in

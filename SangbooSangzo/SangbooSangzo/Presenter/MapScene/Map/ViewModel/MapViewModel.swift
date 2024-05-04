@@ -14,6 +14,7 @@ final class MapViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
+        let searchRegion: ControlProperty<String>
         let selectCell: Driver<ContentEntity>
     }
     
@@ -33,6 +34,12 @@ final class MapViewModel: ViewModel {
     }
     
     func transform(_ input: Input) -> Output {
+        
+        input
+            .searchRegion
+            
+        
+        
         input
             .selectCell
             .drive(with: self) { owner, data in
