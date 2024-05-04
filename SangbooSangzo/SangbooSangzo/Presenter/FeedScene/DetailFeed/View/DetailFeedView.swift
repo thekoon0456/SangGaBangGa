@@ -21,31 +21,22 @@ final class DetailFeedView: BaseView {
     lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
-                    for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
-                    for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
-        $0.contentVerticalAlignment = .center
-        $0.contentHorizontalAlignment = .center
     }
     
     let heartCountLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
+        $0.font = SSFont.light11
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26))),
-                    for: .normal)
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
-        $0.contentVerticalAlignment = .center
-        $0.contentHorizontalAlignment = .center
     }
     
     let commentCountLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
+        $0.font = SSFont.light11
     }
     
     let titleLabel = UILabel().then {
@@ -53,9 +44,13 @@ final class DetailFeedView: BaseView {
         $0.numberOfLines = 2
     }
     
-    let categoryLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textColor = .systemGray
+    let categoryLabel = PaddingLabel().then {
+        $0.font =  SSFont.medium12
+        $0.textColor = .white
+        $0.backgroundColor = .tintColor
+        $0.layer.cornerRadius = 4
+        $0.clipsToBounds = true
+        $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)
     }
     
     private let descriptionTitle = UILabel().then {
@@ -208,48 +203,39 @@ extension DetailFeedView {
             make.width.equalToSuperview()
             make.height.equalTo(imageScrollView.snp.width).multipliedBy(0.8)
         }
-    
-        profileView.snp.makeConstraints { make in
-            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.height.equalTo(30)
-        }
         
         heartButton.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.top)
-            make.leading.equalTo(profileView.snp.trailing).offset(16)
-            make.bottom.equalTo(profileView.snp.bottom)
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.trailing.equalTo(commentButton.snp.leading).offset(-12)
+            make.size.equalTo(30)
         }
         
         heartCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.top)
-            make.leading.equalTo(heartButton.snp.trailing).offset(4)
-            make.bottom.equalTo(profileView.snp.bottom)
+            make.top.equalTo(heartButton.snp.bottom)
+            make.centerX.equalTo(heartButton)
         }
         
         commentButton.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.top)
-            make.leading.equalTo(heartCountLabel.snp.trailing).offset(16)
-            make.bottom.equalTo(profileView.snp.bottom)
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.trailing.equalToSuperview().offset(-12)
+            make.size.equalTo(30)
         }
         
         commentCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(commentButton.snp.top)
-            make.leading.equalTo(commentButton.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(profileView.snp.bottom)
+            make.top.equalTo(commentButton.snp.bottom)
+            make.centerX.equalTo(commentButton)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.bottom).offset(16)
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
         
         categoryLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.equalToSuperview().offset(12)
+            make.height.equalTo(20)
         }
         
         descriptionTitle.snp.makeConstraints { make in
