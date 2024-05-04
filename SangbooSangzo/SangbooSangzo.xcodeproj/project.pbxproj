@@ -103,6 +103,7 @@
 		7C9E2DF62BE4DD5700FD81E3 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9E2DF52BE4DD5700FD81E3 /* LocationManager.swift */; };
 		7C9E2DF82BE52A5900FD81E3 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */; };
 		7CA35D7C2BE6A65400E35AFA /* UserConnentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */; };
+		7CA35D7E2BE6B33B00E35AFA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */; };
 		7CCB4BBA2BE36F0100A96C7B /* ProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */; };
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
@@ -230,6 +231,7 @@
 		7C9E2DF52BE4DD5700FD81E3 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnentView.swift; sourceTree = "<group>"; };
+		7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
 		7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntity.swift; sourceTree = "<group>"; };
 		7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 		7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
@@ -850,6 +852,7 @@
 			children = (
 				7C1C502A2BCD0A980066CBCA /* SSAnnotation.swift */,
 				7C1C502C2BCD0B280066CBCA /* SSAnnotationView.swift */,
+				7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */,
 			);
 			path = CustomAnnotaion;
 			sourceTree = "<group>";
@@ -1207,6 +1210,7 @@
 				7CCB4BC22BE3A9D000A96C7B /* CommentViewModel.swift in Sources */,
 				7C0ADCC62BC92647002DAEA7 /* PostsAPIManager.swift in Sources */,
 				7C18ECBE2BC679DD00F061DE /* Then+.swift in Sources */,
+				7CA35D7E2BE6B33B00E35AFA /* CustomMarkerView.swift in Sources */,
 				7C7D88582BE234F8005A06EB /* LikeEntity.swift in Sources */,
 				7C21F5FD2BD28F1700D52383 /* KF+.swift in Sources */,
 				7C0ADCC32BC92183002DAEA7 /* PostsRouter.swift in Sources */,

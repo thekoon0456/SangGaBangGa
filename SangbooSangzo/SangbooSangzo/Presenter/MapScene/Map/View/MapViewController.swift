@@ -36,15 +36,16 @@ final class MapViewController: RxBaseViewController {
     }
     
     private lazy var currentLocationButton = UIButton().then {
-        let image = UIImage(systemName: "mappin.and.ellipse.circle")
+        let image = UIImage.ssLocation.withTintColor(.accent)
         $0.setImage(image, for: .normal)
         $0.addTarget(self, action: #selector(currentLocationButtonTapped), for: .touchUpInside)
-        $0.tintColor = .black
-        $0.backgroundColor = .white
+        $0.backgroundColor = .second
         $0.layer.cornerRadius = 25
         $0.clipsToBounds = true
     }
-
+    
+    private var markerView = CustomMarkerView()
+    
     // MARK: - Lifecycles
     
     init(viewModel: MapViewModel) {
@@ -58,23 +59,11 @@ final class MapViewController: RxBaseViewController {
         locationManager.configureLocation()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        navigationItem.title = "지도"
-//        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-//        navigationItem.title = ""
-//        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
     override func bind() {
         super.bind()
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                        searchRegion: searchBar.rx.text.orEmpty,
-//                                       currentButtonTapped: ,
+                                       //                                       currentButtonTapped: ,
                                        selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultData()))
         let output = viewModel.transform(input)
         
@@ -135,6 +124,7 @@ final class MapViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+        navigationItem.title = ""
     }
 }
 
@@ -189,16 +179,26 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         print(#function)
-        guard let customAnnotation = annotation as? SSAnnotation,
-              let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier)
-        else {
-            return nil
+        
+        if let annotation = annotation as? MKPointAnnotation {
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: CustomMarkerView.identifier) as? CustomMarkerView {
+                dequeuedView.annotation = annotation
+                markerView = dequeuedView
+                return markerView
+            } else {
+                let markerView = CustomMarkerView(annotation: annotation)
+                return markerView
+            }
         }
         
-        annotationView.annotation = customAnnotation
-        annotationView.frame = .init(x: 0, y: 0, width: 70, height: 100)
-        
-        return annotationView
+        if let customAnnotation = annotation as? SSAnnotation,
+           let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier) {
+            annotationView.annotation = customAnnotation
+            annotationView.frame = .init(x: 0, y: 0, width: 70, height: 100)
+            return annotationView
+        }
+           
+        return nil
     }
 }
 
@@ -206,3 +206,6 @@ extension MapViewController {
     
     
 }
+
+
+
