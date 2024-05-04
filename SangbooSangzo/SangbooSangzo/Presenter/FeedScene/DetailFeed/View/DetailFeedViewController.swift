@@ -44,7 +44,7 @@ final class DetailFeedViewController: RxBaseViewController {
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                               heartButtonTapped: heartButtonTapped,
                                               commentButtonTapped: baseView.commentButton.rx.tap,
-                                              phoneButtonTapped: baseView.phoneButton.rx.tap)
+                                              phoneButtonTapped: baseView.userConnectView.phoneButton.rx.tap)
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
@@ -108,7 +108,7 @@ final class DetailFeedViewController: RxBaseViewController {
         //            })
         //            .disposed(by: disposeBag)
         
-        baseView.messageButton.rx.tap
+        baseView.userConnectView.messageButton.rx.tap
             .flatMap { output.data }
             .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, data in

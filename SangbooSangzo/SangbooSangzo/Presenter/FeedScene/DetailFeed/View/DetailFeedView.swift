@@ -17,7 +17,6 @@ final class DetailFeedView: BaseView {
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    let profileView = UserProfileView()
     lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
@@ -119,25 +118,8 @@ final class DetailFeedView: BaseView {
         $0.font = SSFont.semiBold24
     }
     
-    lazy var inquiryStackView = UIStackView(arrangedSubviews: [phoneButton, messageButton]).then {
-        $0.axis = .horizontal
-        $0.spacing = 80
-        $0.distribution = .fillEqually
-    }
-    
-    let phoneButton = UIButton().then {
-        $0.setTitle("전화하기", for: .normal)
-        $0.setTitleColor(.tintColor, for: .normal)
-        $0.setImage(UIImage(systemName: "phone.fill"), for: .normal)
-        $0.titleEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
-    }
-    
-    let messageButton = UIButton().then {
-        $0.setTitle("문자하기", for: .normal)
-        $0.setTitleColor(.tintColor, for: .normal)
-        $0.setImage(UIImage(systemName: "message.fill"), for: .normal)
-        $0.titleEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
-    }
+    let userConnectView = UserConnectView()
+
     
     // MARK: - Configure
     
@@ -145,12 +127,12 @@ final class DetailFeedView: BaseView {
         super.configureHierarchy()
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(imageScrollView, profileView, heartButton, heartCountLabel, commentButton, commentCountLabel,
+        contentView.addSubviews(imageScrollView, heartButton, heartCountLabel, commentButton, commentCountLabel,
                                 titleLabel, categoryLabel, descriptionTitle, dateTitleLabel, dateLabel,
                                 addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
-                                inquiryTitle, inquiryStackView)
+                                inquiryTitle, userConnectView)
     }
     
     override func configureLayout() {
@@ -169,7 +151,7 @@ final class DetailFeedView: BaseView {
        addressLabel.text = data.address
        priceLabel.text = data.price
        spaceLabel.text = data.space
-       profileView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
+        userConnectView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
         
         imageScrollView.imageViews = data.files.map {
             let imageView = UIImageView()
@@ -319,12 +301,12 @@ extension DetailFeedView {
             make.trailing.equalToSuperview().offset(-16)
         }
         
-        inquiryStackView.snp.makeConstraints { make in
+        userConnectView.snp.makeConstraints { make in
             make.top.equalTo(inquiryTitle.snp.bottom).offset(8)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(300)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-8)
+            make.height.equalTo(80)
         }
     }
 }

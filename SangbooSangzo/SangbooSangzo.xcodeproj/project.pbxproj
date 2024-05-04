@@ -102,6 +102,7 @@
 		7C9E2DF32BE4D86400FD81E3 /* MarqueeLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 7C9E2DF22BE4D86400FD81E3 /* MarqueeLabel */; };
 		7C9E2DF62BE4DD5700FD81E3 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9E2DF52BE4DD5700FD81E3 /* LocationManager.swift */; };
 		7C9E2DF82BE52A5900FD81E3 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */; };
+		7CA35D7C2BE6A65400E35AFA /* UserConnentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */; };
 		7CCB4BBA2BE36F0100A96C7B /* ProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */; };
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
@@ -228,6 +229,7 @@
 		7C9E2DEF2BE4D54200FD81E3 /* APISetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISetting.swift; sourceTree = "<group>"; };
 		7C9E2DF52BE4DD5700FD81E3 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
+		7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnentView.swift; sourceTree = "<group>"; };
 		7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntity.swift; sourceTree = "<group>"; };
 		7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 		7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
@@ -942,6 +944,7 @@
 			children = (
 				7CD29C8E2BCE56EA00A45268 /* Toast.swift */,
 				7C2ADFF92BD5150B00DA2C1F /* UserProfileView.swift */,
+				7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */,
 				7C62A0B02BD62F9D00296BD7 /* ImageScrollView.swift */,
 				7CFC8B032BD108AF00F713E1 /* MenuButton.swift */,
 				7C92D6ED2BD911720021AC66 /* PaddingLabel.swift */,
@@ -1227,6 +1230,7 @@
 				7C1C50232BCD028A0066CBCA /* AuthCoordinator.swift in Sources */,
 				7C0ADCCE2BC92B85002DAEA7 /* UploadContentResponse.swift in Sources */,
 				7C21F5F72BD28C1600D52383 /* DetailFeedViewController.swift in Sources */,
+				7CA35D7C2BE6A65400E35AFA /* UserConnentView.swift in Sources */,
 				7C418C3A2BE0E43A00583C5C /* DateFormatterManager.swift in Sources */,
 				7C1C50172BCCFF2C0066CBCA /* MapViewController.swift in Sources */,
 				7C18ECE42BC6998400F061DE /* UserRouter.swift in Sources */,
