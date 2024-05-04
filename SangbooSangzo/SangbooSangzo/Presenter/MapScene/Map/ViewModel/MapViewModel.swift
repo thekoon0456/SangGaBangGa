@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 import RxCocoa
 import RxSwift
@@ -14,12 +15,14 @@ final class MapViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        let searchRegion: ControlProperty<String>
+        let searchRegion: Observable<String>
+        let currentButtonTapped: ControlEvent<Void>
         let selectCell: Driver<ContentEntity>
     }
     
     struct Output {
         let feeds: Driver<[ContentEntity]>
+        let moveToRegion: Driver<MKCoordinateRegion>
     }
     
     // MARK: - Properties
@@ -35,10 +38,29 @@ final class MapViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
+        let regionRelay = BehaviorRelay<MKCoordinateRegion>(value: .init())
+        
         input
             .searchRegion
+            .withUnretained(self)
+            .flatMap { owner, value in
+                owner.searchAndMoveToLocation(address: value)
+            }
+            .subscribe { value in
+                regionRelay.accept(value)
+            }
+            .disposed(by: disposeBag)
             
         
+        input
+            .currentButtonTapped
+            .flatMap { _ in
+                SSLocationManager.shared.mapRegionRelay
+            }
+            .subscribe { value in
+                regionRelay.accept(value)
+            }
+            .disposed(by: disposeBag)
         
         input
             .selectCell
@@ -61,6 +83,38 @@ final class MapViewModel: ViewModel {
             .debug()
             .asDriver(onErrorJustReturn: [])
         
-        return Output(feeds: feeds)
+        return Output(feeds: feeds,
+                      moveToRegion: regionRelay.asDriver())
+    }
+}
+
+extension MapViewModel {
+    
+    func searchAndMoveToLocation(address: String) -> Observable<MKCoordinateRegion> {
+        print(#function)
+        return Observable.create { observer in
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(address) { placemarks, error in
+                
+                if let error = error {
+                    observer.onError(error)
+                    return
+                }
+                
+                if let placemarks = placemarks,
+                   let location = placemarks.first?.location {
+                    print(placemarks)
+                    print(location)
+                    
+                    let region = MKCoordinateRegion(center: location.coordinate,
+                                                    latitudinalMeters: SSMapConst.latitudinalMeters,
+                                                    longitudinalMeters: SSMapConst.longitudinalMeters)
+                    observer.onNext(region)
+                    observer.onCompleted()
+                }
+            }
+            
+            return Disposables.create()
+        }
     }
 }

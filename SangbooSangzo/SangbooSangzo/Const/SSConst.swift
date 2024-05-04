@@ -7,8 +7,9 @@
 
 import UIKit
 
-enum SSConst {
-    
+enum SSMapConst {
+    static let latitudinalMeters: Double = 1000
+    static let longitudinalMeters: Double = 1000
 }
 
 enum SSIcon {

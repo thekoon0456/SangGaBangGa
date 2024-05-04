@@ -37,8 +37,8 @@ final class SSLocationManager: NSObject {
     }
     
     private let locationManager = CLLocationManager()
-    private let latitudinalMeters: Double = 1000
-    private let longitudinalMeters: Double = 1000
+    private let latitudinalMeters: Double = SSMapConst.latitudinalMeters
+    private let longitudinalMeters: Double = SSMapConst.longitudinalMeters
     private var updateLocation = true
     let authorizationStateRelay = BehaviorRelay<CLAuthorizationStatus>(value: .authorizedWhenInUse)
     let userLocationRelay = BehaviorRelay<CLLocationCoordinate2D>(value: CLLocationCoordinate2D(latitude: 37.654536, longitude: 127.049893))

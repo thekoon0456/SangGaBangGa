@@ -38,7 +38,6 @@ final class MapViewController: RxBaseViewController {
     private lazy var currentLocationButton = UIButton().then {
         let image = UIImage.ssLocation.withTintColor(.accent)
         $0.setImage(image, for: .normal)
-        $0.addTarget(self, action: #selector(currentLocationButtonTapped), for: .touchUpInside)
         $0.backgroundColor = .second
         $0.layer.cornerRadius = 25
         $0.clipsToBounds = true
@@ -62,8 +61,8 @@ final class MapViewController: RxBaseViewController {
     override func bind() {
         super.bind()
         let input = MapViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                       searchRegion: searchBar.rx.text.orEmpty,
-                                       //                                       currentButtonTapped: ,
+                                       searchRegion: searchBar.rx.searchButtonClicked.withLatestFrom(searchBar.rx.text.orEmpty),
+                                       currentButtonTapped: currentLocationButton.rx.tap,
                                        selectCell: dataRelay.asDriver(onErrorJustReturn: ContentEntity.defaultData()))
         let output = viewModel.transform(input)
         
@@ -73,6 +72,13 @@ final class MapViewController: RxBaseViewController {
                 value.forEach { data in
                     owner.setSSAnnotation(data: data)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        output
+            .moveToRegion
+            .drive(with: self) { owner, value in
+                owner.mapView.setRegion(value, animated: true)
             }
             .disposed(by: disposeBag)
         
@@ -91,10 +97,6 @@ final class MapViewController: RxBaseViewController {
                 owner.mapView.setRegion(region, animated: true)
             }
             .disposed(by: disposeBag)
-    }
-    
-    @objc func currentLocationButtonTapped() {
-        mapView.setRegion(locationManager.mapRegionRelay.value, animated: true)
     }
     
     override func configureHierarchy() {
@@ -201,11 +203,3 @@ extension MapViewController: MKMapViewDelegate {
         return nil
     }
 }
-
-extension MapViewController {
-    
-    
-}
-
-
-
