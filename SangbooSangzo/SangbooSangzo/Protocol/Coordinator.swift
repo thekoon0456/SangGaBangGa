@@ -99,7 +99,7 @@ extension Coordinator {
                    completion: (() -> Void)? = nil) {
         guard let view = self.navigationController.visibleViewController?.view else { return }
         let messageLabel = PaddingLabel().then {
-            $0.font = .boldSystemFont(ofSize: 20)
+            $0.font = SSFont.semiBold16
             $0.textColor = .white
             $0.textAlignment = .center
             $0.adjustsFontSizeToFitWidth = true
@@ -114,10 +114,19 @@ extension Coordinator {
         }
         
         view.addSubview(messageLabel)
-        messageLabel.snp.makeConstraints { make in
-            make.width.equalToSuperview().offset(-48)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
+
+        if type == .wrongAddress {
+            messageLabel.snp.makeConstraints { make in
+                make.width.equalToSuperview().offset(-48)
+                make.centerX.equalToSuperview()
+                make.centerY.equalToSuperview().offset(80)
+            }
+        } else {
+            messageLabel.snp.makeConstraints { make in
+                make.width.equalToSuperview().offset(-48)
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().offset(-100)
+            }
         }
         
         UIView.animate(withDuration: 1, delay: 1.0, options: .curveEaseOut, animations: {

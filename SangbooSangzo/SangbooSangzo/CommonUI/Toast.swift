@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Toast {
+enum Toast: Equatable {
     case joinSueecss
     case loginSuccess
     case loginFail
@@ -18,6 +18,8 @@ enum Toast {
     
     case uploadSuccess
     case uploadFail
+    
+    case wrongAddress
     
     var message: String {
         switch self {
@@ -37,6 +39,8 @@ enum Toast {
             "게시글 업로드에 성공했습니다"
         case .uploadFail:
             "게시글 업로드에 실패했습니다. 다시 시도해주세요"
+        case .wrongAddress:
+            "유효하지 않은 주소입니다. 다시 검색해주세요"
         }
     }
 }

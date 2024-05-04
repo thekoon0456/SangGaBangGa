@@ -79,6 +79,9 @@ final class MapViewController: RxBaseViewController {
             .moveToRegion
             .drive(with: self) { owner, value in
                 owner.mapView.setRegion(value, animated: true)
+                let coordinator = CLLocationCoordinate2D(latitude: value.span.latitudeDelta,
+                                                         longitude: value.span.longitudeDelta)
+                owner.setAnnotation(coordinate: coordinator)
             }
             .disposed(by: disposeBag)
         
@@ -163,7 +166,8 @@ extension MapViewController {
     func setAnnotation(coordinate: CLLocationCoordinate2D) {
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        annotation.title = "현재 위치"
+        annotation.title = "위치"
+        markerView = CustomMarkerView(annotation: annotation)
         
         mapView.addAnnotation(annotation)
     }
@@ -183,9 +187,10 @@ extension MapViewController: MKMapViewDelegate {
         print(#function)
         
         if let annotation = annotation as? MKPointAnnotation {
-            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: CustomMarkerView.identifier) as? CustomMarkerView {
-                dequeuedView.annotation = annotation
-                markerView = dequeuedView
+            if let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: CustomMarkerView.identifier) as? CustomMarkerView {
+                annotationView.annotation = annotation
+                annotationView.markerTintColor = .accent
+                markerView = annotationView
                 return markerView
             } else {
                 let markerView = CustomMarkerView(annotation: annotation)

@@ -45,6 +45,12 @@ final class MapViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 owner.searchAndMoveToLocation(address: value)
+                    .catch { error in
+                        DispatchQueue.main.async {
+                            owner.coordinator?.showToast(.wrongAddress)
+                        }
+                        return Observable.never()
+                    }
             }
             .subscribe { value in
                 regionRelay.accept(value)
