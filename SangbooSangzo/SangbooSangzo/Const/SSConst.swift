@@ -14,4 +14,5 @@ enum SSMapConst {
 
 enum SSIcon {
     static let icon = UIImage(systemName: "building.2")
+    static let iconFill = UIImage(systemName: "building.2.fill")
 }

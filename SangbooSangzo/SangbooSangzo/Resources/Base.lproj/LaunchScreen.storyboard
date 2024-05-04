@@ -4,8 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -39,7 +39,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                        <color key="backgroundColor" name="AccentColor"/>
                         <constraints>
                             <constraint firstItem="iKj-Fz-7m7" firstAttribute="bottom" secondItem="Cto-j2-HEP" secondAttribute="bottom" id="03I-9y-GmO"/>
                             <constraint firstItem="WdT-yN-zCW" firstAttribute="leading" secondItem="Cto-j2-HEP" secondAttribute="trailing" constant="4" id="1SR-jH-NGh"/>
@@ -59,8 +59,8 @@
     </scenes>
     <resources>
         <image name="building.2" catalog="system" width="128" height="108"/>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <namedColor name="AccentColor">
+            <color red="0.28999999165534973" green="0.40400001406669617" blue="0.53700000047683716" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

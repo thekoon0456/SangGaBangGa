@@ -27,7 +27,7 @@ final class FeedCoordinator: Coordinator {
         let vc = FeedViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: SSIcon.icon,
-                                     selectedImage: SSIcon.icon)
+                                     selectedImage: SSIcon.iconFill)
         navigationController.pushViewController(vc, animated: true)
     }
     
