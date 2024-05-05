@@ -20,6 +20,7 @@ final class MainTabCoordinator: Coordinator {
         self.childCoordinators = []
         self.navigationController = navigationController
         setLoginFlow()
+        setNetworkErrorToast()
     }
     
     deinit {
@@ -65,6 +66,22 @@ final class MainTabCoordinator: Coordinator {
             }
             .disposed(by: disposeBag)
     }
+    
+    func setNetworkErrorToast() {
+        NetworkMonitorManager.shared.statusObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, status in
+                 switch status {
+                 case .unsatisfied, .requiresConnection:
+                     owner.showToast(.networkError)
+                 case .satisfied:
+                     owner.showToast(.networkResume)
+                 @unknown default:
+                     break
+                 }
+             }
+             .disposed(by: disposeBag)
+     }
 }
 
 extension MainTabCoordinator: CoordinatorDelegate {

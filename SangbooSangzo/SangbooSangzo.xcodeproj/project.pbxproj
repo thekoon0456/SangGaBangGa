@@ -113,6 +113,7 @@
 		7CA35D922BE75E8200E35AFA /* PaymentsAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D912BE75E8200E35AFA /* PaymentsAPIService.swift */; };
 		7CA35D942BE75F5300E35AFA /* PaymentsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D932BE75F5300E35AFA /* PaymentsRepository.swift */; };
 		7CA35D962BE79F3600E35AFA /* EmptySSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D952BE79F3600E35AFA /* EmptySSView.swift */; };
+		7CA35D982BE7C71000E35AFA /* NetworkMonitorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */; };
 		7CCB4BBA2BE36F0100A96C7B /* ProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */; };
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
@@ -249,6 +250,7 @@
 		7CA35D912BE75E8200E35AFA /* PaymentsAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsAPIService.swift; sourceTree = "<group>"; };
 		7CA35D932BE75F5300E35AFA /* PaymentsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsRepository.swift; sourceTree = "<group>"; };
 		7CA35D952BE79F3600E35AFA /* EmptySSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySSView.swift; sourceTree = "<group>"; };
+		7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorManager.swift; sourceTree = "<group>"; };
 		7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntity.swift; sourceTree = "<group>"; };
 		7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 		7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				7CCBCFB02BCFCFAD00B3641D /* FollowAPIService.swift */,
 				7CCBCFB42BCFE16600B3641D /* ProfileAPIService.swift */,
 				7CA35D912BE75E8200E35AFA /* PaymentsAPIService.swift */,
+				7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */,
 			);
 			path = APIService;
 			sourceTree = "<group>";
@@ -1301,6 +1304,7 @@
 				7C18ECCB2BC697BF00F061DE /* RxBaseCollectionViewCell.swift in Sources */,
 				7CEFD0E42BDE33C5002583E9 /* ContentEntity.swift in Sources */,
 				7CA35D892BE75B1600E35AFA /* PaymentsRequest.swift in Sources */,
+				7CA35D982BE7C71000E35AFA /* NetworkMonitorManager.swift in Sources */,
 				7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */,
 				7C18ECBB2BC679AA00F061DE /* UserAPIManager.swift in Sources */,
 				7CCBCFA52BCFCB6900B3641D /* LikeStatusResponse.swift in Sources */,

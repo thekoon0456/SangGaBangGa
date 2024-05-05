@@ -25,6 +25,9 @@ enum Toast: Equatable {
     case paymentsSuccess(name: String, price: Int)
     case paymentsFail
     
+    case networkError
+    case networkResume
+    
     var message: String {
         switch self {
         case .joinSueecss:
@@ -51,6 +54,10 @@ enum Toast: Equatable {
             "\(name)의 계약금 \(price)원이 입금되었습니다"
         case .paymentsFail:
             "결제 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
+        case .networkError:
+            "네트워크 오류가 발생했습니다. 연결을 확인해주세요"
+        case .networkResume:
+            "네트워크가 정상적으로 연결되었습니다"
         }
     }
 }
