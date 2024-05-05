@@ -1429,7 +1429,7 @@
 				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SangbooSangzo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "김덕훈";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도와 연동을 위해서 사용자의 위치 동의가 필요해요";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1462,7 +1462,7 @@
 				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SangbooSangzo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "김덕훈";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도와 연동을 위해서 사용자의 위치 동의가 필요해요";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

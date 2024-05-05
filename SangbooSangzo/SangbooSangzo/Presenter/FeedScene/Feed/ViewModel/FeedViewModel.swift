@@ -40,8 +40,8 @@ final class FeedViewModel: ViewModel {
         let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
         let nextCursorRelay = BehaviorRelay<String?>(value: nil)
         
-        input
-            .viewWillAppear
+        Observable
+            .combineLatest(input.viewWillAppear, TokenInterceptor.refreshSubject)
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner

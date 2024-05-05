@@ -13,6 +13,7 @@ import RxSwift
 
 final class TokenInterceptor: RequestInterceptor {
     
+    static let refreshSubject = BehaviorSubject<Void>(value: ())
     static let errorSubject = PublishSubject<Void>()
     private let disposeBag = DisposeBag()
     
@@ -44,6 +45,7 @@ final class TokenInterceptor: RequestInterceptor {
             .subscribe { response in
                 print("refreshToken", response.accessToken)
                 UserDefaultsManager.shared.userData.accessToken = response.accessToken
+                TokenInterceptor.refreshSubject.onNext(())
             }
             .disposed(by: disposeBag)
     }
