@@ -145,9 +145,8 @@ extension FeedViewController {
     }
     
     private func configureSnapshot() {
-        let snapshot = Snapshot().then {
-            $0.appendSections(Section.allCases)
-        }
+        var snapshot = Snapshot()
+        snapshot.appendSections(Section.allCases)
         dataSource?.apply(snapshot)
     }
     

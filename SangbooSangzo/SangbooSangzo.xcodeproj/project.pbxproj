@@ -104,6 +104,7 @@
 		7C9E2DF82BE52A5900FD81E3 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */; };
 		7CA35D7C2BE6A65400E35AFA /* UserConnentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */; };
 		7CA35D7E2BE6B33B00E35AFA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */; };
+		7CA35D812BE7522200E35AFA /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA35D802BE7522200E35AFA /* iamport-ios */; };
 		7CCB4BBA2BE36F0100A96C7B /* ProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */; };
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
@@ -281,6 +282,7 @@
 				7C2AE00A2BD51E4500DA2C1F /* RxDataSources in Frameworks */,
 				7C18ECAD2BC6792600F061DE /* Moya in Frameworks */,
 				7C18ECDB2BC6990E00F061DE /* SnapKit in Frameworks */,
+				7CA35D812BE7522200E35AFA /* iamport-ios in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1099,6 +1101,7 @@
 				7CDCB95C2BE247F200A3ED55 /* RxGesture */,
 				7CCB4BC42BE3B8B700A96C7B /* IQKeyboardManagerSwift */,
 				7C9E2DF22BE4D86400FD81E3 /* MarqueeLabel */,
+				7CA35D802BE7522200E35AFA /* iamport-ios */,
 			);
 			productName = SangbooSangzo;
 			productReference = 7C18EC8F2BC677F900F061DE /* SangbooSangzo.app */;
@@ -1137,6 +1140,7 @@
 				7CDCB95B2BE247F200A3ED55 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				7CCB4BC32BE3B8B600A96C7B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				7C9E2DF12BE4D86400FD81E3 /* XCRemoteSwiftPackageReference "MarqueeLabel" */,
+				7CA35D7F2BE7522200E35AFA /* XCRemoteSwiftPackageReference "iamport-ios" */,
 			);
 			productRefGroup = 7C18EC902BC677F900F061DE /* Products */;
 			projectDirPath = "";
@@ -1557,6 +1561,14 @@
 				minimumVersion = 4.5.0;
 			};
 		};
+		7CA35D7F2BE7522200E35AFA /* XCRemoteSwiftPackageReference "iamport-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iamport/iamport-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.1;
+			};
+		};
 		7CCB4BC32BE3B8B600A96C7B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
@@ -1615,6 +1627,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C9E2DF12BE4D86400FD81E3 /* XCRemoteSwiftPackageReference "MarqueeLabel" */;
 			productName = MarqueeLabel;
+		};
+		7CA35D802BE7522200E35AFA /* iamport-ios */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CA35D7F2BE7522200E35AFA /* XCRemoteSwiftPackageReference "iamport-ios" */;
+			productName = "iamport-ios";
 		};
 		7CCB4BC42BE3B8B700A96C7B /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
