@@ -32,7 +32,6 @@ final class PostsAPIService {
     func readPosts(query: ReadPostsQuery) -> Single<ReadPostsResponse> {
         provider.rx.request(.readPosts(query: query))
             .map(ReadPostsResponse.self)
-            .retry(3)
     }
     
     func readPost(queryID: String) -> Single<UploadContentResponse> {

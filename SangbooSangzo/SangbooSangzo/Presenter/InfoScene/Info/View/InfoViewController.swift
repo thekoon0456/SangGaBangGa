@@ -94,6 +94,18 @@ final class InfoViewController: RxBaseViewController {
                 cell.configureCellData(element)
             }
             .disposed(by: disposeBag)
+        
+        output
+            .feeds
+            .drive(with: self) { owner, value in
+                let index = owner.titleSegment.selectedSegmentIndex
+                if index == 0 {
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .like) : nil
+                } else {
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .written) : nil
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     private func updateUnderlinePosition(index: Int) {
