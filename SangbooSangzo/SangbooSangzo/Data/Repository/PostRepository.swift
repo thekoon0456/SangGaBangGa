@@ -22,39 +22,39 @@ protocol PostRepository {
 
 final class PostRepositoryImpl: PostRepository {
     
-    private let apiManager = PostsAPIService()
+    private let apiService = PostsAPIService()
     
     func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageEntity> {
-        apiManager.uploadImages(query: query)
+        apiService.uploadImages(query: query)
             .map { $0.toEntity }
     }
     
     func uploadContents(images: [String], query: UploadContentRequest) -> Single<ContentEntity> {
-        apiManager.uploadContents(images: images, query: query)
+        apiService.uploadContents(images: images, query: query)
             .map { $0.toEntity }
     }
 
     func readPosts(query: ReadPostsQuery) -> Single<ReadPostsEntity> {
-        apiManager.readPosts(query: query)
+        apiService.readPosts(query: query)
             .map { $0.toEntity }
     }
     
     func readPost(queryID: String) -> Single<ContentEntity> {
-        apiManager.readPost(queryID: queryID)
+        apiService.readPost(queryID: queryID)
             .map { $0.toEntity }
     }
     
     func fetchPost(queryID: String, request: UploadContentRequest) -> Single<ContentEntity> {
-        apiManager.fetchPost(queryID: queryID, request: request)
+        apiService.fetchPost(queryID: queryID, request: request)
             .map { $0.toEntity }
     }
     
     func deletePost(queryID: String) {
-        apiManager.deletePost(queryID: queryID)
+        apiService.deletePost(queryID: queryID)
     }
     
     func readUserPosts(queryID: String, query: ReadPostsQuery) -> Single<ReadPostsEntity> {
-        apiManager.readUserPosts(queryID: queryID, query: query)
+        apiService.readUserPosts(queryID: queryID, query: query)
             .map { $0.toEntity }
     }
 }

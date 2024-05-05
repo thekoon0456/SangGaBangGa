@@ -22,7 +22,7 @@ final class LikeAPIService {
             .map(LikeStatusResponse.self)
     }
     
-    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsResponse> {
+    func readLikePosts(query: LikePostQuery) -> Single<ReadPostsResponse> {
         provider.rx.request(.ReadLikePosts(query: query))
             .map(ReadPostsResponse.self)
     }

@@ -22,7 +22,7 @@ final class FollowAPIService {
             .map(FollowResponse.self)
     }
     
-    func ReadLikePosts(queryID: String) -> Single<FollowResponse> {
+    func readLikePosts(queryID: String) -> Single<FollowResponse> {
         provider.rx.request(.cancelFollow(queryID: queryID))
             .map(FollowResponse.self)
     }

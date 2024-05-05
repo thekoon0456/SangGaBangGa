@@ -17,15 +17,15 @@ protocol LikeRepository {
 
 final class LikeRepositoryImpl: LikeRepository {
     
-    private let apiManager = LikeAPIService()
+    private let apiService = LikeAPIService()
     
     func postLike(queryID: String, status: Bool) -> Single<LikeEntity> {
-        apiManager.postLike(queryID: queryID, status: status)
+        apiService.postLike(queryID: queryID, status: status)
             .map { $0.toEntity }
     }
     
     func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity> {
-        apiManager.ReadLikePosts(query: query)
+        apiService.readLikePosts(query: query)
             .map { $0.toEntity }
     }
 }

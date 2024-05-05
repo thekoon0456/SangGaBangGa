@@ -16,10 +16,10 @@ protocol CommentRepository {
 
 final class CommentRepositoryImpl: CommentRepository {
     
-    private let apiManager = CommentsAPIService()
+    private let apiService = CommentsAPIService()
     
     func postComments(queryID: String, content: String) -> Single<PostCommentEntity> {
-        apiManager.postComments(queryID: queryID, content: content)
+        apiService.postComments(queryID: queryID, content: content)
             .map { $0.toEntity }
     }
 }

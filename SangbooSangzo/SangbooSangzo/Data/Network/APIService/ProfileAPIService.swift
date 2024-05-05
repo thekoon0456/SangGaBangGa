@@ -17,7 +17,7 @@ final class ProfileAPIService {
     lazy var provider = MoyaProvider<ProfileRouter>(session: Session(interceptor: TokenInterceptor()),
                                                     plugins: [logger])
     
-    func getMyProfile() -> Single<ProfileResponse> {
+    func readMyProfile() -> Single<ProfileResponse> {
         provider.rx.request(.getMyProfile)
             .map(ProfileResponse.self)
     }
@@ -27,7 +27,7 @@ final class ProfileAPIService {
             .map(ProfileResponse.self)
     }
     
-    func getOtherProfile(id: String) -> Single<ProfileResponse> {
+    func readOtherProfile(id: String) -> Single<ProfileResponse> {
         provider.rx.request(.getOtherProfile(id: id))
             .map(ProfileResponse.self)
     }

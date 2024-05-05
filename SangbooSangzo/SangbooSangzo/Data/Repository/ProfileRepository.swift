@@ -21,7 +21,7 @@ final class ProfileRepositoryImpl: ProfileRepository {
     private let apiService = ProfileAPIService()
     
     func getMyProfile() -> Single<ProfileEntity> {
-        apiService.getMyProfile()
+        apiService.readMyProfile()
             .map { $0.toEntity }
     }
     
@@ -31,7 +31,7 @@ final class ProfileRepositoryImpl: ProfileRepository {
     }
     
     func getOtherProfile(id: String) -> Single<ProfileEntity> {
-        apiService.getOtherProfile(id: id)
+        apiService.readOtherProfile(id: id)
             .map { $0.toEntity }
     }
 }
