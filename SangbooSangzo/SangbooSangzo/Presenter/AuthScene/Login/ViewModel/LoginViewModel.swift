@@ -33,6 +33,7 @@ final class LoginViewModel: ViewModel {
         self.coordinator = coordinator
     }
     
+    @discardableResult
     func transform(_ input: Input) -> Output {
         
         let loginInfo = Observable.zip(

@@ -18,9 +18,9 @@ final class LoginViewController: RxBaseViewController {
     private let viewModel: LoginViewModel
     
     private let appLabel = UILabel().then {
-        $0.text = "상부상조"
+        $0.text = "상가방가"
         $0.textAlignment = .center
-        $0.font = .systemFont(ofSize: 40, weight: .bold)
+        $0.font = SSFont.bold28
         $0.textColor = .tintColor
     }
 
@@ -42,11 +42,13 @@ final class LoginViewController: RxBaseViewController {
     
     private let signInLabel = UILabel().then {
         $0.text = "아직 회원이 아니세요?"
+        $0.font = SSFont.semiBold14
     }
     
     private let signInButton = UIButton().then {
         $0.setTitle("여기를 눌러 가입하기", for: .normal)
         $0.setTitleColor(.tintColor, for: .normal)
+        $0.titleLabel?.font = SSFont.semiBold16
     }
     
     // MARK: - Lifecycles

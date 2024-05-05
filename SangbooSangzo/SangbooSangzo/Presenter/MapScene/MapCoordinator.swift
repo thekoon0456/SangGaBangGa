@@ -12,6 +12,7 @@ final class MapCoordinator: Coordinator {
     weak var delegate: CoordinatorDelegate?
     var childCoordinators: [Coordinator]
     var navigationController: UINavigationController
+    lazy var feedCoordinator = FeedCoordinator(navigationController: self.navigationController)
     
     init(navigationController: UINavigationController) {
         self.childCoordinators = []
@@ -69,8 +70,9 @@ final class MapCoordinator: Coordinator {
         let commentRepository = CommentRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
         let paymentsRepository = PaymentsRepositoryImpl()
+
         let vm = DetailFeedViewModel(
-            coordinator: FeedCoordinator(navigationController: self.navigationController),
+            coordinator: feedCoordinator,
             postRepository: postRepository,
             commentRepository: commentRepository,
             likeRepository: likeRepository,
