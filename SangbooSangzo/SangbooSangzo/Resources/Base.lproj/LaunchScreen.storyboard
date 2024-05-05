@@ -39,7 +39,8 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="AccentColor"/>
+                        <color key="backgroundColor" red="0.28999999165534973" green="0.40400001406669617" blue="0.53700000047683716" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="tintColor" name="AccentColor"/>
                         <constraints>
                             <constraint firstItem="iKj-Fz-7m7" firstAttribute="bottom" secondItem="Cto-j2-HEP" secondAttribute="bottom" id="03I-9y-GmO"/>
                             <constraint firstItem="WdT-yN-zCW" firstAttribute="leading" secondItem="Cto-j2-HEP" secondAttribute="trailing" constant="4" id="1SR-jH-NGh"/>

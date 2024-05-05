@@ -7,9 +7,9 @@
 
 import Foundation
 import UIKit
-import WebKit
 
 import iamport_ios
+import RxSwift
 
 enum SSPaymentsConst {
     static let inipay = "INIpayTest"
@@ -20,7 +20,9 @@ enum SSPaymentsConst {
     static let userCode = "imp57573124"
 }
 
-final class Payments {
+final class PaymentsService {
+    
+    let repository = PaymentsRepositoryImpl()
     
     //결제데이터 생성
     func createPaymentData(
@@ -42,34 +44,44 @@ final class Payments {
             }
     }
     
-    func requestPayment() {
+    func requestPayment(
+        nav: UINavigationController,
+        postID: String,
+        productName: String,
+        price: Int
+    ) -> Observable<PaymentsRequest> {
         let payment = createPaymentData()
         
-        Iamport
-            .shared
-            .paymentWebView(
-                webViewMode: wkWebView,
-                userCode: SSPaymentsConst.userCode,
-                payment: payment
-            ) { [weak self] iamportResponse in
-                guard let self,
-                let response = iamportResponse else { return }
-                if response.success == true {
-                    //포트원 고유 결제 번호
-                    let uid = response.imp_uid
-                    //postID
-                    //productName
-                    //price
-                    
-                } else {
-                    // MARK: - Coordinator toast 띄우기
+        return Observable.create { observer in
+            
+            Iamport
+                .shared
+                .payment(navController: nav,
+                         userCode: SSPaymentsConst.userCode,
+                         payment: payment
+                ) { iamportResponse in
+                    guard let response = iamportResponse,
+                          let uid = response.imp_uid
+                    else { return }
+                    if response.success == true {
+                        //UID 포트원 고유 결제 번호
+                        //postID
+                        //productName
+                        //price
+                        let request = PaymentsRequest(impUID: uid,
+                                                      postID: postID,
+                                                      productName: productName,
+                                                      price: price)
+                        observer.onNext(request)
+                        observer.onCompleted()
+                    } else {
+                        // MARK: - Coordinator toast 띄우기
+//                        observer.onError(Error)
+                    }
                 }
-            }
+            
+            return Disposables.create()
+        }
+
     }
-    
-    lazy var wkWebView: WKWebView = {
-        var view = WKWebView()
-        view.backgroundColor = UIColor.clear
-        return view
-    }()
 }

@@ -59,15 +59,15 @@ final class InfoViewController: RxBaseViewController {
         $0.setImage(.ssSetting, for: .normal)
         $0.tintColor = .tintColor
     }
-
+    
     init(viewModel: InfoViewModel) {
         self.viewModel = viewModel
         super.init()
     }
-
+    
     override func bind() {
         super.bind()
-
+        
         let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         segmentTapped: titleSegment.rx.value,
                                         settingTapped: settingButton.rx.tap,
@@ -133,7 +133,7 @@ final class InfoViewController: RxBaseViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
-            make.height.equalTo(80)
+            make.height.equalTo(72)
         }
         
         settingButton.snp.makeConstraints { make in
@@ -157,14 +157,14 @@ final class InfoViewController: RxBaseViewController {
         }
         
         underLineView.snp.makeConstraints { make in
-             make.top.equalTo(titleSegment.snp.bottom).offset(2)
+            make.top.equalTo(titleSegment.snp.bottom).offset(2)
             make.height.equalTo(2)
-             make.width.equalTo(titleSegment.widthForSegment(at: 0))
-             make.centerX.equalTo(titleSegment.snp.leading).offset(titleSegment.widthForSegment(at: 0) / 2)
-         }
+            make.width.equalTo(titleSegment.widthForSegment(at: 0))
+            make.centerX.equalTo(titleSegment.snp.leading).offset(titleSegment.widthForSegment(at: 0) / 2)
+        }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(segmentContainerView.snp.bottom)
+            make.top.equalTo(segmentContainerView.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }

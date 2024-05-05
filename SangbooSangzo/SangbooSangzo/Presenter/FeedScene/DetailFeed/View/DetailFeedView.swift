@@ -39,7 +39,7 @@ final class DetailFeedView: BaseView {
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.semiBold24
+        $0.font = SSFont.semiBold20
         $0.numberOfLines = 2
     }
     
@@ -54,58 +54,58 @@ final class DetailFeedView: BaseView {
     
     private let descriptionTitle = UILabel().then {
         $0.text = "매물 정보"
-        $0.font = SSFont.semiBold24
+        $0.font = SSFont.semiBold20
     }
         
     private let addressTitleLabel = UILabel().then {
         $0.text = "주소: "
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     let addressLabel = UILabel().then {
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     private let priceTitleLabel = UILabel().then {
         $0.text = "보증금 / 월세: "
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     private let spaceTitleLabel = UILabel().then {
         $0.text = "규모: "
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     let spaceLabel = UILabel().then {
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     private let dateTitleLabel = UILabel().then {
         $0.text = "등록일: "
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     let dateLabel = UILabel().then {
-        $0.font = SSFont.semiBold16
+        $0.font = SSFont.semiBold14
     }
     
     private let contentTitle = UILabel().then {
         $0.text = "상세 설명"
-        $0.font = SSFont.semiBold24
+        $0.font = SSFont.semiBold20
     }
     
     let contentLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16)
+        $0.font = SSFont.medium12
         $0.numberOfLines = 0
     }
     
     private let mapTitle = UILabel().then {
         $0.text = "지도"
-        $0.font = SSFont.semiBold24
+        $0.font = SSFont.semiBold20
     }
     
     let mapView = MKMapView().then {
@@ -115,10 +115,21 @@ final class DetailFeedView: BaseView {
     
     private let inquiryTitle = UILabel().then {
         $0.text = "문의하기"
-        $0.font = SSFont.semiBold24
+        $0.font = SSFont.semiBold20
     }
     
     let userConnectView = UserConnectView()
+    
+    let paymentView = UILabel().then {
+        $0.text = "계약금 입금하기"
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.font = SSFont.semiBold16
+        $0.backgroundColor = .accent
+        $0.layer.cornerRadius = 12
+        $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
+    }
 
     
     // MARK: - Configure
@@ -132,7 +143,7 @@ final class DetailFeedView: BaseView {
                                 addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
-                                inquiryTitle, userConnectView)
+                                inquiryTitle, userConnectView, paymentView)
     }
     
     override func configureLayout() {
@@ -211,7 +222,7 @@ extension DetailFeedView {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(imageScrollView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalTo(heartButton.snp.leading).offset(-4)
         }
         
         categoryLabel.snp.makeConstraints { make in
@@ -305,8 +316,15 @@ extension DetailFeedView {
             make.top.equalTo(inquiryTitle.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-8)
-            make.height.equalTo(80)
+            make.height.equalTo(72)
+        }
+        
+        paymentView.snp.makeConstraints { make in
+            make.top.equalTo(userConnectView.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(40)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 }

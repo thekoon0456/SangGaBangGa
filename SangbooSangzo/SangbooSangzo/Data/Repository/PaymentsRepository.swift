@@ -15,7 +15,7 @@ protocol PaymentsAPIRepository {
     func readMyPayments() -> Single<[PaymentsDataEntity]>
 }
 
-final class PaymentsAPIRepositoryImpl {
+final class PaymentsRepositoryImpl: PaymentsAPIRepository {
     
     private let apiService = PaymentsAPIService()
     

@@ -18,6 +18,7 @@ final class DetailFeedViewModel: ViewModel {
         let heartButtonTapped: Observable<Bool>
         let commentButtonTapped: ControlEvent<Void>
         let phoneButtonTapped: ControlEvent<Void>
+        let paymentButtonTapped: Observable<Void>
     }
     
     struct Output {
@@ -31,6 +32,8 @@ final class DetailFeedViewModel: ViewModel {
     private let postRepository: PostRepository
     private let commentRepository: CommentRepository
     private let likeRepository: LikeRepository
+    private let paymentsRepository: PaymentsAPIRepository = PaymentsRepositoryImpl()
+    private let paymentsService = PaymentsService()
     private let data: ContentEntity
     var disposeBag = DisposeBag()
     
@@ -101,6 +104,28 @@ final class DetailFeedViewModel: ViewModel {
             .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, value in
                 owner.call(value.creator.phoneNum)
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .paymentButtonTapped
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                guard let coordinator = owner.coordinator else { return Observable<PaymentsRequest>.never() }
+                return owner.paymentsService
+                    .requestPayment(nav: coordinator.navigationController,
+                                    postID: owner.data.postID,
+                                    productName: owner.data.title,
+                                    price: 100)
+            }
+            .withUnretained(self)
+            .flatMap{ owner, request in
+                owner.paymentsRepository.validation(request: request)
+            }
+            .asDriver(onErrorJustReturn: PaymentsValidationEntity.defaultEntity())
+            .drive(with: self) { owner, validation in
+                owner.coordinator?.showToast(.paymentsSuccess(name: validation.productName,
+                                                              price: validation.price))
             }
             .disposed(by: disposeBag)
         

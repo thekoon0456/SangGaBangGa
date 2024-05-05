@@ -12,6 +12,13 @@ struct PaymentsValidationEntity {
     let postID: String
     let productName: String
     let price: Int
+    
+    static func defaultEntity() -> PaymentsValidationEntity {
+        PaymentsValidationEntity(impUID: "",
+                                 postID: "",
+                                 productName: "",
+                                 price: 0)
+    }
 }
 
 struct PaymentsDataEntity {

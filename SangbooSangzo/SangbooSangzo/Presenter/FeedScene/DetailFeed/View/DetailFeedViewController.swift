@@ -40,11 +40,17 @@ final class DetailFeedViewController: RxBaseViewController {
             guard let self else { return false }
             return baseView.heartButton.isSelected
         }
+         
+        let paymentButtonTapped = baseView.paymentView.rx
+            .tapGesture()
+            .when(.recognized)
+            .map { _ in }
         
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                               heartButtonTapped: heartButtonTapped,
                                               commentButtonTapped: baseView.commentButton.rx.tap,
-                                              phoneButtonTapped: baseView.userConnectView.phoneButton.rx.tap)
+                                              phoneButtonTapped: baseView.userConnectView.phoneButton.rx.tap,
+                                              paymentButtonTapped: paymentButtonTapped)
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in

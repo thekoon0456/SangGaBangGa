@@ -48,5 +48,6 @@ final class TokenInterceptor: RequestInterceptor {
                 TokenInterceptor.refreshSubject.onNext(())
             }
             .disposed(by: disposeBag)
+        completion(.doNotRetry)
     }
 }

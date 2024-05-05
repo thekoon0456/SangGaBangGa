@@ -21,6 +21,9 @@ enum Toast: Equatable {
     
     case wrongAddress
     
+    case paymentsSuccess(name: String, price: Int)
+    case paymentsFail
+    
     var message: String {
         switch self {
         case .joinSueecss:
@@ -41,6 +44,10 @@ enum Toast: Equatable {
             "게시글 업로드에 실패했습니다. 다시 시도해주세요"
         case .wrongAddress:
             "유효하지 않은 주소입니다. 다시 검색해주세요"
+        case .paymentsSuccess(let name, let price):
+            "\(name)의 계약금 \(price)원이 입금되었습니다."
+        case .paymentsFail:
+            "결제 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
         }
     }
 }
