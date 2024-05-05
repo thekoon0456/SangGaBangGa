@@ -1,5 +1,5 @@
 //
-//  LikeAPIManager.swift
+//  LikeAPIService.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/17/24.
@@ -11,7 +11,7 @@ import Moya
 import RxMoya
 import RxSwift
 
-final class LikeAPIManager {
+final class LikeAPIService {
     
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<LikeRouter>(session: Session(interceptor: TokenInterceptor()),

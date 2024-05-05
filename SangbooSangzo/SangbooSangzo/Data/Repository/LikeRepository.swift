@@ -17,7 +17,7 @@ protocol LikeRepository {
 
 final class LikeRepositoryImpl: LikeRepository {
     
-    private let apiManager = LikeAPIManager()
+    private let apiManager = LikeAPIService()
     
     func postLike(queryID: String, status: Bool) -> Single<LikeEntity> {
         apiManager.postLike(queryID: queryID, status: status)

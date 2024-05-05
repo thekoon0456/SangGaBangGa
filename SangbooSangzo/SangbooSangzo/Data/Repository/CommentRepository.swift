@@ -16,7 +16,7 @@ protocol CommentRepository {
 
 final class CommentRepositoryImpl: CommentRepository {
     
-    private let apiManager = CommentsAPIManager()
+    private let apiManager = CommentsAPIService()
     
     func postComments(queryID: String, content: String) -> Single<PostCommentEntity> {
         apiManager.postComments(queryID: queryID, content: content)

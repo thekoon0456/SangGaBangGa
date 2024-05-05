@@ -1,5 +1,5 @@
 //
-//  ProfileAPIManager.swift
+//  ProfileAPIService.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/17/24.
@@ -11,7 +11,7 @@ import Moya
 import RxMoya
 import RxSwift
 
-final class ProfileAPIManager {
+final class ProfileAPIService {
     
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<ProfileRouter>(session: Session(interceptor: TokenInterceptor()),

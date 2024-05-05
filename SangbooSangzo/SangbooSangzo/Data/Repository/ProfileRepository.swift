@@ -18,7 +18,7 @@ protocol ProfileRepository {
 
 final class ProfileRepositoryImpl: ProfileRepository {
     
-    private let apiService = ProfileAPIManager()
+    private let apiService = ProfileAPIService()
     
     func getMyProfile() -> Single<ProfileEntity> {
         apiService.getMyProfile()

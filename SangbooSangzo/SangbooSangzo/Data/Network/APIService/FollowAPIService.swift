@@ -1,5 +1,5 @@
 //
-//  FollowAPIManager.swift
+//  FollowAPIService.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/17/24.
@@ -11,11 +11,7 @@ import Moya
 import RxMoya
 import RxSwift
 
-final class FollowAPIManager {
-    
-    static let shared = FollowAPIManager()
-    
-    private init() { }
+final class FollowAPIService {
     
     let logger = NetworkLoggerPlugin()
     lazy var provider = MoyaProvider<FollowRouter>(session: Session(interceptor: TokenInterceptor()),

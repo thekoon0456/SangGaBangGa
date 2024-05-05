@@ -1,5 +1,5 @@
 //
-//  PostsAPIManager.swift
+//  PostsAPIService.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/12/24.
@@ -11,7 +11,7 @@ import Moya
 import RxMoya
 import RxSwift
 
-final class PostsAPIManager {
+final class PostsAPIService {
     
     private let disposeBag = DisposeBag()
     

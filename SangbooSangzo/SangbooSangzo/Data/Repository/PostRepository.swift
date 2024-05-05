@@ -22,7 +22,7 @@ protocol PostRepository {
 
 final class PostRepositoryImpl: PostRepository {
     
-    private let apiManager = PostsAPIManager()
+    private let apiManager = PostsAPIService()
     
     func uploadImages(query: UploadImageDatasRequest) -> Single<UploadImageEntity> {
         apiManager.uploadImages(query: query)
