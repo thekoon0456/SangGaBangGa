@@ -631,7 +631,6 @@
 		7C1C500C2BCCFE490066CBCA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7CE916892BDBA21F007B1431 /* MainFeedBaseView.swift */,
 				7C1C500E2BCCFE5A0066CBCA /* FeedViewController.swift */,
 				7C418C3B2BE0E79600583C5C /* Cell */,
 			);
@@ -740,6 +739,7 @@
 		7C418C3B2BE0E79600583C5C /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				7CE916892BDBA21F007B1431 /* MainFeedBaseView.swift */,
 				7CE916852BDB9921007B1431 /* MainFeedCell.swift */,
 			);
 			path = Cell;

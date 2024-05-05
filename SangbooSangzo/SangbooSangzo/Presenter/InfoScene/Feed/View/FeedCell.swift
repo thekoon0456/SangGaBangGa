@@ -10,6 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
+import MarqueeLabel
 
 final class FeedCell: RxBaseCollectionViewCell {
     
@@ -26,40 +27,40 @@ final class FeedCell: RxBaseCollectionViewCell {
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .selected)
+        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
     }
     
-    private let heartCountLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
+    let heartCountLabel = UILabel().then {
+        $0.font = SSFont.light11
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20))), for: .normal)
-        $0.backgroundColor = .white
+        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
-        $0.layer.cornerRadius = 15
+    }
+    
+    let commentCountLabel = UILabel().then {
+        $0.font = SSFont.light11
+    }
+    
+    let categoryLabel = PaddingLabel().then {
+        $0.font =  SSFont.medium12
+        $0.textColor = .white
+        $0.backgroundColor = .tintColor
+        $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
+        $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)
     }
     
-    private let commentCountLabel = UILabel().then {
+    let titleLabel = MarqueeLabel().then {
+        $0.font = SSFont.semiBold16
+        $0.numberOfLines = 1
+    }
+    
+    let priceLabel = UILabel().then {
         $0.font = SSFont.semiBold14
-        $0.textAlignment = .left
-    }
-    
-    private let categoryLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 13)
-    }
-    
-    private let titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
-        $0.numberOfLines = 2
-    }
-    
-    private let priceLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
     // MARK: - Lifecycles
@@ -132,46 +133,47 @@ extension FeedCell {
         }
         
         heartButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(4)
+            make.top.equalTo(imageView.snp.bottom)
+            make.trailing.equalTo(commentButton.snp.leading).offset(-12)
             make.size.equalTo(30)
         }
         
         heartCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartButton.snp.trailing).offset(2)
-            make.height.equalTo(30)
+            make.top.equalTo(heartButton.snp.bottom)
+            make.centerX.equalTo(heartButton)
         }
         
         commentButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(heartCountLabel.snp.trailing).offset(12)
+            make.top.equalTo(imageView.snp.bottom)
+            make.trailing.equalToSuperview().offset(-4)
             make.size.equalTo(30)
         }
         
         commentCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(commentButton.snp.trailing).offset(2)
-            make.height.equalTo(30)
+            make.top.equalTo(commentButton.snp.bottom)
+            make.centerX.equalTo(commentButton)
+            make.centerY.equalTo(heartCountLabel)
         }
         
         categoryLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.bottom).offset(4)
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(4)
+            make.height.equalTo(20)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(categoryLabel.snp.bottom).offset(4)
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
+            make.top.equalTo(heartCountLabel.snp.bottom)
+            make.leading.equalToSuperview().offset(4)
+            make.trailing.equalToSuperview().offset(-4)
+            make.height.equalTo(24)
         }
         
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.bottom.equalToSuperview().offset(-4)
+            make.leading.equalToSuperview().offset(4)
+            make.trailing.equalToSuperview().offset(-4)
+            make.bottom.lessThanOrEqualToSuperview().offset(-4)
+            make.height.equalTo(24)
         }
     }
 }
