@@ -23,6 +23,7 @@ struct UploadContentResponse: Decodable {
     let likes: [String]
     let hashTags: [String]
     let comments: [PostCommentResponse]
+    let buyers: [String]? //구매자 user_id 배열로 추가
     
     enum CodingKeys: String, CodingKey {
         case postID = "post_id"
@@ -40,6 +41,7 @@ struct UploadContentResponse: Decodable {
         case likes
         case hashTags
         case comments
+        case buyers
     }
     
     init(from decoder: any Decoder) throws {
@@ -59,6 +61,7 @@ struct UploadContentResponse: Decodable {
         self.likes = try container.decode([String].self, forKey: .likes)
         self.hashTags = try container.decode([String].self, forKey: .hashTags)
         self.comments = try container.decode([PostCommentResponse].self, forKey: .comments)
+        self.buyers = try container.decodeIfPresent([String].self, forKey: .buyers) ?? []
     }
     
     init() {
@@ -77,6 +80,7 @@ struct UploadContentResponse: Decodable {
         self.likes = []
         self.hashTags = []
         self.comments = []
+        self.buyers = []
     }
     
     var toEntity: ContentEntity {
@@ -94,7 +98,8 @@ struct UploadContentResponse: Decodable {
                       files: files,
                       likes: likes,
                       hashTags: hashTags,
-                      comments: comments.map { $0.toEntity } )
+                      comments: comments.map { $0.toEntity },
+                      buyers: buyers ?? [] )
     }
     
     func toPrice() -> String {

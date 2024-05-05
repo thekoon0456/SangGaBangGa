@@ -28,6 +28,7 @@ struct ContentEntity: Hashable, Identifiable {
     let likes: [String]
     let hashTags: [String]
     let comments: [PostCommentEntity]
+    let buyers: [String]
     
     static func defaultData() -> ContentEntity {
         ContentEntity(postID: "",
@@ -44,6 +45,7 @@ struct ContentEntity: Hashable, Identifiable {
                       files: [],
                       likes: [],
                       hashTags: [],
-                      comments: [])
+                      comments: [],
+                      buyers: [])
     }
 }
