@@ -41,7 +41,7 @@ final class FeedViewModel: ViewModel {
         let nextCursorRelay = BehaviorRelay<String?>(value: nil)
         
         Observable
-            .combineLatest(input.viewWillAppear, TokenInterceptor.refreshSubject)
+            .combineLatest(input.viewWillAppear, TokenInterceptor.refreshSubject.take(1))
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner

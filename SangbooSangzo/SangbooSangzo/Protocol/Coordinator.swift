@@ -71,28 +71,28 @@ extension Coordinator {
 
 extension Coordinator {
     
-        func moveToUserSetting() {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                let alert = UIAlertController(title: "아이폰의 위치 설정이 비활성화되어 있어요",
-                                              message:
-                                                "활성화로 설정을 바꿔주세요",
-                                              preferredStyle: .alert)
-                alert.view.tintColor = .label
-    
-                let primaryButton = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
-                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                        return
-                    }
-                    if UIApplication.shared.canOpenURL(settingsUrl) {
-                        UIApplication.shared.open(settingsUrl, completionHandler: nil)
-                    }
+    func moveToUserSetting() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let alert = UIAlertController(title: "아이폰의 위치 설정이 비활성화되어 있어요",
+                                          message:
+                                            "활성화로 설정을 바꿔주세요",
+                                          preferredStyle: .alert)
+            alert.view.tintColor = .label
+            
+            let primaryButton = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
                 }
-    
-                alert.addAction(primaryButton)
-                navigationController.present(alert, animated: true)
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: nil)
+                }
             }
+            
+            alert.addAction(primaryButton)
+            navigationController.present(alert, animated: true)
         }
+    }
     
     func showToast(_ type: Toast,
                    font: UIFont = UIFont.systemFont(ofSize: 14.0),
@@ -114,19 +114,17 @@ extension Coordinator {
         }
         
         view.addSubview(messageLabel)
-
-        if type == .wrongAddress {
-            messageLabel.snp.makeConstraints { make in
-                make.width.equalToSuperview().offset(-48)
-                make.centerX.equalToSuperview()
-                make.centerY.equalToSuperview().offset(80)
-            }
-        } else {
-            messageLabel.snp.makeConstraints { make in
-                make.width.equalToSuperview().offset(-48)
-                make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().offset(-100)
-            }
+        
+        //        messageLabel.snp.makeConstraints { make in
+        //            make.width.equalToSuperview().offset(-48)
+        //            make.centerX.equalToSuperview()
+        //            make.bottom.equalToSuperview().offset(-100)
+        //        }
+        //
+        
+        messageLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview().offset(-48)
+            make.center.equalToSuperview()
         }
         
         UIView.animate(withDuration: 1, delay: 1.0, options: .curveEaseOut, animations: {
@@ -161,14 +159,14 @@ extension Coordinator {
         navigationController.present(alert, animated: true)
     }
     
-//    func presentErrorAlert(
-//        title: String? = nil,
-//        message: String? = "에러 발생",
-//        handler: (() -> Void)? = nil
-//    ) {
-//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//            .appendingAction(title: "확인", handler: handler)
-//        
-//        navigationController?.present(alertController, animated: true)
-//    }
+    //    func presentErrorAlert(
+    //        title: String? = nil,
+    //        message: String? = "에러 발생",
+    //        handler: (() -> Void)? = nil
+    //    ) {
+    //        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    //            .appendingAction(title: "확인", handler: handler)
+    //
+    //        navigationController?.present(alertController, animated: true)
+    //    }
 }
