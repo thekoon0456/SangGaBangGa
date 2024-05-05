@@ -173,7 +173,6 @@ final class InfoViewController: RxBaseViewController {
     override func configureView() {
         super.configureView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
-        navigationItem.title = ""
     }
 }
 

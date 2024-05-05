@@ -33,6 +33,7 @@ class RxBaseViewController: UIViewController {
     func configureLayout() { }
     func configureView() {
         view.backgroundColor = .white
+        navigationItem.backButtonDisplayMode = .minimal
     }
     
     @available(*, unavailable)

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Foundation
 
 import RxCocoa
 import RxSwift
@@ -26,6 +25,7 @@ final class DetailFeedViewModel: ViewModel {
         let heartButtonStatus: Driver<Bool>
         let heartCount: Driver<String>
         let comments: Driver<[PostCommentEntity]>
+        let paymentDone: Driver<Void>
     }
     
     private weak var coordinator: FeedCoordinator?
@@ -56,6 +56,7 @@ final class DetailFeedViewModel: ViewModel {
         let buttonStatus = BehaviorRelay(value: self.data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID} )
         let heartCount = BehaviorRelay(value: self.data.likes.count)
         let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
+        let paymentsRelay = PublishRelay<Void>()
         
         input
             .viewWillAppear
@@ -126,13 +127,15 @@ final class DetailFeedViewModel: ViewModel {
             .drive(with: self) { owner, validation in
                 owner.coordinator?.showToast(.paymentsSuccess(name: validation.productName,
                                                               price: validation.price))
+                paymentsRelay.accept(())
             }
             .disposed(by: disposeBag)
         
         return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultData()),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""),
-                      comments: commentsRelay.asDriver(onErrorJustReturn: []))
+                      comments: commentsRelay.asDriver(onErrorJustReturn: []),
+                      paymentDone: paymentsRelay.asDriver(onErrorJustReturn: ()))
     }
     
     // MARK: - 댓글 sorted

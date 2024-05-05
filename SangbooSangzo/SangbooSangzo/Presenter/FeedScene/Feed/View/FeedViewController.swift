@@ -96,7 +96,6 @@ final class FeedViewController: RxBaseViewController {
     override func configureView() {
         super.configureView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
-        navigationItem.title = ""
     }
     
     private func createLayout() -> UICollectionViewCompositionalLayout {

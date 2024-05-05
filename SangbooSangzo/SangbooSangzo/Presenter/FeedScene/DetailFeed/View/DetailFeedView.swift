@@ -175,6 +175,23 @@ final class DetailFeedView: BaseView {
         
         let formatter = DateFormatterManager.shared
         dateLabel.text = formatter.iso8601DateToString(data.createdAt, format: .date)
+        
+        guard let userID = UserDefaultsManager.shared.userData.userID else { return }
+        data.buyers.contains(userID)
+        ? setPaymentsButton(isEnable: false)
+        : setPaymentsButton(isEnable: true)
+    }
+    
+    func setPaymentsButton(isEnable: Bool) {
+        if isEnable {
+            paymentView.textColor = .white
+            paymentView.text = "계약금 입금하기"
+            paymentView.isUserInteractionEnabled = true
+        } else {
+            paymentView.textColor = .systemGray
+            paymentView.text = "계약금 입금이 완료되었습니다"
+            paymentView.isUserInteractionEnabled = false
+        }
     }
 }
 

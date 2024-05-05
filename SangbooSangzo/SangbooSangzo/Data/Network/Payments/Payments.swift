@@ -5,7 +5,6 @@
 //  Created by Deokhun KIM on 5/5/24.
 //
 
-import Foundation
 import UIKit
 
 import iamport_ios
@@ -21,8 +20,6 @@ enum SSPaymentsConst {
 }
 
 final class PaymentsService {
-    
-    let repository = PaymentsRepositoryImpl()
     
     //결제데이터 생성
     func createPaymentData(
@@ -53,7 +50,6 @@ final class PaymentsService {
         let payment = createPaymentData()
         
         return Observable.create { observer in
-            
             Iamport
                 .shared
                 .payment(navController: nav,
@@ -64,10 +60,6 @@ final class PaymentsService {
                           let uid = response.imp_uid
                     else { return }
                     if response.success == true {
-                        //UID 포트원 고유 결제 번호
-                        //postID
-                        //productName
-                        //price
                         let request = PaymentsRequest(impUID: uid,
                                                       postID: postID,
                                                       productName: productName,

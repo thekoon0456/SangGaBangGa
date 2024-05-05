@@ -77,6 +77,13 @@ final class DetailFeedViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
+        output
+            .paymentDone
+            .drive(with: self) { owner, _ in
+                owner.baseView.setPaymentsButton(isEnable: false)
+            }
+            .disposed(by: disposeBag)
+        
 //        Observable.zip(baseView.commentsTableView.rx.itemDeleted.asObservable(),
 //                       output.comments.asObservable())
 //        .subscribe(with: self) { owner, data in
