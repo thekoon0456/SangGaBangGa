@@ -21,14 +21,7 @@ final class FeedViewController: RxBaseViewController {
     private let viewModel: FeedViewModel
     private var dataSource: DataSource?
     
-    private let titleView = UIView().then {
-        let view = TitleView()
-        $0.addSubview(view)
-        view.snp.makeConstraints { make in
-            make.height.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.width)
-        }
-    }
+    private let titleView = TitleView()
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: createLayout()).then {
@@ -102,7 +95,7 @@ final class FeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationItem.titleView = titleView
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
         navigationItem.title = ""
     }
     

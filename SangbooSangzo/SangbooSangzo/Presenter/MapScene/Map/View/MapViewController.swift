@@ -17,6 +17,11 @@ final class MapViewController: RxBaseViewController {
     // MARK: - Properties
     
     private let viewModel: MapViewModel
+    
+    private let titleView = TitleView().then {
+        $0.configureView(title: "지도")
+    }
+    
     private let mapView = MKMapView().then {
         $0.register(SSAnnotationView.self,
                     forAnnotationViewWithReuseIdentifier:SSAnnotationView.identifier)
@@ -129,6 +134,7 @@ final class MapViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
         navigationItem.title = ""
     }
 }
@@ -166,7 +172,7 @@ extension MapViewController {
     func setAnnotation(coordinate: CLLocationCoordinate2D) {
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        annotation.title = "위치"
+        annotation.title = "현재 위치"
         markerView = CustomMarkerView(annotation: annotation)
         
         mapView.addAnnotation(annotation)

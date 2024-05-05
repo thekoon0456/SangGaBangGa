@@ -41,9 +41,8 @@ final class TitleView: BaseView {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(iconImageView.snp.centerY)
+            make.centerY.equalTo(iconImageView)
             make.leading.equalTo(iconImageView.snp.trailing).offset(6)
-            make.trailing.lessThanOrEqualToSuperview()
         }
     }
     

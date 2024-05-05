@@ -13,18 +13,14 @@ import SnapKit
 final class UserProfileView: BaseView {
     
     // MARK: - Properties
-    
-    //설정버튼 카메라
-    private lazy var cameraImage = UIImageView(image: UIImage(systemName: "camera"))
-    
+
     lazy var profileImageView = UIImageView().then {
         $0.image = .ssUser
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
-        $0.layer.borderColor = UIColor.systemGray.cgColor
-        $0.layer.borderWidth = 1
-        $0.isUserInteractionEnabled = true
+        $0.layer.borderColor = UIColor.accent.cgColor
+        $0.layer.borderWidth = 2
     }
     
     private let userNicknameLabel = UILabel().then {
@@ -52,18 +48,22 @@ final class UserProfileView: BaseView {
     override func configureLayout() {
         super.configureLayout()
         profileImageView.snp.makeConstraints { make in
-            make.top.leading.bottom.equalToSuperview()
-            make.width.equalTo(profileImageView.snp.height)
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(40)
         }
         
         userNicknameLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(profileImageView)
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.trailing.greaterThanOrEqualToSuperview()
+            make.trailing.lessThanOrEqualToSuperview().offset(-8)
         }
     }
     
     override func configureView() {
         super.configureView()
+        self.backgroundColor = .second
+        self.layer.cornerRadius = 12
+        self.clipsToBounds = true
     }
 }

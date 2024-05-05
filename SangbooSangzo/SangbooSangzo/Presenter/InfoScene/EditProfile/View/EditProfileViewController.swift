@@ -33,6 +33,8 @@ final class EditProfileViewController: RxBaseViewController {
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = true
         $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageViewTapped)))
+        $0.layer.borderColor = UIColor.accent.cgColor
+        $0.layer.borderWidth = 4
     }
     
     private let emailTextField = UITextField().then {

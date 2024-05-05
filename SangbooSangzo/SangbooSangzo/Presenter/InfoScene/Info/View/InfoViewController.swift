@@ -19,14 +19,8 @@ final class InfoViewController: RxBaseViewController {
     
     private let detailUserInfoView = UserProfileView()
     
-    private let titleView = UIView().then {
-        let view = TitleView()
-        view.configureView(title: "마이페이지")
-        $0.addSubview(view)
-        view.snp.makeConstraints { make in
-            make.height.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.width)
-        }
+    private let titleView = TitleView().then {
+        $0.configureView(title: "마이페이지")
     }
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
@@ -139,17 +133,17 @@ final class InfoViewController: RxBaseViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
-            make.height.equalTo(48)
+            make.height.equalTo(80)
         }
         
         settingButton.snp.makeConstraints { make in
             make.centerY.equalTo(detailUserInfoView)
-            make.trailing.equalToSuperview().offset(-8)
+            make.trailing.equalToSuperview().offset(-16)
             make.size.equalTo(48)
         }
         
         segmentContainerView.snp.makeConstraints { make in
-            make.top.equalTo(detailUserInfoView.snp.bottom)
+            make.top.equalTo(detailUserInfoView.snp.bottom).offset(8)
             make.horizontalEdges.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(40)
@@ -178,7 +172,7 @@ final class InfoViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationItem.titleView = titleView
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
         navigationItem.title = ""
     }
 }
