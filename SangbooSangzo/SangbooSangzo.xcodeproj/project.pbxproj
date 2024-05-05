@@ -105,6 +105,7 @@
 		7CA35D7C2BE6A65400E35AFA /* UserConnentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */; };
 		7CA35D7E2BE6B33B00E35AFA /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */; };
 		7CA35D812BE7522200E35AFA /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA35D802BE7522200E35AFA /* iamport-ios */; };
+		7CA35D842BE7533100E35AFA /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA35D832BE7533100E35AFA /* Payments.swift */; };
 		7CCB4BBA2BE36F0100A96C7B /* ProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */; };
 		7CCB4BBD2BE37D3D00A96C7B /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */; };
 		7CCB4BC02BE3937900A96C7B /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */; };
@@ -233,6 +234,7 @@
 		7C9E2DF72BE52A5900FD81E3 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		7CA35D7B2BE6A65400E35AFA /* UserConnentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnentView.swift; sourceTree = "<group>"; };
 		7CA35D7D2BE6B33B00E35AFA /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
+		7CA35D832BE7533100E35AFA /* Payments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payments.swift; sourceTree = "<group>"; };
 		7CCB4BB92BE36F0100A96C7B /* ProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEntity.swift; sourceTree = "<group>"; };
 		7CCB4BBC2BE37D3D00A96C7B /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 		7CCB4BBF2BE3937900A96C7B /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 		7C18ECB92BC679A100F061DE /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				7CA35D822BE7532700E35AFA /* Payments */,
 				7C0ADCC42BC9262B002DAEA7 /* APIService */,
 				7C0ADCAC2BC9200A002DAEA7 /* Router */,
 				7C9E2DEE2BE4D53100FD81E3 /* APISetting */,
@@ -782,6 +785,14 @@
 				7CD29C902BCE9DBF00A45268 /* FeedCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		7CA35D822BE7532700E35AFA /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				7CA35D832BE7533100E35AFA /* Payments.swift */,
+			);
+			path = Payments;
 			sourceTree = "<group>";
 		};
 		7CCBCF932BCFBB3400B3641D /* ReadPosts */ = {
@@ -1198,6 +1209,7 @@
 				7C0ADCB92BC920B4002DAEA7 /* LoginResponse.swift in Sources */,
 				7CD29C982BCEA9C700A45268 /* PoseViewModel.swift in Sources */,
 				7CD29C8F2BCE56EA00A45268 /* Toast.swift in Sources */,
+				7CA35D842BE7533100E35AFA /* Payments.swift in Sources */,
 				7C62A0B12BD62F9D00296BD7 /* ImageScrollView.swift in Sources */,
 				7CCBCFB82BCFE18100B3641D /* ProfileResponse.swift in Sources */,
 				7C1C50212BCD002B0066CBCA /* InfoViewModel.swift in Sources */,

@@ -7,6 +7,7 @@
 
 import UIKit
 
+import iamport_ios
 import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -36,6 +37,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidEnterBackground(_ scene: UIScene) { }
 }
+
+// MARK: - iamport_ios
+
+extension SceneDelegate {
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+      if let url = URLContexts.first?.url {
+        Iamport.shared.receivedURL(url)
+      }
+    }
+}
+
+// MARK: - IQKeyboardManagerSwift
 
 extension SceneDelegate {
     
