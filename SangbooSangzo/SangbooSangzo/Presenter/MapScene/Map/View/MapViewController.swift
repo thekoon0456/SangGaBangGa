@@ -83,10 +83,10 @@ final class MapViewController: RxBaseViewController {
         output
             .moveToRegion
             .drive(with: self) { owner, value in
-                owner.mapView.setRegion(value, animated: true)
-                let coordinator = CLLocationCoordinate2D(latitude: value.span.latitudeDelta,
-                                                         longitude: value.span.longitudeDelta)
+                let coordinator = CLLocationCoordinate2D(latitude: value.center.latitude,
+                                                         longitude: value.center.longitude)
                 owner.setAnnotation(coordinate: coordinator)
+                owner.mapView.setRegion(value, animated: true)
             }
             .disposed(by: disposeBag)
         
@@ -146,10 +146,13 @@ extension MapViewController {
     func configureMap() {
         mapView.delegate = self
     }
-    
-    //맵 annotaion 리셋
-    func resetMapAnnotation() {
-        mapView.removeAnnotations(mapView.annotations)
+
+    func setAnnotation(coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "현재 위치"
+        
+        mapView.addAnnotation(annotation)
     }
     
     func setSSAnnotation(data: ContentEntity) {
@@ -169,13 +172,8 @@ extension MapViewController {
         setAnnotation(coordinate: locationManager.userLocationRelay.value)
     }
     
-    func setAnnotation(coordinate: CLLocationCoordinate2D) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "현재 위치"
-        markerView = CustomMarkerView(annotation: annotation)
-        
-        mapView.addAnnotation(annotation)
+    func resetMapAnnotation() {
+        mapView.removeAnnotations(mapView.annotations)
     }
 }
 
