@@ -43,11 +43,6 @@ final class EditProfileViewController: RxBaseViewController {
         $0.isEnabled = false
     }
     
-    private let passwordTextField = UITextField().then {
-        $0.placeholder = "비밀번호를 입력해주세요"
-        $0.borderStyle = .roundedRect
-    }
-    
     private let nicknameTextField = UITextField().then {
         $0.placeholder = "닉네임을 입력해주세요"
         $0.borderStyle = .roundedRect
@@ -77,7 +72,6 @@ final class EditProfileViewController: RxBaseViewController {
         super.bind()
         
         let input = EditProfileViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
-                                               password: passwordTextField.rx.text.orEmpty,
                                                nickname: nicknameTextField.rx.text.orEmpty,
                                                phoneNumber: phoneNumberTextField.rx.text.orEmpty,
                                                imageData: imageRelay.map { $0.jpegData(compressionQuality: 0.5)},
@@ -90,7 +84,6 @@ final class EditProfileViewController: RxBaseViewController {
             .drive(with: self) { owner, value in
                 owner.emailTextField.text = value.email
                 owner.nicknameTextField.text = value.nick
-                owner.passwordTextField.text = nil
                 owner.phoneNumberTextField.text = value.phoneNum
                 guard let imageURL = value.profileImage else { return }
                 owner.profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (imageURL))
@@ -125,7 +118,7 @@ final class EditProfileViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(titleLabel, profileImageView, emailTextField, passwordTextField, nicknameTextField, phoneNumberTextField, editButton)
+        view.addSubviews(titleLabel, profileImageView, emailTextField, nicknameTextField, phoneNumberTextField, editButton)
     }
     
     override func configureLayout() {
@@ -159,15 +152,8 @@ final class EditProfileViewController: RxBaseViewController {
             make.height.equalTo(60)
         }
         
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(60)
-        }
-        
         nicknameTextField.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(20)
+            make.top.equalTo(emailTextField.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(60)

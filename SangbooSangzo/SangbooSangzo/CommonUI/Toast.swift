@@ -11,6 +11,7 @@ enum Toast: Equatable {
     case joinSueecss
     case loginSuccess
     case loginFail
+    case updateUserData
     
     case emailValidation(email: String)
     case emailValidationFail(email: String)
@@ -27,11 +28,13 @@ enum Toast: Equatable {
     var message: String {
         switch self {
         case .joinSueecss:
-            "회원가입에 성공했습니다."
+            "회원가입에 성공했습니다"
         case .loginSuccess:
             "로그인에 성공했습니다"
         case .loginFail:
-            "유효하지 않은 회원정보입니다. 회원가입을 진행해주세요."
+            "유효하지 않은 회원정보입니다. 회원가입을 진행해주세요"
+        case .updateUserData:
+            "회원정보 수정을 완료했습니다"
         case .emailValidation(let email):
             "\(email)은 사용 가능합니다"
         case .emailValidationFail(let email):
@@ -45,7 +48,7 @@ enum Toast: Equatable {
         case .wrongAddress:
             "유효하지 않은 주소입니다. 다시 검색해주세요"
         case .paymentsSuccess(let name, let price):
-            "\(name)의 계약금 \(price)원이 입금되었습니다."
+            "\(name)의 계약금 \(price)원이 입금되었습니다"
         case .paymentsFail:
             "결제 오류가 발생했습니다. 잠시 후 다시 시도해주세요"
         }

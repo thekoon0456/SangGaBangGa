@@ -34,7 +34,7 @@ final class SSAnnotationView: MKAnnotationView {
     
     let titleLabel = UILabel().then {
         $0.font = SSFont.medium11
-        $0.textColor = .systemGray
+        $0.textColor = .accent
         $0.textAlignment = .center
     }
     

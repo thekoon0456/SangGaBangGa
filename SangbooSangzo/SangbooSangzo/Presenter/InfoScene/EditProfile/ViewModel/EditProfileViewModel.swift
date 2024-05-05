@@ -14,7 +14,6 @@ final class EditProfileViewModel: ViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        let password: ControlProperty<String>
         let nickname: ControlProperty<String>
         let phoneNumber: ControlProperty<String>
         let imageData: Observable<Data?>
@@ -33,7 +32,11 @@ final class EditProfileViewModel: ViewModel {
     private let profileRepository: ProfileRepository
     var disposeBag = DisposeBag()
     
-    init(coordinator: InfoCoordinator?, profileRepository: ProfileRepository, userInfo: ProfileEntity) {
+    init(
+        coordinator: InfoCoordinator?,
+        profileRepository: ProfileRepository,
+        userInfo: ProfileEntity
+    ) {
         self.coordinator = coordinator
         self.profileRepository = profileRepository
         self.userInfo = userInfo
@@ -41,34 +44,27 @@ final class EditProfileViewModel: ViewModel {
     
     func transform(_ input: Input) -> Output {
         
+        let nickNameRelay = BehaviorRelay(value: "")
+        let phoneRelay = BehaviorRelay(value: "")
         let buttonRelay = PublishRelay<Bool>()
-        let validationObservable = Observable.combineLatest(input.password.asObservable(),
-                                                            input.nickname.asObservable(),
-                                                            input.phoneNumber.asObservable(),
-                                                            input.imageData)
-        //버튼 enable
-        validationObservable
-            .map { !$0.0.isEmpty && !$0.1.isEmpty && !$0.2.isEmpty }
-            .subscribe { value in
-                buttonRelay.accept(value)
-            }.disposed(by: disposeBag)
         
-        //수정하기
+        let validationObservable = Observable.combineLatest(
+            nickNameRelay.asObservable(),
+            phoneRelay.asObservable(),
+            input.imageData
+        )
+        
         input
-            .editButtonTapped
-            .flatMap { validationObservable }
-            .subscribe(with: self) { owner, login in
-                owner
-                    .profileRepository
-                    .updateMyProfile(request: .init(nick: login.1,
-                                                    phoneNum: login.2,
-                                                    birthDay: nil,
-                                                    profile: login.3))
-                    .catchAndReturn(ProfileEntity.defaultData())
-                    .subscribe(with: self) { owner, response in
-                        owner.coordinator?.popViewController()
-                    }
-                    .disposed(by: owner.disposeBag)
+            .nickname
+            .subscribe { value in
+                nickNameRelay.accept(value)
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .phoneNumber
+            .subscribe { value in
+                phoneRelay.accept(value)
             }
             .disposed(by: disposeBag)
         
@@ -78,7 +74,39 @@ final class EditProfileViewModel: ViewModel {
             .map { owner, _ in
                 owner.userInfo
             }
+            .do { value in
+                nickNameRelay.accept(value.nick)
+                phoneRelay.accept(value.phoneNum)
+            }
             .asDriver(onErrorJustReturn: ProfileEntity.defaultData())
+        
+        //버튼 enable
+        validationObservable
+            .map { !$0.0.isEmpty && !$0.1.isEmpty }
+            .subscribe { value in
+                buttonRelay.accept(value)
+            }.disposed(by: disposeBag)
+        
+        //수정하기
+        input
+            .editButtonTapped
+            .flatMap { validationObservable }
+            .withUnretained(self)
+            .flatMap { owner, login in
+                owner
+                    .profileRepository
+                    .updateMyProfile(request: .init(nick: login.0 + " / " + login.1,
+                                                    phoneNum: "",
+                                                    birthDay: nil,
+                                                    profile: login.2))
+            }
+            .asDriver(onErrorJustReturn: ProfileEntity.defaultData())
+            .drive(with: self) { owner, response in
+                owner.coordinator?.showToast(.updateUserData) {
+                    owner.coordinator?.popViewController()
+                }
+            }
+            .disposed(by: disposeBag)
         
         return Output(userInfo: userInfo,
                       buttonEnabled: buttonRelay.asDriver(onErrorJustReturn: false))
