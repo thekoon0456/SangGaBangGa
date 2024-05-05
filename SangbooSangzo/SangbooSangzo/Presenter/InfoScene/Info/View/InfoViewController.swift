@@ -9,6 +9,7 @@ import UIKit
 
 import RxCocoa
 import RxSwift
+import SnapKit
 
 final class InfoViewController: RxBaseViewController {
     
@@ -17,6 +18,16 @@ final class InfoViewController: RxBaseViewController {
     // MARK: - UI
     
     private let detailUserInfoView = UserProfileView()
+    
+    private let titleView = UIView().then {
+        let view = TitleView()
+        view.configureView(title: "마이페이지")
+        $0.addSubview(view)
+        view.snp.makeConstraints { make in
+            make.height.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width)
+        }
+    }
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
         $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
@@ -59,19 +70,7 @@ final class InfoViewController: RxBaseViewController {
         self.viewModel = viewModel
         super.init()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationItem.title = "마이페이지"
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationItem.title = ""
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
+
     override func bind() {
         super.bind()
 
@@ -137,16 +136,16 @@ final class InfoViewController: RxBaseViewController {
     override func configureLayout() {
         super.configureLayout()
         detailUserInfoView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
-            make.height.equalTo(64)
+            make.height.equalTo(48)
         }
         
         settingButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.centerY.equalTo(detailUserInfoView)
             make.trailing.equalToSuperview().offset(-8)
-            make.size.equalTo(64)
+            make.size.equalTo(48)
         }
         
         segmentContainerView.snp.makeConstraints { make in
@@ -179,8 +178,8 @@ final class InfoViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "마이페이지"
+        navigationItem.titleView = titleView
+        navigationItem.title = ""
     }
 }
 

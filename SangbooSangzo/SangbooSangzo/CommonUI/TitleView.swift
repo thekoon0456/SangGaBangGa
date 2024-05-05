@@ -22,6 +22,10 @@ final class TitleView: BaseView {
         $0.contentMode = .scaleAspectFill
     }
     
+    func configureView(title: String) {
+        titleLabel.text = title
+    }
+    
     override func configureHierarchy() {
         super.configureHierarchy()
         addSubviews(iconImageView, titleLabel)
@@ -32,13 +36,14 @@ final class TitleView: BaseView {
         
         iconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview()
             make.size.equalTo(40)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalTo(iconImageView.snp.centerY)
             make.leading.equalTo(iconImageView.snp.trailing).offset(6)
+            make.trailing.lessThanOrEqualToSuperview()
         }
     }
     
