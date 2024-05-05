@@ -56,7 +56,7 @@ final class MapCoordinator: Coordinator {
             data: data
         )
         let vc = MapDetailViewController(viewModel: vm)
-        vc.sheetPresentationController?.detents = [.medium()]
+        vc.sheetPresentationController?.detents = [.custom { _ in CGFloat(300) }]
         vc.sheetPresentationController?.prefersGrabberVisible = true
         navigationController.present(vc, animated: true)
     }

@@ -20,10 +20,6 @@ final class MapDetailViewController: RxBaseViewController {
         $0.isUserInteractionEnabled = true
     }
     
-    private let titleLabel = UILabel().then {
-        $0.font = SSFont.semiBold24
-    }
-    
     init(viewModel: MapDetailViewModel) {
         self.viewModel = viewModel
         super.init()
@@ -45,7 +41,6 @@ final class MapDetailViewController: RxBaseViewController {
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
-            owner.titleLabel.text = data.title
             owner.baseView.configureCellData(data)
         }
         .disposed(by: disposeBag)
@@ -63,19 +58,14 @@ final class MapDetailViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(baseView, titleLabel)
+        view.addSubviews(baseView)
         
     }
     
     override func configureLayout() {
         super.configureLayout()
-        titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
-        }
-        
         baseView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-12).priority(.low)

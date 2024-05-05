@@ -33,18 +33,18 @@ final class SSAnnotationView: MKAnnotationView {
     }
     
     let titleLabel = UILabel().then {
-        $0.font = SSFont.medium12
-        $0.textColor = .label
+        $0.font = SSFont.medium11
+        $0.textColor = .systemGray
         $0.textAlignment = .center
     }
     
     let priceLabel = MarqueeLabel().then {
-        $0.font = SSFont.medium11
+        $0.font = SSFont.light11
         $0.textColor = .label
         $0.type = .leftRight
         $0.animationCurve = .easeInOut
         $0.trailingBuffer = 4
-        $0.speed = .duration(5)
+        $0.speed = .duration(4)
     }
     
     lazy var imageView = UIImageView().then {
