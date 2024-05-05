@@ -38,17 +38,20 @@ final class InfoViewController: RxBaseViewController {
         $0.setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
         $0.insertSegment(withTitle: "좋아요 한 글", at: 0, animated: true)
         $0.insertSegment(withTitle: "내가 작성한 글", at: 1, animated: true)
-        $0.setWidth(140, forSegmentAt: 0)
-        $0.setWidth(140, forSegmentAt: 1)
+        $0.insertSegment(withTitle: "계약금 입금한 글", at: 2, animated: true)
+        let segWidth = UIScreen.main.bounds.width / 3
+        $0.setWidth(segWidth, forSegmentAt: 0)
+        $0.setWidth(segWidth, forSegmentAt: 1)
+        $0.setWidth(segWidth, forSegmentAt: 2)
         $0.selectedSegmentIndex = 0
         $0.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.systemGray,
-            NSAttributedString.Key.font: SSFont.semiBold18 as Any
+            NSAttributedString.Key.font: SSFont.semiBold16 as Any
         ], for: .normal)
         
         $0.setTitleTextAttributes([
             NSAttributedString.Key.foregroundColor: UIColor.label,
-            NSAttributedString.Key.font: SSFont.semiBold18 as Any], for: .selected)
+            NSAttributedString.Key.font: SSFont.semiBold16 as Any], for: .selected)
     }
     
     private lazy var underLineView = UIView().then {
@@ -99,10 +102,13 @@ final class InfoViewController: RxBaseViewController {
             .feeds
             .drive(with: self) { owner, value in
                 let index = owner.titleSegment.selectedSegmentIndex
-                if index == 0 {
+                switch index {
+                case 0:
                     owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .like) : nil
-                } else {
+                case 1:
                     owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .written) : nil
+                default:
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .payments) : nil
                 }
             }
             .disposed(by: disposeBag)
@@ -156,16 +162,16 @@ final class InfoViewController: RxBaseViewController {
         
         segmentContainerView.snp.makeConstraints { make in
             make.top.equalTo(detailUserInfoView.snp.bottom).offset(8)
-            make.horizontalEdges.equalToSuperview()
+            make.width.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(40)
         }
         
         titleSegment.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
             make.height.equalTo(30)
-            make.width.equalTo(280)
+            make.width.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
         
         underLineView.snp.makeConstraints { make in

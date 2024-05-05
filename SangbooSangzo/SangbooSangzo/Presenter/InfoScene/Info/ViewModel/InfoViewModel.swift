@@ -29,18 +29,22 @@ final class InfoViewModel: ViewModel {
     private let postRepository: PostRepository
     private let likeRepository: LikeRepository
     private let profileRepository: ProfileRepository
+    private let paymentsRepository: PaymentsAPIRepository
+    private let paymentsService = PaymentsService()
     var disposeBag = DisposeBag()
     
     init(
         coordinator: InfoCoordinator,
         postRepository: PostRepository,
         likeRepository: LikeRepository,
-        profileRepository: ProfileRepository
+        profileRepository: ProfileRepository,
+        paymentsRepository: PaymentsAPIRepository
     ) {
         self.coordinator = coordinator
         self.postRepository = postRepository
         self.likeRepository = likeRepository
         self.profileRepository = profileRepository
+        self.paymentsRepository = paymentsRepository
     }
     
     func transform(_ input: Input) -> Output {
@@ -62,20 +66,25 @@ final class InfoViewModel: ViewModel {
                                              input.segmentTapped)
             .withUnretained(self)
             .do { owner, index in
+                print(index.1)
                 updateBar.accept(index.1)
             }
             .flatMap { owner, index in
-                if index.1 == 0 {
-                    owner.likeRepository.ReadLikePosts(query: .init(next: "",
-                                                                    limit: APISetting.limit))
-                } else {
-                    owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
-                                                       query: ReadPostsQuery(next: "",
-                                                                             limit: APISetting.limit,
-                                                                             productID: APISetting.productID))
+                switch index.1 {
+                case 0:
+                    let posts = owner.likeRepository.ReadLikePosts(query: .init(next: "",
+                                                                                limit: APISetting.limit))
+                    return posts.map { $0.data }
+                case 1:
+                    let posts = owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
+                                                                   query: ReadPostsQuery(next: "",
+                                                                                         limit: APISetting.limit,
+                                                                                         productID: APISetting.productID))
+                    return posts.map { $0.data }
+                default:
+                    return owner.paymentsContentsSingle()
                 }
             }
-            .map { $0.data }
             .asDriver(onErrorJustReturn: [ContentEntity]())
         
         input
@@ -97,5 +106,26 @@ final class InfoViewModel: ViewModel {
         return Output(userProfile: userProfile,
                       underBarIndex: updateBar.asDriver(onErrorJustReturn: 0),
                       feeds: feeds)
+    }
+
+    func paymentsContentsSingle() -> Single<[ContentEntity]> {
+        return paymentsRepository.readMyPayments()
+            .asObservable()
+            .map { payments in
+                Set(payments.map { $0.postID })
+            }
+            .flatMap { ids in
+                Observable.combineLatest(ids.map { id in
+                    self.postRepository.readPost(queryID: id)
+                        .asObservable()
+                        .flatMap {
+                            Observable.just($0)
+                        }
+                })
+            }
+            .map { results in
+                results.compactMap { $0 }
+            }
+            .asSingle()
     }
 }

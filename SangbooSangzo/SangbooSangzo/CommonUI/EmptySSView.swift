@@ -16,6 +16,7 @@ final class EmptySSView: BaseView {
     enum SettingTitle: String {
         case like = "좋아요 누른 글이"
         case written = "작성한 글이"
+        case payments = "계약금을 입금한 글이"
     }
     
     // MARK: - Properties

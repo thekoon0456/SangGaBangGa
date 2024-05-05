@@ -22,11 +22,13 @@ final class InfoCoordinator: Coordinator {
         let postRepository = PostRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
         let profileRepository = ProfileRepositoryImpl()
+        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = InfoViewModel(
             coordinator: self,
             postRepository: postRepository,
             likeRepository: likeRepository,
-            profileRepository: profileRepository
+            profileRepository: profileRepository,
+            paymentsRepository: paymentsRepository
         )
         let vc = InfoViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
