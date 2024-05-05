@@ -42,11 +42,13 @@ final class FeedCoordinator: Coordinator {
         let postRepository = PostRepositoryImpl()
         let commentRepository = CommentRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
+        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = DetailFeedViewModel(
             coordinator: self,
             postRepository: postRepository,
             commentRepository: commentRepository,
             likeRepository: likeRepository,
+            paymentsRepository: paymentsRepository,
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)

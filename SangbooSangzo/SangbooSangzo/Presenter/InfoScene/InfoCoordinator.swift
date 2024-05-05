@@ -39,11 +39,13 @@ final class InfoCoordinator: Coordinator {
         let postRepository = PostRepositoryImpl()
         let commentRepository = CommentRepositoryImpl()
         let likeRepository = LikeRepositoryImpl()
+        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = DetailFeedViewModel(
             coordinator: FeedCoordinator(navigationController: self.navigationController),
             postRepository: postRepository,
             commentRepository: commentRepository,
             likeRepository: likeRepository,
+            paymentsRepository: paymentsRepository,
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)

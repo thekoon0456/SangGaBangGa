@@ -32,7 +32,7 @@ final class DetailFeedViewModel: ViewModel {
     private let postRepository: PostRepository
     private let commentRepository: CommentRepository
     private let likeRepository: LikeRepository
-    private let paymentsRepository: PaymentsAPIRepository = PaymentsRepositoryImpl()
+    private let paymentsRepository: PaymentsAPIRepository
     private let paymentsService = PaymentsService()
     private let data: ContentEntity
     var disposeBag = DisposeBag()
@@ -41,12 +41,14 @@ final class DetailFeedViewModel: ViewModel {
          postRepository: PostRepository,
          commentRepository: CommentRepository,
          likeRepository: LikeRepository,
+         paymentsRepository: PaymentsAPIRepository,
          data: ContentEntity
     ) {
         self.coordinator = coordinator
         self.postRepository = postRepository
         self.commentRepository = commentRepository
         self.likeRepository = likeRepository
+        self.paymentsRepository = paymentsRepository
         self.data = data
         print("data:", data)
     }
