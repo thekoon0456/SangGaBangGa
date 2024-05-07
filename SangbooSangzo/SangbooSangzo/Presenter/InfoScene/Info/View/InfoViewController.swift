@@ -13,7 +13,11 @@ import SnapKit
 
 final class InfoViewController: RxBaseViewController {
     
+    // MARK: - Properties
+    
     private let viewModel: InfoViewModel
+    private let cellHeartButtonSubject = PublishSubject<(Int, Bool)>()
+    private let cellCommentButtonSubject = PublishSubject<Int>()
     
     // MARK: - UI
     
@@ -24,7 +28,7 @@ final class InfoViewController: RxBaseViewController {
     }
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
-        $0.register(FeedCell.self, forCellWithReuseIdentifier: FeedCell.identifier)
+        $0.register(InfoFeedCell.self, forCellWithReuseIdentifier: InfoFeedCell.identifier)
     }
     
     private lazy var segmentContainerView = UIView().then {
@@ -74,7 +78,9 @@ final class InfoViewController: RxBaseViewController {
         let input = InfoViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         segmentTapped: titleSegment.rx.value,
                                         settingTapped: settingButton.rx.tap,
-                                        cellTapped: collectionView.rx.modelSelected(ContentEntity.self))
+                                        cellTapped: collectionView.rx.modelSelected(ContentEntity.self),
+                                        cellHeartButtonTapped: cellHeartButtonSubject.asObservable(),
+                                        cellCommentButtonTapped: cellCommentButtonSubject.asObservable())
         let output = viewModel.transform(input)
         
         output
@@ -93,8 +99,19 @@ final class InfoViewController: RxBaseViewController {
         
         output
             .feeds
-            .drive(collectionView.rx.items(cellIdentifier: FeedCell.identifier, cellType: FeedCell.self)) { item , element, cell in
+            .drive(collectionView.rx.items(cellIdentifier: InfoFeedCell.identifier, cellType: InfoFeedCell.self)) { item , element, cell in
                 cell.configureCellData(element)
+                
+                cell.heartButtonTapped = { [weak self] in
+                    guard let self else { return }
+                    cell.heartButton.isSelected.toggle()
+                    let isSelected = cell.heartButton.isSelected
+                    cellHeartButtonSubject.onNext((item, isSelected))
+                }
+                cell.commentButtonTapped = { [weak self] in
+                    guard let self else { return }
+                    cellCommentButtonSubject.onNext((item))
+                }
             }
             .disposed(by: disposeBag)
         

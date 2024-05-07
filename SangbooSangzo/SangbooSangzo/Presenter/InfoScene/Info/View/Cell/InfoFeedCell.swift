@@ -1,5 +1,5 @@
 //
-//  FeedCell.swift
+//  InfoFeedCell.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/16/24.
@@ -12,13 +12,12 @@ import RxSwift
 import Kingfisher
 import MarqueeLabel
 
-final class FeedCell: RxBaseCollectionViewCell {
+final class InfoFeedCell: RxBaseCollectionViewCell {
     
     // MARK: - Properties
     
-    private let likeRepository = LikeRepositoryImpl()
-    private lazy var viewModel = FeedCellViewModel(likeRepository: likeRepository)
-    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
+    var heartButtonTapped: (() -> Void)?
+    var commentButtonTapped: (() -> Void)?
     
     private let imageView = UIImageView().then {
         $0.layer.cornerRadius = 5
@@ -41,6 +40,8 @@ final class FeedCell: RxBaseCollectionViewCell {
     let commentButton = UIButton().then {
         $0.setImage(SSIcon.message?
             .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
+        $0.setImage(SSIcon.messageFill?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .selected)
         $0.tintColor = .tintColor
     }
     
@@ -82,20 +83,17 @@ final class FeedCell: RxBaseCollectionViewCell {
     override func bind() {
         super.bind()
         
-        let input = FeedCellViewModel.Input(inputData: dataSubject.asObservable(),
-                                            heartButtonTapped: heartButton.rx.tap.map { [weak self] in
-            guard let self else { return false }
-            return heartButton.isSelected })
-        let output = viewModel.transform(input)
-        
-        output
-            .heartButtonStatus
-            .drive(heartButton.rx.isSelected)
+        heartButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                owner.heartButton.isSelected.toggle()
+                owner.heartButtonTapped?()
+            }
             .disposed(by: disposeBag)
         
-        output
-            .heartCount
-            .drive(heartCountLabel.rx.text)
+        commentButton.rx.tap
+            .subscribe(with: self) { owner, _ in
+                owner.commentButtonTapped?()
+            }
             .disposed(by: disposeBag)
     }
 
@@ -118,15 +116,18 @@ final class FeedCell: RxBaseCollectionViewCell {
 
 // MARK: - Configure
 
-extension FeedCell {
+extension InfoFeedCell {
 
     func configureCellData(_ data: ContentEntity) {
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files.first ?? ""))
         categoryLabel.text = data.category
         titleLabel.text = data.title
         priceLabel.text = data.price
+        commentButton.isSelected = data.likes.count != 0 ? true : false
         commentCountLabel.text = String(data.comments.count)
-        dataSubject.onNext(data)
+        guard let userID = UserDefaultsManager.shared.userData.userID else { return }
+        heartButton.isSelected = data.likes.contains(userID) ? true : false
+        heartCountLabel.text = String(data.likes.count)
     }
     
     private func setLayout() {

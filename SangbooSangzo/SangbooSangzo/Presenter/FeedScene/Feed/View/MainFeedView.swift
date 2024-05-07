@@ -35,6 +35,8 @@ final class MainFeedView: BaseView {
     let commentButton = UIButton().then {
         $0.setImage(SSIcon.message?
             .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
+        $0.setImage(SSIcon.messageFill?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .selected)
         $0.tintColor = .tintColor
     }
     
@@ -101,6 +103,7 @@ extension MainFeedView {
         categoryLabel.text = data.category
         titleLabel.text = data.title
         priceLabel.text = data.price
+        commentButton.isSelected = data.likes.count != 0 ? true : false
         commentCountLabel.text = String(data.comments.count)
         addressLabel.text = data.address
         let formatter = DateFormatterManager.shared

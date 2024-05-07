@@ -19,6 +19,7 @@ enum SSIcon {
     static let heart = UIImage(systemName: "heart")
     static let heartFill = UIImage(systemName: "heart.fill")
     static let message = UIImage(systemName: "message")
+    static let messageFill = UIImage(systemName: "message.fill")
     
     static let ellipsis = UIImage(systemName: "ellipsis")
 }

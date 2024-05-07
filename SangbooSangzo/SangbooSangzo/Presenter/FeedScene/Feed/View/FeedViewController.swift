@@ -78,9 +78,6 @@ final class FeedViewController: RxBaseViewController {
                 owner.updateSnapshot(withItems: item, toSection: .feed)
             }
             .disposed(by: disposeBag)
-        
-        
-        
     }
     
     override func configureHierarchy() {

@@ -17,6 +17,8 @@ final class InfoViewModel: ViewModel {
         let segmentTapped: ControlProperty<Int>
         let settingTapped: ControlEvent<Void>
         let cellTapped: ControlEvent<ContentEntity>
+        let cellHeartButtonTapped: Observable<(Int, Bool)>
+        let cellCommentButtonTapped: Observable<Int>
     }
     
     struct Output {
@@ -50,6 +52,9 @@ final class InfoViewModel: ViewModel {
     func transform(_ input: Input) -> Output {
         let userProfileRelay = BehaviorRelay<ProfileEntity>(value: ProfileEntity.defaultData())
         let updateBar = PublishRelay<Int>()
+        let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
+        let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
+        let updateRelay = BehaviorRelay<Void>(value: ())
         
         let userProfile = input
             .viewWillAppear
@@ -62,8 +67,13 @@ final class InfoViewModel: ViewModel {
             }
             .asDriver(onErrorJustReturn: ProfileEntity.defaultData())
         
-        let feeds = Observable.combineLatest(input.viewWillAppear,
-                                             input.segmentTapped)
+        Observable
+            .combineLatest(
+                input.viewWillAppear,
+                input.segmentTapped,
+                commentsRelay.asObservable(),
+                updateRelay.asObservable()
+            )
             .withUnretained(self)
             .do { owner, index in
                 print(index.1)
@@ -85,7 +95,10 @@ final class InfoViewModel: ViewModel {
                     return owner.paymentsContentsSingle()
                 }
             }
-            .asDriver(onErrorJustReturn: [ContentEntity]())
+            .subscribe { value in
+                dataRelay.accept(value)
+            }
+            .disposed(by: disposeBag)
         
         input
             .settingTapped
@@ -103,11 +116,45 @@ final class InfoViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        input
+            .cellHeartButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .map { value in
+                var status = value.1
+                status.toggle()
+                return (value.0, status)
+            }
+            .withUnretained(self)
+            .flatMap { owner, value in
+                owner
+                    .likeRepository
+                    .postLike(queryID: dataRelay.value[value.0].postID, status: value.1)
+                    .catch { error in
+                        print(error)
+                        return Single<LikeEntity>.never()
+                    }
+            }
+            .subscribe { _ in
+                updateRelay.accept(())
+            }
+            .disposed(by: disposeBag)
+        
+        
+        input
+            .cellCommentButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .asDriver(onErrorJustReturn: 0)
+            .drive(with: self) { owner, index in
+                let comments = owner.sortedComments(dataRelay.value[index].comments)
+                commentsRelay.accept(comments)
+            }
+            .disposed(by: disposeBag)
+        
         return Output(userProfile: userProfile,
                       underBarIndex: updateBar.asDriver(onErrorJustReturn: 0),
-                      feeds: feeds)
+                      feeds: dataRelay.asDriver())
     }
-
+    
     func paymentsContentsSingle() -> Single<[ContentEntity]> {
         return paymentsRepository.readMyPayments()
             .asObservable()
@@ -127,5 +174,15 @@ final class InfoViewModel: ViewModel {
                 results.compactMap { $0 }
             }
             .asSingle()
+    }
+    
+    func sortedComments(_ input: [PostCommentEntity]) -> [PostCommentEntity] {
+        let formatter = DateFormatterManager.shared
+        
+        return input.sorted { item1, item2 in
+            let date1 = formatter.formattedISO8601ToDate(item1.createdAt) ?? Date()
+            let date2 = formatter.formattedISO8601ToDate(item2.createdAt) ?? Date()
+            return date1 < date2
+        }
     }
 }
