@@ -48,7 +48,7 @@ final class CommentViewController: RxBaseViewController {
         let sendButtonTapped = sendButton.rx.tap.withLatestFrom(commentTextField.rx.text.orEmpty)
         
         let input = CommentViewModel.Input(sendButtonTapped: sendButtonTapped,
-        cellDeleted: commentsTableView.rx.itemDeleted)
+                                           cellDeleted: commentsTableView.rx.itemDeleted)
         let output = viewModel.transform(input)
         
         output
@@ -64,6 +64,13 @@ final class CommentViewController: RxBaseViewController {
             .comments
             .drive(with: self) { owner, comments in
                 owner.scrollToBottom()
+            }
+            .disposed(by: disposeBag)
+        
+        commentsTableView.rx.itemSelected
+            .asDriver()
+            .drive(with: self) { owner, index in
+                owner.commentsTableView.deselectRow(at: index, animated: false)
             }
             .disposed(by: disposeBag)
         

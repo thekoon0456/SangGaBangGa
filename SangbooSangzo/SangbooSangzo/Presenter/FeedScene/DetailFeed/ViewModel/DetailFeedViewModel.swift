@@ -97,7 +97,6 @@ final class DetailFeedViewModel: ViewModel {
             .commentButtonTapped
             .asDriver()
             .drive(with: self) { owner, _ in
-                print("==========", owner.coordinator)
                 owner.coordinator?.presentComment(data: owner.data, commentsRelay: commentsRelay)
             }
             .disposed(by: disposeBag)

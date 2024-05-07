@@ -17,6 +17,8 @@ final class FeedViewModel: ViewModel {
         let cellSelected: ControlEvent<IndexPath>
         let addButtonTapped: ControlEvent<Void>
         let fetchContents: Observable<Int>
+        let cellHeartButtonTapped: Observable<Bool>
+        let cellCommentButtonTapped: Observable<Int>
     }
     
     struct Output {
@@ -39,14 +41,19 @@ final class FeedViewModel: ViewModel {
         
         let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
         let nextCursorRelay = BehaviorRelay<String?>(value: nil)
+        let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
         
         Observable
-            .combineLatest(input.viewWillAppear, TokenInterceptor.refreshSubject.take(1))
+            .combineLatest(
+                input.viewWillAppear,
+                TokenInterceptor.refreshSubject.take(1),
+                commentsRelay.asObservable()
+            )
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
                     .postRepository
-                    .readPosts(query: .init(next: nil,
+                    .readPosts(query: .init(next: nextCursorRelay.value,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID))
             }
@@ -93,6 +100,27 @@ final class FeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        input
+            .cellCommentButtonTapped
+            .asDriver(onErrorJustReturn: 0)
+            .drive(with: self) { owner, index in
+                let comments = owner.sortedComments(dataRelay.value[index].comments)
+                commentsRelay.accept(comments)
+                owner.coordinator?.presentComment(data: dataRelay.value[index],
+                                                  commentsRelay: commentsRelay)
+            }
+            .disposed(by: disposeBag)
+        
         return Output(feeds: dataRelay.asDriver())
+    }
+    
+    func sortedComments(_ input: [PostCommentEntity]) -> [PostCommentEntity] {
+        let formatter = DateFormatterManager.shared
+        
+        return input.sorted { item1, item2 in
+            let date1 = formatter.formattedISO8601ToDate(item1.createdAt) ?? Date()
+            let date2 = formatter.formattedISO8601ToDate(item2.createdAt) ?? Date()
+            return date1 < date2
+        }
     }
 }

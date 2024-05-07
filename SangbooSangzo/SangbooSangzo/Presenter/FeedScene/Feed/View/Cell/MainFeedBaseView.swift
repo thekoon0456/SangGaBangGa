@@ -102,6 +102,9 @@ extension MainFeedBaseView {
         addressLabel.text = data.address
         let formatter = DateFormatterManager.shared
         dateLabel.text =  formatter.iso8601DateToString(data.createdAt, format: .date)
+        guard let userID = UserDefaultsManager.shared.userData.userID else { return }
+        heartButton.isSelected = data.likes.contains(userID) ? true : false
+        heartCountLabel.text = String(data.likes.count)
     }
     
     private func setLayout() {

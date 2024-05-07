@@ -21,6 +21,11 @@ final class FeedViewController: RxBaseViewController {
     private let viewModel: FeedViewModel
     private var dataSource: DataSource?
     
+    private let cellHeartButtonSubject = PublishSubject<Bool>()
+    private let cellCommentButtonSubject = PublishSubject<Int>()
+    
+    // MARK: - UI
+    
     private let titleView = TitleView()
     
     private lazy var collectionView = UICollectionView(frame: .zero,
@@ -61,7 +66,9 @@ final class FeedViewController: RxBaseViewController {
         let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.itemSelected,
                                         addButtonTapped: addButton.rx.tap,
-                                        fetchContents: fetchContents)
+                                        fetchContents: fetchContents,
+                                        cellHeartButtonTapped: cellHeartButtonSubject.asObservable(),
+                                        cellCommentButtonTapped: cellCommentButtonSubject.asObservable())
         
         let output = viewModel.transform(input)
         
@@ -71,6 +78,8 @@ final class FeedViewController: RxBaseViewController {
                 owner.updateSnapshot(withItems: item, toSection: .feed)
             }
             .disposed(by: disposeBag)
+        
+        
         
     }
     
@@ -124,6 +133,16 @@ extension FeedViewController {
     private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, ContentEntity> {
         UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
             cell.configureCellData(itemIdentifier)
+            cell.heartButtonTapped = { [weak self] in
+                guard let self else { return }
+                cell.view.heartButton.isSelected.toggle()
+                let isSelected = cell.view.heartButton.isSelected
+                cellHeartButtonSubject.onNext(isSelected)
+            }
+            cell.commentButtonTapped = { [weak self] in
+                guard let self else { return }
+                cellCommentButtonSubject.onNext((indexPath.item))
+            }
         }
     }
     

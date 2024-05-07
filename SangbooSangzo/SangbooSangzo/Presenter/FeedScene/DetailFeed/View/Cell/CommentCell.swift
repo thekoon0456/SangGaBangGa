@@ -27,7 +27,7 @@ final class CommentCell: BaseTableViewCell {
     }
     
     private let commentLabel = UILabel().then {
-        $0.font = SSFont.semiBold18
+        $0.font = SSFont.medium14
         $0.numberOfLines = 0
     }
     
@@ -51,7 +51,8 @@ final class CommentCell: BaseTableViewCell {
     override func configureLayout() {
         super.configureLayout()
         profileImageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
             make.size.equalTo(40)
         }
         
@@ -71,6 +72,5 @@ final class CommentCell: BaseTableViewCell {
     
     override func configureView() {
         super.configureView()
-        
     }
 }

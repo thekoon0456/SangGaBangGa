@@ -36,15 +36,12 @@ final class DetailFeedViewController: RxBaseViewController {
     
     override func bind() {
         super.bind()
-        let heartButtonTapped = baseView.heartButton.rx.tap.map { [weak self] in
-            guard let self else { return false }
-            return baseView.heartButton.isSelected
-        }
-         
-//        let paymentButtonTapped = baseView.paymentView.rx
-//            .tapGesture()
-//            .when(.recognized)
-//            .map { _ in }
+        
+        let heartButtonTapped = baseView.heartButton.rx.tap
+            .withUnretained(self)
+            .map { owner, _ in
+                owner.baseView.heartButton.isSelected
+            }
         
         let input = DetailFeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                               heartButtonTapped: heartButtonTapped,
@@ -88,7 +85,6 @@ final class DetailFeedViewController: RxBaseViewController {
             .flatMap { output.data }
             .asDriver(onErrorJustReturn: ContentEntity.defaultData())
             .drive(with: self) { owner, data in
-                print(data)
                 let messageComposer = MFMessageComposeViewController()
                 messageComposer.messageComposeDelegate = self
                 if MFMessageComposeViewController.canSendText(){
@@ -103,15 +99,15 @@ final class DetailFeedViewController: RxBaseViewController {
     
     func setAnnotaion(coordinate: String?, title: String) {
         guard let latitude = Double(coordinate?.components(separatedBy: " / ").first ?? ""),
-              let longitude = Double(coordinate?.components(separatedBy: " / ").last ?? "") else { return }
-        print(latitude, longitude)
+              let longitude = Double(coordinate?.components(separatedBy: " / ").last ?? "")
+        else { return }
+        
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         annotation.title = title
         
         baseView.mapView.addAnnotation(annotation)
-        
         let region = MKCoordinateRegion(center: coordinate,
                                         latitudinalMeters: 100,
                                         longitudinalMeters: 100)

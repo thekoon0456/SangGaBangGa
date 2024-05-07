@@ -21,10 +21,14 @@ final class CommentViewModel: ViewModel {
         let comments: Driver<[PostCommentEntity]>
     }
     
+    // MARK: - Properties
+    
     var disposeBag = DisposeBag()
     private let commentRepository: CommentRepository
     private let data: ContentEntity
     private let commentsRelay: BehaviorRelay<[PostCommentEntity]>
+    
+    // MARK: - Lifecycles
     
     init(data: ContentEntity,
          commentRepository: CommentRepository,
@@ -34,6 +38,8 @@ final class CommentViewModel: ViewModel {
         self.data = data
         self.commentsRelay = commentsRelay
     }
+    
+    // MARK: - Helpers
     
     func transform(_ input: Input) -> Output {
         
