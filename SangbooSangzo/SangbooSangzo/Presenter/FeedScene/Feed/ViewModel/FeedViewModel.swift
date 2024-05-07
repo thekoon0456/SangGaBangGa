@@ -35,8 +35,8 @@ final class FeedViewModel: ViewModel {
     
     init(
         coordinator: FeedCoordinator?,
-         postRepository: PostRepository,
-         likeRepository: LikeRepository
+        postRepository: PostRepository,
+        likeRepository: LikeRepository
     ) {
         self.coordinator = coordinator
         self.postRepository = postRepository
@@ -64,6 +64,10 @@ final class FeedViewModel: ViewModel {
                     .readPosts(query: .init(next: nextCursorRelay.value,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID))
+                    .catch { error in
+                        print(error)
+                        return Single<ReadPostsEntity>.never()
+                    }
             }
             .subscribe { value in
                 nextCursorRelay.accept(value.nextCursor)
@@ -111,23 +115,26 @@ final class FeedViewModel: ViewModel {
         input
             .cellHeartButtonTapped
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-            .withUnretained(self)
-            .flatMap { owner, cellValue in
-                if cellValue.1 == true {
-                    owner
-                        .likeRepository
-                        .postLike(queryID: dataRelay.value[cellValue.0].postID, status: false)
-                } else {
-                    owner
-                        .likeRepository
-                        .postLike(queryID: dataRelay.value[cellValue.0].postID, status: true)
-                }
+            .map { value in
+                var status = value.1
+                status.toggle()
+                return (value.0, status)
             }
-            .subscribe { _ in 
+            .withUnretained(self)
+            .flatMap { owner, value in
+                owner
+                    .likeRepository
+                    .postLike(queryID: dataRelay.value[value.0].postID, status: value.1)
+                    .catch { error in
+                        print(error)
+                        return Single<LikeEntity>.never()
+                    }
+            }
+            .subscribe { _ in
                 updateRelay.accept(())
             }
             .disposed(by: disposeBag)
-            
+        
         
         input
             .cellCommentButtonTapped

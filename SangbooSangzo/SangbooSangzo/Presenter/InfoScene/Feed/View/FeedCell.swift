@@ -27,8 +27,10 @@ final class FeedCell: RxBaseCollectionViewCell {
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
+        $0.setImage(SSIcon.heart?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(SSIcon.heartFill?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
     }
     
@@ -37,7 +39,8 @@ final class FeedCell: RxBaseCollectionViewCell {
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
+        $0.setImage(SSIcon.message?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
     }
     

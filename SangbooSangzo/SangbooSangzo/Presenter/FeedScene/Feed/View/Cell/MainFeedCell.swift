@@ -15,11 +15,7 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     
     // MARK: - Properties
     
-    let view = MainFeedBaseView()
-    //    private let likeRepository = LikeRepositoryImpl()
-    //    private lazy var viewModel = MainFeedCellViewModel(likeRepository: likeRepository)
-    //    private let dataSubject = BehaviorSubject(value: ContentEntity.defaultData())
-    
+    let view = MainFeedView()
     var heartButtonTapped: (() -> Void)?
     var commentButtonTapped: (() -> Void)?
     
@@ -51,27 +47,6 @@ final class MainFeedCell: RxBaseCollectionViewCell {
                 owner.commentButtonTapped?()
             }
             .disposed(by: disposeBag)
-        //
-        //        let heartButtonTapped = view.heartButton.rx.tap
-        //            .map { [weak self] in
-        //            guard let self else { return false }
-        //            return view.heartButton.isSelected
-        //        }
-        //
-        //        let input = MainFeedCellViewModel.Input(inputData: dataSubject.asObservable(),
-        //                                                heartButtonTapped: heartButtonTapped,
-        //                                                commentButtonTapped: view.commentButton.rx.tap)
-        //        let output = viewModel.transform(input)
-        //
-        //        output
-        //            .heartButtonStatus
-        //            .drive(view.heartButton.rx.isSelected)
-        //            .disposed(by: disposeBag)
-        //
-        //        output
-        //            .heartCount
-        //            .drive(view.heartCountLabel.rx.text)
-        //            .disposed(by: disposeBag)
     }
     
     override func configureHierarchy() {
@@ -95,7 +70,6 @@ extension MainFeedCell {
     
     func configureCellData(_ data: ContentEntity) {
         view.configureCellData(data)
-        //        dataSubject.onNext(data)
     }
     
     private func setLayout() {

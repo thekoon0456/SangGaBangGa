@@ -16,7 +16,7 @@ final class MapDetailViewController: RxBaseViewController {
     
     private let viewModel: MapDetailViewModel
     
-    private lazy var baseView = MainFeedBaseView().then {
+    private lazy var baseView = MainFeedView().then {
         $0.isUserInteractionEnabled = true
     }
     

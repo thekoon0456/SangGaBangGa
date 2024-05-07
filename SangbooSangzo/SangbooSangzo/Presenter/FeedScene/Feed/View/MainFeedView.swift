@@ -1,5 +1,5 @@
 //
-//  MainFeedBaseView.swift
+//  MainFeedView.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 4/26/24.
@@ -12,7 +12,7 @@ import RxSwift
 import Kingfisher
 import MarqueeLabel
 
-final class MainFeedBaseView: BaseView {
+final class MainFeedView: BaseView {
     
     let imageView = UIImageView().then {
         $0.layer.cornerRadius = 12
@@ -21,8 +21,10 @@ final class MainFeedBaseView: BaseView {
     }
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
+        $0.setImage(SSIcon.heart?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(SSIcon.heartFill?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
     }
     
@@ -31,7 +33,8 @@ final class MainFeedBaseView: BaseView {
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
+        $0.setImage(SSIcon.message?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
     }
     
@@ -91,7 +94,7 @@ final class MainFeedBaseView: BaseView {
 
 // MARK: - Configure
 
-extension MainFeedBaseView {
+extension MainFeedView {
     
     func configureCellData(_ data: ContentEntity) {
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (data.files.first ?? ""))
