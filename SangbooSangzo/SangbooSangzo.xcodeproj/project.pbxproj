@@ -409,6 +409,7 @@
 				7CCBCFA62BCFCB7800B3641D /* LikeAPIService.swift */,
 				7CCBCFB02BCFCFAD00B3641D /* FollowAPIService.swift */,
 				7CCBCFB42BCFE16600B3641D /* ProfileAPIService.swift */,
+				7CA35D832BE7533100E35AFA /* Payments.swift */,
 				7CA35D912BE75E8200E35AFA /* PaymentsAPIService.swift */,
 				7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */,
 			);
@@ -483,7 +484,6 @@
 		7C18ECB92BC679A100F061DE /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				7CA35D822BE7532700E35AFA /* Payments */,
 				7C0ADCC42BC9262B002DAEA7 /* APIService */,
 				7C0ADCAC2BC9200A002DAEA7 /* Router */,
 				7C9E2DEE2BE4D53100FD81E3 /* APISetting */,
@@ -794,14 +794,6 @@
 				7CD29C902BCE9DBF00A45268 /* FeedCell.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		7CA35D822BE7532700E35AFA /* Payments */ = {
-			isa = PBXGroup;
-			children = (
-				7CA35D832BE7533100E35AFA /* Payments.swift */,
-			);
-			path = Payments;
 			sourceTree = "<group>";
 		};
 		7CA35D872BE75B0A00E35AFA /* Payments */ = {

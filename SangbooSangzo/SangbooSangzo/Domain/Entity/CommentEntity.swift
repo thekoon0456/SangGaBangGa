@@ -14,6 +14,9 @@ struct PostCommentEntity: Decodable, Hashable {
     let creator: ProfileEntity
     
     static func defaultData() -> PostCommentEntity {
-        PostCommentEntity(commentID: "", content: "", createdAt: "", creator: ProfileEntity.defaultData())
+        PostCommentEntity(commentID: "",
+                          content: "",
+                          createdAt: "",
+                          creator: ProfileEntity.defaultData())
     }
 }

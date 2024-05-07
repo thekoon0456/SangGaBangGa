@@ -18,6 +18,13 @@ struct ProfileEntity: Decodable, Hashable {
     let posts: [String]
     
     static func defaultData() -> ProfileEntity {
-        ProfileEntity(userID: "", email: nil, nick: "", phoneNum: "", profileImage: nil, followers: [], following: [], posts: [])
+        ProfileEntity(userID: "",
+                      email: nil,
+                      nick: "",
+                      phoneNum: "",
+                      profileImage: nil,
+                      followers: [],
+                      following: [],
+                      posts: [])
     }
 }

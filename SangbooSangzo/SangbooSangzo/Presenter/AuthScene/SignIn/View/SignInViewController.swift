@@ -88,7 +88,8 @@ final class SignInViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
-        view.addSubviews(signInLabel, emailTextField, emailCheckButton, passwordTextField, nicknameTextField, phoneNumberTextField, signInButton)
+        view.addSubviews(signInLabel, emailTextField, emailCheckButton,
+                         passwordTextField, nicknameTextField, phoneNumberTextField, signInButton)
     }
     
     override func configureLayout() {
@@ -147,6 +148,5 @@ final class SignInViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
-        
     }
 }

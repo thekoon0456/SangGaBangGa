@@ -87,7 +87,8 @@ final class SignInViewModel: ViewModel {
         input
             .signInButtonTapped
             .flatMap { validationObservable }
-            .subscribe(with: self) { owner, login in
+            .withUnretained(self)
+            .flatMap { owner, login in
                 owner
                     .userAPIManager
                     .join(query: UserJoinRequest(email: login.0,
@@ -96,13 +97,13 @@ final class SignInViewModel: ViewModel {
                                                  phoneNum: login.3,
                                                  birthDay: nil))
                     .catchAndReturn(nil)
-                    .subscribe(with: self) { owner, response in
-                        guard response != nil else { return }
-                        owner.coordinator?.showToast(.joinSueecss, completion: {
-                            owner.coordinator?.start()
-                        })
-                    }
-                    .disposed(by: owner.disposeBag)
+                
+            }
+            .subscribe(with: self) { owner, response in
+                guard response != nil else { return }
+                owner.coordinator?.showToast(.joinSueecss, completion: {
+                    owner.coordinator?.start()
+                })
             }
             .disposed(by: disposeBag)
         

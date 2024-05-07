@@ -58,7 +58,5 @@ extension SceneDelegate {
         IQKeyboardManager.shared.resignOnTouchOutside = true
         IQKeyboardManager.shared.disabledDistanceHandlingClasses = [CommentViewController.self]
         IQKeyboardManager.shared.disabledToolbarClasses = [CommentViewController.self]
-        
-
     }
 }
