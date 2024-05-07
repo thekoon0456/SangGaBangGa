@@ -411,7 +411,6 @@
 				7CCBCFB42BCFE16600B3641D /* ProfileAPIService.swift */,
 				7CA35D832BE7533100E35AFA /* Payments.swift */,
 				7CA35D912BE75E8200E35AFA /* PaymentsAPIService.swift */,
-				7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */,
 			);
 			path = APIService;
 			sourceTree = "<group>";
@@ -554,6 +553,7 @@
 				7C18ECD52BC698A800F061DE /* UserDefaultsManager.swift */,
 				7C9E2DF52BE4DD5700FD81E3 /* LocationManager.swift */,
 				7C418C392BE0E43A00583C5C /* DateFormatterManager.swift */,
+				7CA35D972BE7C71000E35AFA /* NetworkMonitorManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";

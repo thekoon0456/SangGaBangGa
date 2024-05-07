@@ -96,14 +96,37 @@ final class SignInViewModel: ViewModel {
                                                  nick: login.2 + " / " + login.3,
                                                  phoneNum: login.3,
                                                  birthDay: nil))
-                    .catchAndReturn(nil)
-                
+                    .catch { error in
+                        DispatchQueue.main.async {
+                            guard let coordinator = owner.coordinator else { return }
+                            coordinator.showToast(.loginFail)
+                        }
+                        
+                        return Single<UserJoinResponse?>.never()
+                    }
             }
-            .subscribe(with: self) { owner, response in
-                guard response != nil else { return }
-                owner.coordinator?.showToast(.joinSueecss, completion: {
-                    owner.coordinator?.start()
-                })
+            .flatMap { _ in validationObservable }
+            .withUnretained(self)
+            .flatMap { owner, login -> Single<LoginResponse> in
+                owner
+                    .userAPIManager
+                    .login(query: LoginRequest(email: login.0, password: login.1))
+                    .catch { error in
+                        DispatchQueue.main.async {
+                            owner.coordinator?.showToast(.loginFail)
+                        }
+                        
+                        return Single<LoginResponse>.never()
+                    }
+            }
+            .subscribe(with: self) { owner, result in
+                guard let coordinator = owner.coordinator else { return }
+                UserDefaultsManager.shared.userData = UserData(userID: result.userID,
+                                                               accessToken: result.accessToken,
+                                                               refreshToken: result.refreshToken)
+                coordinator.showToast(.loginSuccess) {
+                    coordinator.didFinish(childCoordinator: coordinator)
+                }
             }
             .disposed(by: disposeBag)
         

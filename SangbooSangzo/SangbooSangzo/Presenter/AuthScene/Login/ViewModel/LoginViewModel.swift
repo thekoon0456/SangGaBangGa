@@ -41,7 +41,8 @@ final class LoginViewModel: ViewModel {
             input.password.asObservable()
         )
         
-        input.loginButtonTapped
+        input
+            .loginButtonTapped
             .flatMap { loginInfo }
             .withUnretained(self)
             .flatMap { (owner, login) -> Single<LoginResponse> in

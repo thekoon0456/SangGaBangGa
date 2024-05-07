@@ -47,7 +47,7 @@ extension Coordinator {
     }
 }
 
-// MARK: - SetNavigation
+// MARK: - SetNavigationBar
 
 extension Coordinator {
     //투명 네비게이션 바

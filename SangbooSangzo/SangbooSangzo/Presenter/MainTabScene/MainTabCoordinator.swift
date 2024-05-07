@@ -77,7 +77,7 @@ final class MainTabCoordinator: Coordinator {
                  case .satisfied:
                      owner.showToast(.networkResume)
                  @unknown default:
-                     break
+                     return
                  }
              }
              .disposed(by: disposeBag)

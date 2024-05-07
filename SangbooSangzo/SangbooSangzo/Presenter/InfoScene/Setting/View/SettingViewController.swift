@@ -63,5 +63,4 @@ final class SettingViewController: RxBaseViewController {
         super.configureView()
         navigationItem.title = "설정"
     }
-    
 }

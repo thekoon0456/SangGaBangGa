@@ -25,7 +25,6 @@ final class AuthCoordinator: Coordinator {
     func start() {
         let vm = LoginViewModel(coordinator: self)
         let vc = LoginViewController(viewModel: vm)
-        setNavigationBarHidden(true)
         navigationController.pushViewController(vc, animated: false)
     }
     

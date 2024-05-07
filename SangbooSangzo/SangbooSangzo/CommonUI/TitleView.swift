@@ -11,6 +11,8 @@ import SnapKit
 
 final class TitleView: BaseView {
     
+    // MARK: - Properties
+    
     private let titleLabel = UILabel().then {
         $0.text = "상가방가"
         $0.font = SSFont.bold28
@@ -21,6 +23,8 @@ final class TitleView: BaseView {
         $0.image = SSIcon.icon
         $0.contentMode = .scaleAspectFill
     }
+    
+    // MARK: - Helpers
     
     func configureView(title: String) {
         titleLabel.text = title

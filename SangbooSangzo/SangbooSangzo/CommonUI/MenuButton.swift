@@ -22,7 +22,8 @@ final class SSMenuButton: UIButton {
         super.init(frame: .zero)
         configureUI(buttonTitle: buttonTitle, menus: menus)
         
-        menuButtonRelay.subscribe(with: self) { owner, title in
+        menuButtonRelay
+            .subscribe(with: self) { owner, title in
             guard let title else { return }
             owner.setTitle(title, for: .normal)
         }.disposed(by: disposeBag)
@@ -60,7 +61,6 @@ final class SSMenuButton: UIButton {
             }
         }
         
-        // Add the chevronImage directly to the button
         if let chevronImage = chevronImage {
             let chevronImageView = UIImageView(image: chevronImage)
             addSubview(chevronImageView)

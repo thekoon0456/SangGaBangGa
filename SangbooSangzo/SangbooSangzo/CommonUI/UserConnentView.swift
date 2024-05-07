@@ -80,7 +80,6 @@ final class UserConnectView: BaseView {
             make.trailing.equalToSuperview().offset(-16)
             make.width.equalTo(80)
             make.height.equalTo(60)
-            
         }
     }
     

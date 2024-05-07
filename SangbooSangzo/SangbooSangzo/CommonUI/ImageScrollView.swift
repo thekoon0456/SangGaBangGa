@@ -11,6 +11,8 @@ import SnapKit
 
 final class ImageScrollView: BaseView {
     
+    // MARK: - Properties
+    
     var imageViews: [UIImageView] = [] {
         didSet {
             setupImageViews()
@@ -32,6 +34,8 @@ final class ImageScrollView: BaseView {
         $0.contentSize = CGSize(width: CGFloat(imageViews.count) * UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
     }
     
+    // MARK: - Lifecycles
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         let totalWidth = CGFloat(imageViews.count) * scrollView.frame.width
@@ -40,6 +44,8 @@ final class ImageScrollView: BaseView {
             imageView.frame = CGRect(x: CGFloat(index) * scrollView.frame.width, y: 0, width: scrollView.frame.width, height: scrollView.frame.height)
         }
     }
+    
+    // MARK: - Helpers
     
     private func setupImageViews() {
         scrollView.subviews.forEach { $0.removeFromSuperview() }
