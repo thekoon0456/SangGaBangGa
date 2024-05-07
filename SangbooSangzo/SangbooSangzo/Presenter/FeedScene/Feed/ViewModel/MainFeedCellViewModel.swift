@@ -15,6 +15,7 @@ final class MainFeedCellViewModel: ViewModel {
     struct Input {
         let inputData: Observable<ContentEntity>
         let heartButtonTapped: Observable<Bool>
+        let commentButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -65,6 +66,13 @@ final class MainFeedCellViewModel: ViewModel {
                 bool == true
                 ? heartCount.accept(heartCount.value + 1)
                 : heartCount.accept(heartCount.value - 1)
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .commentButtonTapped
+            .asDriver()
+            .drive(with: self) { owner, _ in
             }
             .disposed(by: disposeBag)
         

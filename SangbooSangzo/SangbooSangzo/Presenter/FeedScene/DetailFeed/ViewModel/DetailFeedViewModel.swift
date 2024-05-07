@@ -17,7 +17,7 @@ final class DetailFeedViewModel: ViewModel {
         let heartButtonTapped: Observable<Bool>
         let commentButtonTapped: ControlEvent<Void>
         let phoneButtonTapped: ControlEvent<Void>
-        let paymentButtonTapped: Observable<Void>
+        let paymentButtonTapped: ControlEvent<Void>
     }
     
     struct Output {

@@ -20,8 +20,10 @@ final class DetailFeedView: BaseView {
     lazy var imageScrollView = ImageScrollView()
     
     let heartButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
-        $0.setImage(UIImage(systemName: "heart.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
+        $0.setImage(SSIcon.heart?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .normal)
+        $0.setImage(SSIcon.heartFill?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 18))), for: .selected)
         $0.tintColor = .tintColor
     }
     
@@ -30,7 +32,8 @@ final class DetailFeedView: BaseView {
     }
     
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
+        $0.setImage(SSIcon.message?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 17))), for: .normal)
         $0.tintColor = .tintColor
     }
     
@@ -121,15 +124,13 @@ final class DetailFeedView: BaseView {
     
     let userConnectView = UserConnectView()
     
-    let paymentView = UILabel().then {
-        $0.text = "계약금 입금하기"
-        $0.textColor = .white
-        $0.textAlignment = .center
-        $0.font = SSFont.semiBold16
+    let paymentButton = UIButton().then {
+        $0.setTitle("계약금 입금하기", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = SSFont.semiBold16
         $0.backgroundColor = .accent
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
-        $0.isUserInteractionEnabled = true
     }
 
     
@@ -144,7 +145,7 @@ final class DetailFeedView: BaseView {
                                 addressTitleLabel, addressLabel,
                                 priceTitleLabel, priceLabel, spaceTitleLabel, spaceLabel,
                                 contentTitle, contentLabel, mapTitle, mapView,
-                                inquiryTitle, userConnectView, paymentView)
+                                inquiryTitle, userConnectView, paymentButton)
     }
     
     override func configureLayout() {
@@ -186,13 +187,11 @@ final class DetailFeedView: BaseView {
     
     func setPaymentsButton(isEnable: Bool) {
         if isEnable {
-            paymentView.textColor = .white
-            paymentView.text = "계약금 입금하기"
-            paymentView.isUserInteractionEnabled = true
+            paymentButton.setTitle("계약금 입금하기", for: .normal)
+            paymentButton.setTitleColor(.white, for: .normal)
         } else {
-            paymentView.textColor = .systemGray
-            paymentView.text = "계약금 입금이 완료되었습니다"
-            paymentView.isUserInteractionEnabled = false
+            paymentButton.setTitle("계약금 입금이 완료되었습니다", for: .normal)
+            paymentButton.setTitleColor(.systemGray, for: .normal)
         }
     }
 }
@@ -338,7 +337,7 @@ extension DetailFeedView {
             make.height.equalTo(72)
         }
         
-        paymentView.snp.makeConstraints { make in
+        paymentButton.snp.makeConstraints { make in
             make.top.equalTo(userConnectView.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)

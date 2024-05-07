@@ -36,10 +36,15 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     override func bind() {
         super.bind()
         
-        let input = MainFeedCellViewModel.Input(inputData: dataSubject.asObservable(),
-                                                heartButtonTapped: view.heartButton.rx.tap.map { [weak self] in
+        let heartButtonTapped = view.heartButton.rx.tap
+            .map { [weak self] in
             guard let self else { return false }
-            return view.heartButton.isSelected })
+            return view.heartButton.isSelected
+        }
+        
+        let input = MainFeedCellViewModel.Input(inputData: dataSubject.asObservable(),
+                                                heartButtonTapped: heartButtonTapped,
+                                                commentButtonTapped: view.commentButton.rx.tap)
         let output = viewModel.transform(input)
         
         output
