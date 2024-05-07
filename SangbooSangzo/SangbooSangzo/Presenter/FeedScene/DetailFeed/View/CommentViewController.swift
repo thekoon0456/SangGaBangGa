@@ -32,7 +32,9 @@ final class CommentViewController: RxBaseViewController {
     }
     
     private let sendButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "paperplane.circle.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30))), for: .normal)
+        $0.setImage(UIImage(systemName: "paperplane.circle.fill")?
+            .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30)))
+                    , for: .normal)
         $0.tintColor = .tintColor
     }
     
@@ -45,7 +47,8 @@ final class CommentViewController: RxBaseViewController {
         super.bind()
         let sendButtonTapped = sendButton.rx.tap.withLatestFrom(commentTextField.rx.text.orEmpty)
         
-        let input = CommentViewModel.Input(sendButtonTapped: sendButtonTapped)
+        let input = CommentViewModel.Input(sendButtonTapped: sendButtonTapped,
+        cellDeleted: commentsTableView.rx.itemDeleted)
         let output = viewModel.transform(input)
         
         output
@@ -64,6 +67,9 @@ final class CommentViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
+        commentsTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     override func configureHierarchy() {
@@ -116,5 +122,19 @@ extension CommentViewController {
             let indexPath = IndexPath(row: rowCount - 1, section: 0)
             commentsTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
+    }
+}
+
+
+// MARK: - Comment Delete
+
+extension CommentViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        guard let userID = UserDefaultsManager.shared.userData.userID else {
+            return .none
+        }
+        let comment = viewModel.getCurrentComments()[indexPath.row]
+        return comment.creator.userID == userID ? .delete : .none
     }
 }

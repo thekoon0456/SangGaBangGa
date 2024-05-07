@@ -11,6 +11,7 @@ import Moya
 
 enum CommentsRouter {
     case postComments(queryID: String, content: String)
+    case deleteComment(queryID: String, commentID: String)
 }
 
 extension CommentsRouter: TargetType {
@@ -21,8 +22,10 @@ extension CommentsRouter: TargetType {
     
     var path: String {
         switch self {
-        case .postComments(let postId, _):
-            "/v1/posts/\(postId)/comments"
+        case .postComments(let postID, _):
+            "/v1/posts/\(postID)/comments"
+        case .deleteComment(let postID , let commentID):
+            "/v1/posts/\(postID)/comments/\(commentID)"
         }
     }
     
@@ -30,6 +33,8 @@ extension CommentsRouter: TargetType {
         switch self {
         case .postComments:
                 .post
+        case .deleteComment:
+                .delete
         }
     }
     
@@ -38,6 +43,8 @@ extension CommentsRouter: TargetType {
         case .postComments(_, let content):
             let params: [String: Any] = ["content": content]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+        case .deleteComment:
+            return .requestPlain
         }
     }
     
@@ -46,6 +53,9 @@ extension CommentsRouter: TargetType {
         case .postComments:
             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.contentType: HTTPHeader.json,
+             HTTPHeader.sesacKey: APIKey.sesacKey]
+        case .deleteComment(queryID: let queryID, commentID: let commentID):
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
     }

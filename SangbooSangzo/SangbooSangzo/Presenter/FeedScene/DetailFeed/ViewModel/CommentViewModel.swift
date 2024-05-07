@@ -14,6 +14,7 @@ final class CommentViewModel: ViewModel {
     
     struct Input {
         let sendButtonTapped: Observable<String>
+        let cellDeleted: ControlEvent<IndexPath>
     }
     
     struct Output {
@@ -40,7 +41,9 @@ final class CommentViewModel: ViewModel {
             .sendButtonTapped
             .withUnretained(self)
             .flatMap { owner, value in
-                owner.commentRepository.postComments(queryID: owner.data.postID, content: value)
+                owner
+                    .commentRepository
+                    .postComments(queryID: owner.data.postID, content: value)
                     .catchAndReturn(PostCommentEntity.defaultData())
             }
             .subscribe(with: self) { owner, value in
@@ -50,6 +53,21 @@ final class CommentViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        input
+            .cellDeleted
+            .subscribe(with: self) { owner, index in
+                var comments = owner.commentsRelay.value
+                owner.commentRepository.deleteComment(queryID: owner.data.postID,
+                                                      commentID: comments[index.row].commentID)
+                comments.remove(at: index.row)
+                owner.commentsRelay.accept(comments)
+            }
+            .disposed(by: disposeBag)
+        
         return Output(comments: commentsRelay.asDriver(onErrorJustReturn: []))
+    }
+    
+    func getCurrentComments() -> [PostCommentEntity] {
+        commentsRelay.value
     }
 }

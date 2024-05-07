@@ -18,6 +18,7 @@ enum SSFont {
     static let semiBold16 = UIFont(name: "Pretendard-SemiBold", size: 16)
     static let semiBold14 = UIFont(name: "Pretendard-SemiBold", size: 14)
     
+    static let medium14 = UIFont(name: "Pretendard-Medium", size: 14)
     static let medium12 = UIFont(name: "Pretendard-Medium", size: 12)
     static let regular12 = UIFont(name: "Pretendard-Regular", size: 12)
     static let medium11 = UIFont(name: "Pretendard-Medium", size: 11)

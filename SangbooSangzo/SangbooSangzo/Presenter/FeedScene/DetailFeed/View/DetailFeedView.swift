@@ -99,7 +99,7 @@ final class DetailFeedView: BaseView {
     }
     
     let contentLabel = UILabel().then {
-        $0.font = SSFont.medium12
+        $0.font = SSFont.medium14
         $0.numberOfLines = 0
     }
     

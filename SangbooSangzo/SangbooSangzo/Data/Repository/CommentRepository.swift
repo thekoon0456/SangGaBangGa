@@ -12,6 +12,7 @@ import RxSwift
 
 protocol CommentRepository {
     func postComments(queryID: String, content: String) -> Single<PostCommentEntity>
+    func deleteComment(queryID: String, commentID: String)
 }
 
 final class CommentRepositoryImpl: CommentRepository {
@@ -21,5 +22,9 @@ final class CommentRepositoryImpl: CommentRepository {
     func postComments(queryID: String, content: String) -> Single<PostCommentEntity> {
         apiService.postComments(queryID: queryID, content: content)
             .map { $0.toEntity }
+    }
+    
+    func deleteComment(queryID: String, commentID: String) {
+        apiService.deleteComment(queryID: queryID, commentID: commentID)
     }
 }
