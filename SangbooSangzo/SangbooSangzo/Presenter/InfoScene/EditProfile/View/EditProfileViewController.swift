@@ -24,11 +24,8 @@ final class EditProfileViewController: RxBaseViewController {
         $0.textColor = .tintColor
     }
     
-    private lazy var cameraImage = UIImageView(image: UIImage(named: "SSCameraButton"))
-    
     lazy var profileImageView = UIImageView().then {
         $0.image = .ssUser
-        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 50
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = true
@@ -85,7 +82,10 @@ final class EditProfileViewController: RxBaseViewController {
                 owner.emailTextField.text = value.email
                 owner.nicknameTextField.text = value.nick
                 owner.phoneNumberTextField.text = value.phoneNum
-                guard let imageURL = value.profileImage else { return }
+                guard let imageURL = value.profileImage else { 
+                    owner.profileImageView.image = .ssUser
+                    return
+                }
                 owner.profileImageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (imageURL))
             }
             .disposed(by: disposeBag)
@@ -99,7 +99,7 @@ final class EditProfileViewController: RxBaseViewController {
             .asDriver()
             .drive(profileImageView.rx.image)
             .disposed(by: disposeBag)
-
+        
     }
     
     // MARK: - Selectors
@@ -136,13 +136,6 @@ final class EditProfileViewController: RxBaseViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.size.equalTo(100)
-            
-            profileImageView.addSubview(cameraImage)
-            cameraImage.snp.makeConstraints { make in
-                make.size.equalTo(20)
-                make.trailing.equalTo(profileImageView.snp.trailing)
-                make.bottom.equalTo(profileImageView.snp.bottom)
-            }
         }
         
         emailTextField.snp.makeConstraints { make in
