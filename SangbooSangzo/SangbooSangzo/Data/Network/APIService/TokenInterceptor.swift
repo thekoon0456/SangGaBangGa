@@ -32,11 +32,13 @@ final class TokenInterceptor: RequestInterceptor {
     
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
         print("retry")
-        guard let response = request.task?.response as? HTTPURLResponse,
-              response.statusCode == 419 //엑세스 토큰 만료
+        guard let response = request.task?.response as? HTTPURLResponse else { return }
+        guard response.statusCode == 419 //엑세스 토큰 만료
         else {
             //login화면으로
-            TokenInterceptor.errorSubject.onNext(())
+            if response.statusCode == 418 {
+                TokenInterceptor.errorSubject.onNext(())
+            }
             completion(.doNotRetryWithError(error))
             return
         }
