@@ -23,7 +23,12 @@ final class FeedCoordinator: Coordinator {
     
     func start() {
         let postRepository = PostRepositoryImpl()
-        let vm = FeedViewModel(coordinator: self, postRepository: postRepository)
+        let likeRepository = LikeRepositoryImpl()
+        let vm = FeedViewModel(
+            coordinator: self,
+            postRepository: postRepository,
+            likeRepository: likeRepository
+        )
         let vc = FeedViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: SSIcon.icon,

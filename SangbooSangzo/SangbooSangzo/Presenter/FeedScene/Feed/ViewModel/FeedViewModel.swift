@@ -17,7 +17,7 @@ final class FeedViewModel: ViewModel {
         let cellSelected: ControlEvent<IndexPath>
         let addButtonTapped: ControlEvent<Void>
         let fetchContents: Observable<Int>
-        let cellHeartButtonTapped: Observable<Bool>
+        let cellHeartButtonTapped: Observable<(Int, Bool)>
         let cellCommentButtonTapped: Observable<Int>
     }
     
@@ -29,12 +29,18 @@ final class FeedViewModel: ViewModel {
     
     weak var coordinator: FeedCoordinator?
     private let postRepository: PostRepository
+    private let likeRepository: LikeRepository
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
-    init(coordinator: FeedCoordinator?, postRepository: PostRepository) {
+    init(
+        coordinator: FeedCoordinator?,
+         postRepository: PostRepository,
+         likeRepository: LikeRepository
+    ) {
         self.coordinator = coordinator
         self.postRepository = postRepository
+        self.likeRepository = likeRepository
     }
     
     func transform(_ input: Input) -> Output {
@@ -42,12 +48,14 @@ final class FeedViewModel: ViewModel {
         let dataRelay = BehaviorRelay<[ContentEntity]>(value: [])
         let nextCursorRelay = BehaviorRelay<String?>(value: nil)
         let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
+        let updateRelay = BehaviorRelay<Void>(value: ())
         
         Observable
             .combineLatest(
                 input.viewWillAppear,
                 TokenInterceptor.refreshSubject.take(1),
-                commentsRelay.asObservable()
+                commentsRelay.asObservable(),
+                updateRelay.asObservable()
             )
             .withUnretained(self)
             .flatMap { owner, _ in
@@ -101,7 +109,29 @@ final class FeedViewModel: ViewModel {
             .disposed(by: disposeBag)
         
         input
+            .cellHeartButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .withUnretained(self)
+            .flatMap { owner, cellValue in
+                if cellValue.1 == true {
+                    owner
+                        .likeRepository
+                        .postLike(queryID: dataRelay.value[cellValue.0].postID, status: false)
+                } else {
+                    owner
+                        .likeRepository
+                        .postLike(queryID: dataRelay.value[cellValue.0].postID, status: true)
+                }
+            }
+            .subscribe { _ in 
+                updateRelay.accept(())
+            }
+            .disposed(by: disposeBag)
+            
+        
+        input
             .cellCommentButtonTapped
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: 0)
             .drive(with: self) { owner, index in
                 let comments = owner.sortedComments(dataRelay.value[index].comments)

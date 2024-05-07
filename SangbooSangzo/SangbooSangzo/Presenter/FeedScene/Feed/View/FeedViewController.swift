@@ -21,7 +21,7 @@ final class FeedViewController: RxBaseViewController {
     private let viewModel: FeedViewModel
     private var dataSource: DataSource?
     
-    private let cellHeartButtonSubject = PublishSubject<Bool>()
+    private let cellHeartButtonSubject = PublishSubject<(Int, Bool)>()
     private let cellCommentButtonSubject = PublishSubject<Int>()
     
     // MARK: - UI
@@ -137,7 +137,7 @@ extension FeedViewController {
                 guard let self else { return }
                 cell.view.heartButton.isSelected.toggle()
                 let isSelected = cell.view.heartButton.isSelected
-                cellHeartButtonSubject.onNext(isSelected)
+                cellHeartButtonSubject.onNext((indexPath.item, isSelected))
             }
             cell.commentButtonTapped = { [weak self] in
                 guard let self else { return }

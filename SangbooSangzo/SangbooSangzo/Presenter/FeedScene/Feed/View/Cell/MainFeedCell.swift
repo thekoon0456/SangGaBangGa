@@ -34,7 +34,6 @@ final class MainFeedCell: RxBaseCollectionViewCell {
         bind()
     }
     
-    
     // MARK: - Helpers
     
     override func bind() {
