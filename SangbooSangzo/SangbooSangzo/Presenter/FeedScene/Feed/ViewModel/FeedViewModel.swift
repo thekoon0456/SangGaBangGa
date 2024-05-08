@@ -53,7 +53,7 @@ final class FeedViewModel: ViewModel {
         Observable
             .combineLatest(
                 input.viewWillAppear,
-                TokenInterceptor.refreshSubject.take(1),
+                TokenInterceptor.refreshSubject.asObservable(),
                 commentsRelay.asObservable(),
                 updateRelay.asObservable()
             )

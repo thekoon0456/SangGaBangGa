@@ -104,8 +104,7 @@ final class InfoViewController: RxBaseViewController {
                 
                 cell.heartButtonTapped = { [weak self] in
                     guard let self else { return }
-                    cell.heartButton.isSelected.toggle()
-                    let isSelected = cell.heartButton.isSelected
+                    let isSelected = element.likes.contains(UserDefaultsManager.shared.userData.userID ?? "") ? true : false
                     cellHeartButtonSubject.onNext((item, isSelected))
                 }
                 cell.commentButtonTapped = { [weak self] in

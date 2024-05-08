@@ -130,15 +130,16 @@ extension FeedViewController {
     private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, ContentEntity> {
         UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
             cell.configureCellData(itemIdentifier)
+            
             cell.heartButtonTapped = { [weak self] in
                 guard let self else { return }
-                cell.view.heartButton.isSelected.toggle()
-                let isSelected = cell.view.heartButton.isSelected
+                let isSelected = itemIdentifier.likes.contains(UserDefaultsManager.shared.userData.userID ?? "") ? true : false
                 cellHeartButtonSubject.onNext((indexPath.item, isSelected))
             }
+            
             cell.commentButtonTapped = { [weak self] in
                 guard let self else { return }
-                cellCommentButtonSubject.onNext((indexPath.item))
+                cellCommentButtonSubject.onNext(indexPath.item)
             }
         }
     }

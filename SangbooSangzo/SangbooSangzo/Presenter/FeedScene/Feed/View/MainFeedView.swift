@@ -103,14 +103,14 @@ extension MainFeedView {
         categoryLabel.text = data.category
         titleLabel.text = data.title
         priceLabel.text = data.price
-        commentButton.isSelected = data.likes.count != 0 ? true : false
+        heartCountLabel.text = String(data.likes.count)
         commentCountLabel.text = String(data.comments.count)
         addressLabel.text = data.address
         let formatter = DateFormatterManager.shared
         dateLabel.text =  formatter.iso8601DateToString(data.createdAt, format: .date)
         guard let userID = UserDefaultsManager.shared.userData.userID else { return }
-        heartButton.isSelected = data.likes.contains(userID) ? true : false
-        heartCountLabel.text = String(data.likes.count)
+        heartButton.isSelected = data.likes.contains(userID)
+        commentButton.isSelected = data.comments.contains { $0.creator.userID == userID }
     }
     
     private func setLayout() {

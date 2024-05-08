@@ -59,7 +59,7 @@ final class DetailFeedView: BaseView {
         $0.text = "매물 정보"
         $0.font = SSFont.semiBold20
     }
-        
+    
     private let addressTitleLabel = UILabel().then {
         $0.text = "주소: "
         $0.font = SSFont.semiBold14
@@ -132,7 +132,7 @@ final class DetailFeedView: BaseView {
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
     }
-
+    
     
     // MARK: - Configure
     
@@ -158,12 +158,12 @@ final class DetailFeedView: BaseView {
     }
     
     func configureViewData(_ data: ContentEntity) {
-       titleLabel.text = data.title
-       contentLabel.text = data.content
-       categoryLabel.text = data.category
-       addressLabel.text = data.address
-       priceLabel.text = data.price
-       spaceLabel.text = data.space
+        titleLabel.text = data.title
+        contentLabel.text = data.content
+        categoryLabel.text = data.category
+        addressLabel.text = data.address
+        priceLabel.text = data.price
+        spaceLabel.text = data.space
         userConnectView.setValues(nick: data.creator.nick, imageURL: data.creator.profileImage)
         
         imageScrollView.imageViews = data.files.map {
@@ -174,12 +174,15 @@ final class DetailFeedView: BaseView {
         }
         
         heartCountLabel.text = String(data.likes.count)
-        heartButton.isSelected = data.likes.contains { $0 == UserDefaultsManager.shared.userData.userID }
+        commentCountLabel.text = String(data.comments.count)
         
         let formatter = DateFormatterManager.shared
         dateLabel.text = formatter.iso8601DateToString(data.createdAt, format: .date)
         
         guard let userID = UserDefaultsManager.shared.userData.userID else { return }
+        heartButton.isSelected = data.likes.contains(userID)
+        commentButton.isSelected = data.comments.contains { $0.creator.userID == userID }
+        
         data.buyers.contains(userID)
         ? setPaymentsButton(isEnable: false)
         : setPaymentsButton(isEnable: true)
@@ -254,7 +257,7 @@ extension DetailFeedView {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
-
+        
         addressTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionTitle.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(16)

@@ -23,11 +23,8 @@ final class MainFeedCell: RxBaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
-        view.heartButton.isSelected = false
-        view.heartCountLabel.text = nil
-        view.commentCountLabel.text = nil
-        bind()
+        heartButtonTapped = nil
+        commentButtonTapped = nil
     }
     
     // MARK: - Helpers

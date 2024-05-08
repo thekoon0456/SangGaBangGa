@@ -71,11 +71,8 @@ final class InfoFeedCell: RxBaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
-        heartButton.isSelected = false
-        heartCountLabel.text = nil
-        commentCountLabel.text = nil
-        bind()
+        heartButtonTapped = nil
+        commentButtonTapped = nil
     }
     
     // MARK: - Helpers
@@ -123,11 +120,11 @@ extension InfoFeedCell {
         categoryLabel.text = data.category
         titleLabel.text = data.title
         priceLabel.text = data.price
-        commentButton.isSelected = data.likes.count != 0 ? true : false
         commentCountLabel.text = String(data.comments.count)
+        heartCountLabel.text = String(data.likes.count)
         guard let userID = UserDefaultsManager.shared.userData.userID else { return }
         heartButton.isSelected = data.likes.contains(userID) ? true : false
-        heartCountLabel.text = String(data.likes.count)
+        commentButton.isSelected = data.comments.contains { $0.creator.userID == userID } ? true : false
     }
     
     private func setLayout() {
