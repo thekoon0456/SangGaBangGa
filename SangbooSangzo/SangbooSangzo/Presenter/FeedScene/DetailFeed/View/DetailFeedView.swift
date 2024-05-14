@@ -114,7 +114,8 @@ final class DetailFeedView: BaseView {
     let mapView = MKMapView().then {
         $0.isScrollEnabled = false
         $0.layer.cornerRadius = 16
-        $0.register(CustomMarkerView.self, forAnnotationViewWithReuseIdentifier: CustomMarkerView.identifier)
+        $0.register(CustomMarkerView.self,
+                    forAnnotationViewWithReuseIdentifier: CustomMarkerView.identifier)
     }
     
     private let inquiryTitle = UILabel().then {

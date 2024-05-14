@@ -1,5 +1,5 @@
 //
-//  BackgroundView.swift
+//  EmptyCommentView.swift
 //  SangbooSangzo
 //
 //  Created by Deokhun KIM on 5/5/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class EmptySSView: BaseView {
+final class EmptyCommentView: BaseView {
     
     //각 case에 따른 멘트
     enum SettingTitle: String {

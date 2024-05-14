@@ -120,11 +120,11 @@ final class InfoViewController: RxBaseViewController {
                 let index = owner.titleSegment.selectedSegmentIndex
                 switch index {
                 case 0:
-                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .like) : nil
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptyCommentView(type: .like) : nil
                 case 1:
-                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .written) : nil
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptyCommentView(type: .written) : nil
                 default:
-                    owner.collectionView.backgroundView = value.count == 0 ? EmptySSView(type: .payments) : nil
+                    owner.collectionView.backgroundView = value.count == 0 ? EmptyCommentView(type: .payments) : nil
                 }
             }
             .disposed(by: disposeBag)

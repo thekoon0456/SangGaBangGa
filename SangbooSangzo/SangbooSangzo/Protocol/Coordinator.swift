@@ -115,13 +115,6 @@ extension Coordinator {
         
         view.addSubview(messageLabel)
         
-        //        messageLabel.snp.makeConstraints { make in
-        //            make.width.equalToSuperview().offset(-48)
-        //            make.centerX.equalToSuperview()
-        //            make.bottom.equalToSuperview().offset(-100)
-        //        }
-        //
-        
         messageLabel.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-48)
             make.center.equalToSuperview()
