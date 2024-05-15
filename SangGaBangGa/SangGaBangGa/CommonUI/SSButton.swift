@@ -24,7 +24,7 @@ final class SSButton: UIButton {
     
     private func configureUI(buttonTitle: String, color: UIColor) {
         setTitle(buttonTitle, for: .normal)
-        setTitleColor(.label, for: .normal)
+        setTitleColor(.accent, for: .normal)
         setTitleColor(.white, for: .selected)
         titleLabel?.font = SSFont.medium12
         layer.cornerRadius = 10

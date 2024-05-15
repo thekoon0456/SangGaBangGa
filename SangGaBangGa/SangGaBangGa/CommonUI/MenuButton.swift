@@ -14,6 +14,7 @@ final class SSMenuButton: UIButton {
     
     var menuButtonRelay = BehaviorRelay<String?>(value: nil)
     let buttonLabel = UILabel().then {
+        $0.textColor = .accent
         $0.font = SSFont.medium12
     }
     let chevronImageView = UIImageView().then {
