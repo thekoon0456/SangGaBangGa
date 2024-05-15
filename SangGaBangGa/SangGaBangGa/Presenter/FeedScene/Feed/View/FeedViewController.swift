@@ -28,6 +28,29 @@ final class FeedViewController: RxBaseViewController {
     
     private let titleView = TitleView()
     
+    private let filterScrollView = UIScrollView().then {
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
+    private lazy var optionStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .fill
+        $0.distribution = .fill
+        $0.spacing = 8
+        $0.addArrangedSubviews(regionFilterButton, allButton, emptyButton, cafeButton, foodButton, etcButton)
+    }
+    
+    private let regionFilterButton = SSMenuButton(buttonTitle: "모든 지역",
+                                                  menus: ["모든 지역", "서울", "인천", "부산", "대구", "울산",
+                                                          "대전", "광주", "세종특별자치시","경기", "강원특별자치도",
+                                                          "충북", "충남", "경북", "경남", "전북", "전남", "제주특별자치도"])
+    
+    private let allButton = SSButton(buttonTitle: "모두")
+    private let emptyButton = SSButton(buttonTitle: "공실")
+    private let cafeButton = SSButton(buttonTitle: "카페")
+    private let foodButton = SSButton(buttonTitle: "음식점")
+    private let etcButton = SSButton(buttonTitle: "기타")
+    
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: createLayout()).then {
         $0.register(MainFeedCell.self, forCellWithReuseIdentifier: MainFeedCell.identifier)
@@ -82,14 +105,27 @@ final class FeedViewController: RxBaseViewController {
     
     override func configureHierarchy() {
         super.configureHierarchy()
+        view.addSubview(filterScrollView)
+        filterScrollView.addSubview(optionStackView)
         view.addSubviews(collectionView, addButton)
     }
     
     override func configureLayout() {
         super.configureLayout()
         
+        filterScrollView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        optionStackView.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+        }
+        
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(filterScrollView.snp.bottom)
             make.horizontalEdges.bottom.equalToSuperview()
         }
         
