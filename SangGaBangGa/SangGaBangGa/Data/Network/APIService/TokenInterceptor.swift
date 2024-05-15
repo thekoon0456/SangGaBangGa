@@ -40,6 +40,7 @@ final class TokenInterceptor: RequestInterceptor {
                 TokenInterceptor.errorSubject.onNext(())
             }
             completion(.doNotRetryWithError(error))
+            return
         }
         
         UserAPIManager.shared.refreshToken()

@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7C18EC8E2BC677F900F061DE"
-               BuildableName = "SangbooSangzo.app"
-               BlueprintName = "SangbooSangzo"
-               ReferencedContainer = "container:SangbooSangzo.xcodeproj">
+               BuildableName = "SangGaBangGa.app"
+               BlueprintName = "SangGaBangGa"
+               ReferencedContainer = "container:SangGaBangGa.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7C18EC8E2BC677F900F061DE"
-            BuildableName = "SangbooSangzo.app"
-            BlueprintName = "SangbooSangzo"
-            ReferencedContainer = "container:SangbooSangzo.xcodeproj">
+            BuildableName = "SangGaBangGa.app"
+            BlueprintName = "SangGaBangGa"
+            ReferencedContainer = "container:SangGaBangGa.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7C18EC8E2BC677F900F061DE"
-            BuildableName = "SangbooSangzo.app"
-            BlueprintName = "SangbooSangzo"
-            ReferencedContainer = "container:SangbooSangzo.xcodeproj">
+            BuildableName = "SangGaBangGa.app"
+            BlueprintName = "SangGaBangGa"
+            ReferencedContainer = "container:SangGaBangGa.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

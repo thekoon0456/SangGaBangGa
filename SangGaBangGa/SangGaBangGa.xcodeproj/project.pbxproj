@@ -161,7 +161,7 @@
 		7C0ADCCD2BC92B85002DAEA7 /* UploadContentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadContentResponse.swift; sourceTree = "<group>"; };
 		7C0ADCCF2BC92BA9002DAEA7 /* UploadContentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadContentRequest.swift; sourceTree = "<group>"; };
 		7C0ADCD12BC93923002DAEA7 /* TokenInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenInterceptor.swift; sourceTree = "<group>"; };
-		7C18EC8F2BC677F900F061DE /* SangbooSangzo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SangbooSangzo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C18EC8F2BC677F900F061DE /* SangGaBangGa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SangGaBangGa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C18EC922BC677F900F061DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C18EC942BC677F900F061DE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7C18EC9B2BC677FA00F061DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 		7C18EC862BC677F900F061DE = {
 			isa = PBXGroup;
 			children = (
-				7C18EC912BC677F900F061DE /* SangbooSangzo */,
+				7C18EC912BC677F900F061DE /* SangGaBangGa */,
 				7C18EC902BC677F900F061DE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -440,12 +440,12 @@
 		7C18EC902BC677F900F061DE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7C18EC8F2BC677F900F061DE /* SangbooSangzo.app */,
+				7C18EC8F2BC677F900F061DE /* SangGaBangGa.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7C18EC912BC677F900F061DE /* SangbooSangzo */ = {
+		7C18EC912BC677F900F061DE /* SangGaBangGa */ = {
 			isa = PBXGroup;
 			children = (
 				7C18ECD72BC698CA00F061DE /* App */,
@@ -462,7 +462,7 @@
 				7C18ECA02BC677FA00F061DE /* Info.plist */,
 				7C18ECEC2BC7F01400F061DE /* .gitignore */,
 			);
-			path = SangbooSangzo;
+			path = SangGaBangGa;
 			sourceTree = "<group>";
 		};
 		7C18ECB62BC6798600F061DE /* Base */ = {
@@ -1085,9 +1085,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7C18EC8E2BC677F900F061DE /* SangbooSangzo */ = {
+		7C18EC8E2BC677F900F061DE /* SangGaBangGa */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7C18ECA32BC677FA00F061DE /* Build configuration list for PBXNativeTarget "SangbooSangzo" */;
+			buildConfigurationList = 7C18ECA32BC677FA00F061DE /* Build configuration list for PBXNativeTarget "SangGaBangGa" */;
 			buildPhases = (
 				7C18EC8B2BC677F900F061DE /* Sources */,
 				7C18EC8C2BC677F900F061DE /* Frameworks */,
@@ -1097,7 +1097,7 @@
 			);
 			dependencies = (
 			);
-			name = SangbooSangzo;
+			name = SangGaBangGa;
 			packageProductDependencies = (
 				7C18ECA72BC6790600F061DE /* RxCocoa */,
 				7C18ECA92BC6790600F061DE /* RxSwift */,
@@ -1111,7 +1111,7 @@
 				7CA35D802BE7522200E35AFA /* iamport-ios */,
 			);
 			productName = SangbooSangzo;
-			productReference = 7C18EC8F2BC677F900F061DE /* SangbooSangzo.app */;
+			productReference = 7C18EC8F2BC677F900F061DE /* SangGaBangGa.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1129,7 +1129,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7C18EC8A2BC677F900F061DE /* Build configuration list for PBXProject "SangbooSangzo" */;
+			buildConfigurationList = 7C18EC8A2BC677F900F061DE /* Build configuration list for PBXProject "SangGaBangGa" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1152,7 +1152,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7C18EC8E2BC677F900F061DE /* SangbooSangzo */,
+				7C18EC8E2BC677F900F061DE /* SangGaBangGa */,
 			);
 		};
 /* End PBXProject section */
@@ -1444,7 +1444,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SangbooSangzo/Info.plist;
+				INFOPLIST_FILE = SangGaBangGa/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "김덕훈";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도와 연동을 위해서 사용자의 위치 동의가 필요해요";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1478,7 +1478,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6X76DS4Z7;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SangbooSangzo/Info.plist;
+				INFOPLIST_FILE = SangGaBangGa/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "김덕훈";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도와 연동을 위해서 사용자의 위치 동의가 필요해요";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1506,7 +1506,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7C18EC8A2BC677F900F061DE /* Build configuration list for PBXProject "SangbooSangzo" */ = {
+		7C18EC8A2BC677F900F061DE /* Build configuration list for PBXProject "SangGaBangGa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C18ECA12BC677FA00F061DE /* Debug */,
@@ -1515,7 +1515,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7C18ECA32BC677FA00F061DE /* Build configuration list for PBXNativeTarget "SangbooSangzo" */ = {
+		7C18ECA32BC677FA00F061DE /* Build configuration list for PBXNativeTarget "SangGaBangGa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7C18ECA42BC677FA00F061DE /* Debug */,
