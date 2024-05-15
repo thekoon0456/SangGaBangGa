@@ -33,7 +33,6 @@ final class SSLocationManager: NSObject {
     
     private override init() {
         super.init()
-//        configureLocation()
     }
     
     private let locationManager = CLLocationManager()
@@ -100,6 +99,9 @@ extension SSLocationManager: CLLocationManagerDelegate {
             let location = CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                   longitude: coordinate.longitude)
             userLocationRelay.accept(location)
+            mapRegionRelay.accept(MKCoordinateRegion(center: userLocationRelay.value,
+                                                     latitudinalMeters: latitudinalMeters,
+                                                     longitudinalMeters: longitudinalMeters))
         }
     }
     
