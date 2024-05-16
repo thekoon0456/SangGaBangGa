@@ -29,6 +29,8 @@
 - Kingfisher, SnapKit, IQKeyboardManagerSwift, MarqueeLabel
 <br>
 
+## 📱시연 영상
+
 ## 💻 앱 개발 환경
 
 - 최소 지원 버전: iOS 16.0+
@@ -91,4 +93,152 @@
 ### NWPathMonitor
 - 네트워크 모니터링과 네트워크 단절상황 관리
 - CustomToast를 활용해 에러처리, 사용자와의 Interaction 제공
+<br>
+
+## ✅ 트러블 슈팅
+### 사용자의 편의를 위해 AccessToken 갱신을 통한 자동 로그인 구현
+<div markdown="1">
+앱을 켤때마다 로그인을 해야하는 번거로움을 해소하기 위해 자동 로그인 기능 도입<br>
+Moya의 RequestInterceptor를 통해 RefreshToken의 만료 전까지는 AccessToken을 자동으로 갱신하도록 구현<br>
+Coordinator와 errorSubject를 구독해 RefreshToken의 갱신이 만료되면 로그인 화면으로 이동<br>
+<br>
+
+```swift
+final class TokenInterceptor: RequestInterceptor {
+    ...
+    static let refreshSubject = BehaviorSubject<Void>(value: ())
+    static let errorSubject = PublishSubject<Void>()
+    ...
+
+    func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
+        guard let response = request.task?.response as? HTTPURLResponse else { return }
+        //엑세스 토큰 만료
+        guard response.statusCode == 419 else {
+            //login화면으로
+            if response.statusCode == 418 {
+                TokenInterceptor.errorSubject.onNext(())
+            }
+            completion(.doNotRetryWithError(error))
+            return
+        }
+
+        //엑세스 토큰 갱신
+        UserAPIManager.shared.refreshToken()
+            .subscribe { response in
+                UserDefaultsManager.shared.userData.accessToken = response.accessToken
+                TokenInterceptor.refreshSubject.onNext(())
+            }
+            .disposed(by: disposeBag)
+        completion(.doNotRetry)
+    }
+}
+```
+</div>
+<br>
+
+### 각 Cell마다 좋아요 버튼과 댓글 버튼을 연동하는 방식 변경. CellViewModel을 생성하는 방식에서 FeedViewModel로 로직 이동
+<div markdown="1">
+Main Feed의 각 Cell마다 좋아요 버튼이 눌리거나, 댓글 버튼이 눌렸을때 UI변경, 서버통신 등의 역할을 수행<br>
+기존에는 Cell에 ViewModel 인스턴스를 생성하는 방식으로 구현했으나, Cell을 화면에 구성할때마다 CellViewModel과 관련 인스턴스들이 생성되어 메모리에 비효율적<br>
+메모리를 효율적으로 활용하기 위해 CellViewModel의 로직을 FeedViewModel로 이동하고, 클로저로 외부에서 Action을 주입하는 방식으로 변경<br>
+불필요한 인스턴스 생성을 줄이고, 뷰모델에서 일관된 로직 처리 구현<br>
+<br>
+
+```swift
+
+// MARK: - MainFeedCell
+...
+var heartButtonTapped: (() -> Void)?
+var commentButtonTapped: (() -> Void)?
+
+ override func prepareForReuse() {
+     super.prepareForReuse()
+     heartButtonTapped = nil
+     commentButtonTapped = nil
+ }
+...
+
+// MARK: - FeedViewController
+...
+private func feedCellRegistration() -> UICollectionView.CellRegistration<MainFeedCell, ContentEntity> {
+    UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+        cell.configureCellData(itemIdentifier)
+        
+        cell.heartButtonTapped = { [weak self] in
+            guard let self else { return }
+            let isSelected = itemIdentifier.likes.contains(UserDefaultsManager.shared.userData.userID ?? "") ? true : false
+            cellHeartButtonSubject.onNext((indexPath.item, isSelected))
+        }
+        
+        cell.commentButtonTapped = { [weak self] in
+            guard let self else { return }
+            cellCommentButtonSubject.onNext(indexPath.item)
+        }
+    }
+}
+...
+
+// MARK: - FeedViewModel
+...
+input
+    .cellCommentButtonTapped
+    .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+    .asDriver(onErrorJustReturn: 0)
+    .drive(with: self) { owner, index in
+        let comments = owner.sortedComments(dataRelay.value[index].comments)
+        commentsRelay.accept(comments)
+        owner.coordinator?.presentComment(data: dataRelay.value[index],
+                                          commentsRelay: commentsRelay)
+    }
+    .disposed(by: disposeBag)
+...
+```
+</div>
+<br>
+
+### 매물의 주소를 좌표로 변환해 지도에 표시
+<div markdown="1">
+매물으 등록할 때 입력한 매물의 주소를 좌표로 변환해 지도에 띄워주기 위해 CLGeocoder 사용<br>
+CustomAnnotationView를 구성해 매물의 사진, 정보와 위치를 지도에 바로 표시하도록 구현 <br>
+<br>
+
+```swift
+
+// MARK: - MapViewModel
+...
+input
+    .address
+    .withUnretained(self)
+    .flatMap { owner, value in
+        owner.convertAddressToCoordinates(address: value)
+            .catchAndReturn("")
+    }
+    .subscribe { value in
+        request.content3 = value
+    }
+    .disposed(by: disposeBag)
+...
+func convertAddressToCoordinates(address: String) -> Observable<String> {
+    return Observable.create { observer in
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if let error = error {
+                observer.onError(error)
+                return
+            }
+            
+            if let placemark = placemarks?.first, let location = placemark.location {
+                observer.onNext("\(location.coordinate.latitude) / \(location.coordinate.longitude)")
+                observer.onCompleted()
+            } else {
+                let error = SSError.LocationError
+                observer.onError(error)
+            }
+        }
+        
+        return Disposables.create()
+    }
+}
+```
+</div>
 <br>
