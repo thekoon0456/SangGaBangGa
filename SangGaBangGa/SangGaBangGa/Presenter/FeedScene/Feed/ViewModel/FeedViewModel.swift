@@ -19,6 +19,7 @@ final class FeedViewModel: ViewModel {
         let fetchContents: Observable<Int>
         let cellHeartButtonTapped: Observable<(Int, Bool)>
         let cellCommentButtonTapped: Observable<Int>
+        let filterHashTag: Observable<String?>
     }
     
     struct Output {
@@ -63,7 +64,8 @@ final class FeedViewModel: ViewModel {
                     .postRepository
                     .readPosts(query: .init(next: nextCursorRelay.value,
                                             limit: APISetting.limit,
-                                            productID: APISetting.productID))
+                                            productID: APISetting.productID,
+                                            hashTag: ""))
                     .catch { error in
                         print(error)
                         return Single<ReadPostsEntity>.never()
@@ -102,7 +104,8 @@ final class FeedViewModel: ViewModel {
                 }
                 return owner.postRepository.readPosts(query: .init(next: nextCursor,
                                                                    limit: APISetting.limit,
-                                                                   productID: APISetting.productID))
+                                                                   productID: APISetting.productID,
+                                                                   hashTag: ""))
             }
             .subscribe(with: self) { owner, value in
                 var data = dataRelay.value
@@ -145,6 +148,27 @@ final class FeedViewModel: ViewModel {
                 commentsRelay.accept(comments)
                 owner.coordinator?.presentComment(data: dataRelay.value[index],
                                                   commentsRelay: commentsRelay)
+            }
+            .disposed(by: disposeBag)
+        
+        input
+            .filterHashTag
+            .withUnretained(self)
+            .flatMap { owner, value in
+                owner
+                    .postRepository
+                    .readPosts(query: .init(next: nextCursorRelay.value,
+                                            limit: APISetting.limit,
+                                            productID: APISetting.productID,
+                                            hashTag: value))
+                    .catch { error in
+                        print(error)
+                        return Single<ReadPostsEntity>.never()
+                    }
+            }
+            .subscribe(with: self) { owner, value in
+                dataRelay.accept(value.data)
+                nextCursorRelay.accept(value.nextCursor)
             }
             .disposed(by: disposeBag)
         

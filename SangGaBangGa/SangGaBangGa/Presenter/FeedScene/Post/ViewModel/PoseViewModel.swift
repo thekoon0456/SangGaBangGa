@@ -16,7 +16,7 @@ final class PostViewModel: ViewModel {
     struct Input {
         let selectedPhotos: BehaviorRelay<[Data]>
         let title: ControlProperty<String>
-        let category: BehaviorRelay<String?>
+        let category: BehaviorRelay<String>
         let address: ControlProperty<String>
         let deposit: ControlProperty<String>
         let rent: ControlProperty<String>
@@ -61,7 +61,7 @@ final class PostViewModel: ViewModel {
         let buttonEnable = Observable.combineLatest(
             [
                 input.title.map { $0.isEmpty },
-                input.category.map { $0?.isEmpty ?? true },
+                input.category.map { $0.isEmpty },
                 input.address.map { $0.isEmpty },
                 input.deposit.map { $0.isEmpty },
                 input.rent.map { $0.isEmpty },
@@ -98,6 +98,7 @@ final class PostViewModel: ViewModel {
             .category
             .subscribe { value in
                 request.content1 = value
+                request.content?.append("#\(value)")
             }
             .disposed(by: disposeBag)
         
@@ -105,6 +106,8 @@ final class PostViewModel: ViewModel {
             .address
             .subscribe { value in
                 request.content2 = value
+                let region = value.split(separator: " ").first ?? ""
+                request.content?.append("#\(value)")
             }
             .disposed(by: disposeBag)
         

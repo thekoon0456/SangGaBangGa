@@ -64,4 +64,9 @@ final class PostsAPIService {
         provider.rx.request(.readUserPosts(queryID: queryID, query: query))
             .map(ReadPostsResponse.self)
     }
+    
+    func readHashtagPosts(hashtag: String, query: ReadPostsQuery) -> Single<ReadPostsResponse> {
+        provider.rx.request(.readHashtag(hashtag: hashtag, query: query))
+            .map(ReadPostsResponse.self)
+    }
 }

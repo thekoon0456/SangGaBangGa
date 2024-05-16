@@ -85,13 +85,15 @@ final class FeedViewController: RxBaseViewController {
         
         let fetchContents = collectionView.rx.prefetchItems
             .compactMap { $0.last?.item }
+        let filterHashTag = BehaviorRelay<String?>(value: nil)
         
         let input = FeedViewModel.Input(viewWillAppear: self.rx.viewWillAppear.map { _ in },
                                         cellSelected: collectionView.rx.itemSelected,
                                         addButtonTapped: addButton.rx.tap,
                                         fetchContents: fetchContents,
                                         cellHeartButtonTapped: cellHeartButtonSubject.asObservable(),
-                                        cellCommentButtonTapped: cellCommentButtonSubject.asObservable())
+                                        cellCommentButtonTapped: cellCommentButtonSubject.asObservable(),
+                                        filterHashTag: filterHashTag.asObservable())
         
         let output = viewModel.transform(input)
         
@@ -99,6 +101,68 @@ final class FeedViewController: RxBaseViewController {
             .feeds
             .drive(with: self) { owner, item in
                 owner.updateSnapshot(withItems: item, toSection: .feed)
+            }
+            .disposed(by: disposeBag)
+        
+        regionFilterButton.menuButtonRelay
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return regionFilterButton.buttonLabel.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
+            }
+            .disposed(by: disposeBag)
+        
+        allButton.rx.tap
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return allButton.titleLabel?.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
+            }
+            .disposed(by: disposeBag)
+        
+        emptyButton.rx.tap
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return emptyButton.titleLabel?.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
+            }
+            .disposed(by: disposeBag)
+
+        
+        cafeButton.rx.tap
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return cafeButton.titleLabel?.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
+            }
+            .disposed(by: disposeBag)
+
+        
+        foodButton.rx.tap
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return foodButton.titleLabel?.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
+            }
+            .disposed(by: disposeBag)
+        
+        etcButton.rx.tap
+            .map { [weak self] _ in
+                guard let self else { return nil }
+                return etcButton.titleLabel?.text
+            }
+            .subscribe { value in
+                filterHashTag.accept(value)
             }
             .disposed(by: disposeBag)
     }

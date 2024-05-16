@@ -12,7 +12,7 @@ import RxSwift
 
 final class SSMenuButton: UIButton {
     
-    var menuButtonRelay = BehaviorRelay<String?>(value: nil)
+    var menuButtonRelay = BehaviorRelay<String>(value: "")
     let buttonLabel = UILabel().then {
         $0.textColor = .accent
         $0.font = SSFont.medium12
@@ -25,13 +25,12 @@ final class SSMenuButton: UIButton {
     
     // MARK: - Lifecycles
     
-    init(buttonTitle: String, menus: [String]) {
+    init(buttonTitle: String, menus: [String], color: UIColor = .accent) {
         super.init(frame: .zero)
-        configureUI(buttonTitle: buttonTitle, menus: menus)
+        configureUI(buttonTitle: buttonTitle, menus: menus, color: color)
         
         menuButtonRelay
             .subscribe(with: self) { owner, title in
-                guard let title else { return }
                 owner.buttonLabel.text = title
             }.disposed(by: disposeBag)
     }
@@ -42,7 +41,7 @@ final class SSMenuButton: UIButton {
     
     // MARK: - Helpers
     // TODO: - 폰트?
-    private func configureUI(buttonTitle: String, menus: [String]) {
+    private func configureUI(buttonTitle: String, menus: [String], color: UIColor) {
         buttonLabel.text = buttonTitle
         tintColor = .accent
         layer.cornerRadius = 10
@@ -51,7 +50,7 @@ final class SSMenuButton: UIButton {
         layer.borderColor = UIColor.accent.cgColor
         showsMenuAsPrimaryAction = true
         addSubviews(buttonLabel, chevronImageView)
-        backgroundColor = .second
+        backgroundColor = color
         
         let menus: [String]  = menus
         

@@ -18,6 +18,7 @@ protocol PostRepository {
     func fetchPost(queryID: String, request: UploadContentRequest) -> Single<ContentEntity>
     func deletePost(queryID: String)
     func readUserPosts(queryID: String, query: ReadPostsQuery) -> Single<ReadPostsEntity>
+    func readHashtagPosts(hashtag: String, query: ReadPostsQuery) -> Single<ReadPostsEntity>
 }
 
 final class PostRepositoryImpl: PostRepository {
@@ -55,6 +56,11 @@ final class PostRepositoryImpl: PostRepository {
     
     func readUserPosts(queryID: String, query: ReadPostsQuery) -> Single<ReadPostsEntity> {
         apiService.readUserPosts(queryID: queryID, query: query)
+            .map { $0.toEntity }
+    }
+    
+    func readHashtagPosts(hashtag: String, query: ReadPostsQuery) -> Single<ReadPostsEntity> {
+        apiService.readHashtagPosts(hashtag: hashtag, query: query)
             .map { $0.toEntity }
     }
 }

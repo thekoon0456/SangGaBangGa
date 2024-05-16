@@ -89,7 +89,8 @@ final class InfoViewModel: ViewModel {
                     let posts = owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
                                                                    query: ReadPostsQuery(next: "",
                                                                                          limit: APISetting.limit,
-                                                                                         productID: APISetting.productID))
+                                                                                         productID: APISetting.productID,
+                                                                                         hashTag: ""))
                     return posts.map { $0.data }
                 default:
                     return owner.paymentsContentsSingle()

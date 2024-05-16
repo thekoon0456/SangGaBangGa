@@ -17,6 +17,7 @@ enum PostsRouter {
     case fetchPost(queryID: String, request: UploadContentRequest)
     case deletePost(queryID: String)
     case readUserPosts(queryID: String, query: ReadPostsQuery)
+    case readHashtag(hashtag: String, query: ReadPostsQuery)
 }
 
 extension PostsRouter: TargetType {
@@ -41,6 +42,8 @@ extension PostsRouter: TargetType {
             return "/v1/posts/\(queryID)"
         case .readUserPosts(let userID, _):
             return "/v1/posts/users/\(userID)"
+        case .readHashtag:
+            return "/v1/posts/hashtags"
         }
     }
     
@@ -59,6 +62,8 @@ extension PostsRouter: TargetType {
         case .deletePost:
                 .delete
         case .readUserPosts:
+                .get
+        case .readHashtag:
                 .get
         }
     }
@@ -125,6 +130,14 @@ extension PostsRouter: TargetType {
                 "product_id": readPostsQuery.productID ?? "SangbooSangzo"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .readHashtag(let hashtag, let readPostsQuery):
+            let params: [String: Any] = [
+                "next": readPostsQuery.next ?? "",
+                "limit": readPostsQuery.limit ?? "",
+                "product_id": readPostsQuery.productID ?? "SangbooSangzo",
+                "hashTag": readPostsQuery.hashTag ?? ""
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
     
@@ -138,7 +151,7 @@ extension PostsRouter: TargetType {
              [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
               HTTPHeader.contentType: HTTPHeader.json,
               HTTPHeader.sesacKey: APIKey.sesacKey]
-        case .readPosts, .readPost, .deletePost, .readUserPosts:
+        case .readPosts, .readPost, .deletePost, .readUserPosts, .readHashtag:
             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]
         }
