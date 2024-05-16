@@ -1,33 +1,31 @@
 # 상가를 찾을때? 상가방가!
 상가 전용 부동산 중개 앱입니다. <br>
 - 실시간으로 업데이트되는 상가 매물! <br>
-- 지도를 통해 현재 매물을 한 눈에 볼 수 있습니다. <br>
+- 지도를 통해 내 위치 주변 매물을 한 눈에 볼 수 있습니다. <br>
 - 결제 기능을 통해 계약금을 바로 결제하실 수 있습니다. <br>
 - 좋아요 누른 글, 내가 작성한 글, 계약금을 결제한 글을 관리하실 수 있습니다. <br>
 <br>
 
 ## 📱스크린샷
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/ca2f666a-b4d8-4352-a520-032a6f1d5002" width="150"></img>
+<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/16b60e03-f68c-4d49-b02e-600108fb8b86" width="150"></img>
 <img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/37fc4767-5bae-423c-a13d-d0e3fff15ddd" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/f9101841-4591-4beb-9033-e1eacd00f5e6" width="150"></img>
+<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/5f2379c2-ee4e-4f54-b606-667ac9cc2217" width="150"></img>
 <img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/77c36456-df23-4ac1-a680-c11791703b1e" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/899914ac-e198-477c-9bdd-96d8b2b8908c" width="150"></img>
+<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/5f6afb0a-405c-4a8d-a06b-601c6a99a2df" width="150"></img>
 
 ## 📌 주요 기능
 - 이메일 회원가입, 로그인 기능 <br>
-- 실시간으로 업데이트되는 다양한 매물 <br>
+- 실시간으로 업데이트되는 게시글 <br>
 - 좋아요, 댓글 기능 <br>
-- 전화, 문자 연결 기능 <br>
-- 지도를 통해 현재 매물을 한 눈에 볼 수 있습니다. <br>
-- 결제 기능을 통해 계약금을 바로 결제하실 수 있습니다. <br>
-- 좋아요 누른 글, 내가 작성한 글, 계약금을 결제한 글을 관리하실 수 있습니다. <br>
+- 글 작성자 전화, 문자 기능 <br>
+- 지도를 통해 주변 매물 관리와 검색기능 <br>
 <br>
 
 ## 기술 스택
 - UIKit, MVVM-C, Input-Output, Singleton, Repository, CodeBasedUI
 - RxSwift, RxMoya, NWPathMonitor, RxGesture ,iamport-ios
 - MapKit, CoreLocation, MessageUI
-- Compositional Layout, CollectionViewPagingLayout, DiffableDataSource,
+- CompositionalLayout, CollectionViewPagingLayout, DiffableDataSource,
 - Kingfisher, SnapKit, IQKeyboardManagerSwift, MarqueeLabel
 <br>
 
@@ -41,31 +39,36 @@
 ## 💡 기술 소개
 
 ### MVVM
-- 사용자 입력 및 뷰의 로직과 비즈니스에 관련된 로직을 분리하기 위해 MVVM을 도입
-- Input, Output 패턴을 활용해 데이터의 흐름을 전달받을 값과, 전달할 값을 명확하게 나누고 관리
-- ViewModel Protocol을 활용해 구조적으로 일관된 뷰모델 구성
+- 뷰의 로직과 비즈니스 로직을 분리하고 관리하기 위해 MVVM 아키텍처를 도입
+- Input, Output 패턴을 활용해 뷰의 이벤트들을 Input에 바인딩하고, 뷰에 보여질 데이터를 Output에 바인딩
+- 데이터의 흐름을 단방향으로 구성하고 뷰모델의 코드 가독성 향상
+- ViewModel Protocol을 활용해 구조적화된 뷰모델 구성
 <br>
 
 ### Coordinator 패턴
+- CodeBasedUI로 UI구성, Storyboard에 비해 화면 전환의 흐름을 직관적으로 파악하기 힘든 단점을 해결하기 위해
 - 화면 전환 코드가 복잡해지고 비대해지는 문제를 해결하기 위해 뷰 컨트롤러와 화면 전환 로직을 분리
 - Coordinator 생성, Repository 생성, ViewModel 생성, ViewController 생성하는 패턴으로 의존성 주입
 - ViewController의 Input이 ViewModel의 Coordinator로 전달하여 화면 전환
 <br>
 
 ### RxSwift
-- RxSwift를 활용해 앱 내의 일관성 있는 비동기 처리와 Traits를 활용하여 Thread 관리
+- RxSwift를 활용해 앱 내의 일관성 있는 비동기 처리
+- 연속된 escaping closure를 피하고, 선언형 프로그래밍을 통한 코드 가독성을 높임
+- Traits을 활용해 일관된 Thread 관리
+- 데이터가 발생하는 시점에서부터 뷰에 그려지기까지 하나의 스트림으로 데이터 바인딩
 <br>
 
 ### RxMoya
 - 다양한 역할의 API를 Router패턴과 RxSwift를 연동해 관리하기 위해 RxMoya 활용
-- UserRouter, PostsRouter, PaymentRouter등 댜앙한 역할의 Router를 TargetType을 활용해 Router 구현
-- API에 필요한 Request, Respose 모델을 구성하고 Entity로 변환해 앱 내에서 데이터 활용
-- RequestInterceptor를 활용해 Login Token Refresh
+- UserRouter, PostsRouter, PaymentRouter등 세분화한 역할의 Router를 TargetType을 통해 구현
+- API에 필요한 Request, Response 모델을 구성하고 Entity로 변환해 앱 내에서 데이터 활용
+- RequestInterceptor를 활용해 Login Token Refresh 관리
 <br>
 
 ### Repopsitory 패턴
 - Repository 패턴을 사용해 데이터 계층 추상화
-- DIP를 활용해 의존성 역전, 결합성을 낮추고 유지보수성 향상
+- DIP를 활용해 Repository의 의존성 역전, 결합성을 낮추고 유지보수성 향상
 <br>
 
 ### MapKit
