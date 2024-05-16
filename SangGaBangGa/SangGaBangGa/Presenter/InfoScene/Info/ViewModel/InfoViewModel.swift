@@ -90,7 +90,7 @@ final class InfoViewModel: ViewModel {
                                                                    query: ReadPostsQuery(next: "",
                                                                                          limit: APISetting.limit,
                                                                                          productID: APISetting.productID,
-                                                                                         hashTag: ""))
+                                                                                         hashTag: nil))
                     return posts.map { $0.data }
                 default:
                     return owner.paymentsContentsSingle()

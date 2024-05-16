@@ -65,7 +65,7 @@ final class FeedViewModel: ViewModel {
                     .readPosts(query: .init(next: nextCursorRelay.value,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID,
-                                            hashTag: ""))
+                                            hashTag: nil))
                     .catch { error in
                         print(error)
                         return Single<ReadPostsEntity>.never()
@@ -105,7 +105,7 @@ final class FeedViewModel: ViewModel {
                 return owner.postRepository.readPosts(query: .init(next: nextCursor,
                                                                    limit: APISetting.limit,
                                                                    productID: APISetting.productID,
-                                                                   hashTag: ""))
+                                                                   hashTag: nil))
             }
             .subscribe(with: self) { owner, value in
                 var data = dataRelay.value
@@ -157,16 +157,17 @@ final class FeedViewModel: ViewModel {
             .flatMap { owner, value in
                 owner
                     .postRepository
-                    .readPosts(query: .init(next: nextCursorRelay.value,
-                                            limit: APISetting.limit,
-                                            productID: APISetting.productID,
-                                            hashTag: value))
+                    .readHashtagPosts(query: .init(next: nextCursorRelay.value,
+                                                   limit: APISetting.limit,
+                                                   productID: APISetting.productID,
+                                                   hashTag: value))
                     .catch { error in
                         print(error)
                         return Single<ReadPostsEntity>.never()
                     }
             }
             .subscribe(with: self) { owner, value in
+                print(value.data)
                 dataRelay.accept(value.data)
                 nextCursorRelay.accept(value.nextCursor)
             }

@@ -84,7 +84,7 @@ final class MapViewModel: ViewModel {
                     .readPosts(query: .init(next: nil,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID,
-                                            hashTag: ""))
+                                            hashTag: nil))
             }
             .compactMap { $0.data }
             .debug()

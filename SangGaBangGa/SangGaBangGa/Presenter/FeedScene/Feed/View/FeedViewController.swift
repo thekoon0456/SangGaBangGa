@@ -110,7 +110,8 @@ final class FeedViewController: RxBaseViewController {
                 owner.regionFilterButton.buttonLabel.text
             }
             .subscribe { value in
-                filterHashTag.accept(value)
+                guard let value else { return }
+                value == "모든 지역" ? filterHashTag.accept(nil) : filterHashTag.accept(value)
             }
             .disposed(by: disposeBag)
         
@@ -120,11 +121,8 @@ final class FeedViewController: RxBaseViewController {
                 owner.allButton.isSelected.toggle()
                 owner.allButton.setBackgroundColor()
             }
-            .map { owner, _ in
-                owner.allButton.titleLabel?.text
-            }
             .subscribe { value in
-                filterHashTag.accept(value)
+                filterHashTag.accept(nil)
             }
             .disposed(by: disposeBag)
         

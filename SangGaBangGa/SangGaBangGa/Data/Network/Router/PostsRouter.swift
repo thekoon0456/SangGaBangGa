@@ -17,7 +17,7 @@ enum PostsRouter {
     case fetchPost(queryID: String, request: UploadContentRequest)
     case deletePost(queryID: String)
     case readUserPosts(queryID: String, query: ReadPostsQuery)
-    case readHashtag(hashtag: String, query: ReadPostsQuery)
+    case readHashtag(query: ReadPostsQuery)
 }
 
 extension PostsRouter: TargetType {
@@ -130,7 +130,7 @@ extension PostsRouter: TargetType {
                 "product_id": readPostsQuery.productID ?? "SangbooSangzo"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-        case .readHashtag(let hashtag, let readPostsQuery):
+        case .readHashtag(let readPostsQuery):
             let params: [String: Any] = [
                 "next": readPostsQuery.next ?? "",
                 "limit": readPostsQuery.limit ?? "",
@@ -144,13 +144,13 @@ extension PostsRouter: TargetType {
     var headers: [String: String]? {
         switch self {
         case .uploadImage:
-             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
-              HTTPHeader.contentType: HTTPHeader.multiPartFormData,
-              HTTPHeader.sesacKey: APIKey.sesacKey]
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
+             HTTPHeader.contentType: HTTPHeader.multiPartFormData,
+             HTTPHeader.sesacKey: APIKey.sesacKey]
         case .uploadContents, .fetchPost:
-             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
-              HTTPHeader.contentType: HTTPHeader.json,
-              HTTPHeader.sesacKey: APIKey.sesacKey]
+            [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
+             HTTPHeader.contentType: HTTPHeader.json,
+             HTTPHeader.sesacKey: APIKey.sesacKey]
         case .readPosts, .readPost, .deletePost, .readUserPosts, .readHashtag:
             [HTTPHeader.authorization: UserDefaultsManager.shared.userData.accessToken ?? "",
              HTTPHeader.sesacKey: APIKey.sesacKey]

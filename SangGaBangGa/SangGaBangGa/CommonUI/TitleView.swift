@@ -15,7 +15,7 @@ final class TitleView: BaseView {
     
     private let titleLabel = UILabel().then {
         $0.text = "상가방가"
-        $0.font = SSFont.bold28
+        $0.font = SSFont.semiBold24
         $0.textColor = .tintColor
     }
     
@@ -41,7 +41,7 @@ final class TitleView: BaseView {
         iconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview()
-            make.size.equalTo(40)
+            make.size.equalTo(28)
         }
         
         titleLabel.snp.makeConstraints { make in
