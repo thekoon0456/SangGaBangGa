@@ -105,9 +105,9 @@ final class FeedViewController: RxBaseViewController {
             .disposed(by: disposeBag)
         
         regionFilterButton.menuButtonRelay
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return regionFilterButton.buttonLabel.text
+            .withUnretained(self)
+            .map { owner, _ in
+                owner.regionFilterButton.buttonLabel.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
@@ -115,9 +115,13 @@ final class FeedViewController: RxBaseViewController {
             .disposed(by: disposeBag)
         
         allButton.rx.tap
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return allButton.titleLabel?.text
+            .withUnretained(self)
+            .do { owner, _ in
+                owner.allButton.isSelected.toggle()
+                owner.allButton.setBackgroundColor()
+            }
+            .map { owner, _ in
+                owner.allButton.titleLabel?.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
@@ -125,9 +129,13 @@ final class FeedViewController: RxBaseViewController {
             .disposed(by: disposeBag)
         
         emptyButton.rx.tap
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return emptyButton.titleLabel?.text
+            .withUnretained(self)
+            .do { owner, _ in
+                owner.emptyButton.isSelected.toggle()
+                owner.emptyButton.setBackgroundColor()
+            }
+            .map { owner, _ in
+                owner.emptyButton.titleLabel?.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
@@ -136,9 +144,13 @@ final class FeedViewController: RxBaseViewController {
 
         
         cafeButton.rx.tap
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return cafeButton.titleLabel?.text
+            .withUnretained(self)
+            .do { owner, _ in
+                owner.cafeButton.isSelected.toggle()
+                owner.cafeButton.setBackgroundColor()
+            }
+            .map { owner, _ in
+                owner.cafeButton.titleLabel?.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
@@ -147,9 +159,13 @@ final class FeedViewController: RxBaseViewController {
 
         
         foodButton.rx.tap
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return foodButton.titleLabel?.text
+            .withUnretained(self)
+            .do { owner, _ in
+                owner.foodButton.isSelected.toggle()
+                owner.foodButton.setBackgroundColor()
+            }
+            .map { owner, _ in
+                owner.foodButton.titleLabel?.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
@@ -157,9 +173,13 @@ final class FeedViewController: RxBaseViewController {
             .disposed(by: disposeBag)
         
         etcButton.rx.tap
-            .map { [weak self] _ in
-                guard let self else { return nil }
-                return etcButton.titleLabel?.text
+            .withUnretained(self)
+            .do { owner, _ in
+                owner.etcButton.isSelected.toggle()
+                owner.etcButton.setBackgroundColor()
+            }
+            .map { owner, _ in
+                owner.etcButton.titleLabel?.text
             }
             .subscribe { value in
                 filterHashTag.accept(value)
