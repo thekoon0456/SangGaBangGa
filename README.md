@@ -46,8 +46,8 @@
 <br>
 
 ### Coordinator 패턴
-- CodeBasedUI로 UI구성, Storyboard에 비해 화면 전환의 흐름을 직관적으로 파악하기 힘든 단점을 해결하기 위해
-- 화면 전환 코드가 복잡해지고 비대해지는 문제를 해결하기 위해 뷰 컨트롤러와 화면 전환 로직을 분리
+- CodeBasedUI로 UI구성, Storyboard에 비해 화면 전환의 흐름을 직관적으로 파악하기 힘든 단점
+- 화면 전환 코드가 복잡해지고 비대해지는 문제를 해결하기 위해 뷰 컨트롤러와 화면 전환 로직을 분리해서 관리
 - Coordinator 생성, Repository 생성, ViewModel 생성, ViewController 생성하는 패턴으로 의존성 주입
 - ViewController의 Input이 ViewModel의 Coordinator로 전달하여 화면 전환
 <br>
