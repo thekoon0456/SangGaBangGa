@@ -30,7 +30,12 @@
 <br>
 
 ## 📱시연 영상
-
+|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/d1e332e9-a6ba-4d88-a74f-f75dd23ad826" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/c11a36a3-f599-483a-b330-567c31efbcd4" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/ab19932f-98b2-4ab9-8a81-59764238c0fa" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/02c6c645-a794-4ba0-ad99-bbed6cfc03f3" width="200"></img>|
+|:-:|:-:|:-:|:-:|
+|`피드`|`게시글 작성`|`댓글 작성`|`메세지 보내기`|
+|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/00ae5c9b-d201-44fd-9582-0934c6166dfa" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/27a13156-4e65-4c68-ab35-ec230e581204" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/65302b8c-3fb4-4524-b960-ed70e5dafe4c" width="200"></img>|<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/0eed20bd-3544-4cdf-b9ae-24830859dfc4" width="200"></img>|
+|`계약금 결제`|`지도 검색`|`지도 매물 이동`|`마이페이지`|
+<br>
 
 ## 💻 앱 개발 환경
 
