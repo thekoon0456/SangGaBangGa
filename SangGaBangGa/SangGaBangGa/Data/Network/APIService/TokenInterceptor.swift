@@ -33,8 +33,8 @@ final class TokenInterceptor: RequestInterceptor {
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
         print(#function)
         guard let response = request.task?.response as? HTTPURLResponse else { return }
-        guard response.statusCode == 419 //엑세스 토큰 만료
-        else {
+        //엑세스 토큰 만료
+        guard response.statusCode == 419 else {
             //login화면으로
             if response.statusCode == 418 {
                 TokenInterceptor.errorSubject.onNext(())
@@ -45,7 +45,6 @@ final class TokenInterceptor: RequestInterceptor {
         
         UserAPIManager.shared.refreshToken()
             .subscribe { response in
-                print("DEBUG: refreshToken", response.accessToken)
                 UserDefaultsManager.shared.userData.accessToken = response.accessToken
                 TokenInterceptor.refreshSubject.onNext(())
             }
