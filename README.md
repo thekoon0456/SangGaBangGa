@@ -22,11 +22,11 @@
 <br>
 
 ## 기술 스택
-- UIKit, MVVM-C, Input-Output, Singleton, Repository, CodeBasedUI
-- RxSwift, RxMoya, NWPathMonitor, RxGesture ,iamport-ios
+- UIKit, Clean-Architecture, Input-Output, CodeBasedUI
+- RxSwift, RxMoya, NWPathMonitor, RxGesture, iamport-ios
 - MapKit, CoreLocation, MessageUI
-- CompositionalLayout, CollectionViewPagingLayout, DiffableDataSource,
-- Kingfisher, SnapKit, IQKeyboardManagerSwift, MarqueeLabel
+- CompositionalLayout, CollectionViewPagingLayout, DiffableDataSource
+- Kingfisher, SnapKit, IQKeyboardManagerSwift
 <br>
 
 ## 📱시연 영상
@@ -46,7 +46,7 @@
 
 ## 💡 기술 소개
 
-### Clean Architecture
+### Clean-Architecture
 - MVVM 구조에서 ViewModel이 모든 로직을 처리하는 것을 줄이기 위해 Clean Architecture 적용
 - View - ViewModel - UseCase - Repository - DataSource로 레이어 분리
 - 서버에서 온 데이터의 모델과 앱 내에서 사용되는 데이터의 모델을 분리하여 서버의 변경에 유연하게 대처
