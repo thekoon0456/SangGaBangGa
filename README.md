@@ -46,6 +46,15 @@
 
 ## 💡 기술 소개
 
+### Clean Architecture
+- MVVM 구조에서 ViewModel이 모든 로직을 처리하는 것을 줄이기 위해 Clean Architecture 적용
+- View - ViewModel - UseCase - Repository - DataSource로 레이어 분리
+- 서버에서 온 데이터의 모델과 앱 내에서 사용되는 데이터의 모델을 분리하여 서버의 변경에 유연하게 대처
+- Repository 패턴을 활용해 DataSource 캡슐화
+- 앱의 핵심 로직을 작은 기능의 단위의 UseCase를 나누어 단일 책임 원칙을 준수하도록 구현
+- 계층과 모듈의 역할이 명확하게 분리되어 코드 가독성, 재사용성 향상
+<br>
+
 ### MVVM
 - 뷰의 로직과 비즈니스 로직을 분리하고 관리하기 위해 MVVM 아키텍처를 도입
 - Input, Output 패턴을 활용해 뷰의 이벤트들을 Input에 바인딩하고, 뷰에 보여질 데이터를 Output에 바인딩
@@ -72,11 +81,6 @@
 - UserRouter, PostsRouter, PaymentRouter등 세분화한 역할의 Router를 TargetType을 통해 구현
 - API에 필요한 Request, Response 모델을 구성하고 Entity로 변환해 앱 내에서 데이터 활용
 - RequestInterceptor를 활용해 Login Token Refresh 관리
-<br>
-
-### Repopsitory 패턴
-- Repository 패턴을 사용해 데이터 계층 추상화
-- DIP를 활용해 Repository의 의존성 역전, 결합성을 낮추고 유지보수성 향상
 <br>
 
 ### MapKit
