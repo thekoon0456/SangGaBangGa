@@ -11,7 +11,7 @@ import RxSwift
 
 protocol LikeUseCase {
     func postLike(queryID: String, status: Bool) -> Single<LikeEntity>
-    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity>
+    func readLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity>
 }
 
 final class LikeUseCaseImpl: LikeUseCase {
@@ -26,7 +26,7 @@ final class LikeUseCaseImpl: LikeUseCase {
         likeRepository.postLike(queryID: queryID, status: status)
     }
     
-    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity> {
+    func readLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity> {
         likeRepository.readLikePosts(query: query)
     }
 }

@@ -10,12 +10,12 @@ import Foundation
 import RxMoya
 import RxSwift
 
-protocol PaymentsAPIRepository {
+protocol PaymentsRepository {
     func validation(request: PaymentsRequest) -> Single<PaymentsValidationEntity>
     func readMyPayments() -> Single<[PaymentsDataEntity]>
 }
 
-final class PaymentsRepositoryImpl: PaymentsAPIRepository {
+final class PaymentsRepositoryImpl: PaymentsRepository {
     
     private let apiService = PaymentsAPIService()
     

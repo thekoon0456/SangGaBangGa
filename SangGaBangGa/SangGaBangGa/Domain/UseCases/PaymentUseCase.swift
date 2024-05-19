@@ -16,17 +16,17 @@ protocol PaymentsUseCase {
 
 final class PaymentsUseCaseImpl: PaymentsUseCase {
     
-    private let paymentsAPIRepository: PaymentsAPIRepository
+    private let paymentsRepository: PaymentsRepository
     
-    init(paymentsAPIRepository: PaymentsAPIRepository) {
-        self.paymentsAPIRepository = paymentsAPIRepository
+    init(paymentsRepository: PaymentsRepository) {
+        self.paymentsRepository = paymentsRepository
     }
     
     func validation(request: PaymentsRequest) -> Single<PaymentsValidationEntity> {
-        paymentsAPIRepository.validation(request: request)
+        paymentsRepository.validation(request: request)
     }
     
     func readMyPayments() -> Single<[PaymentsDataEntity]> {
-        paymentsAPIRepository.readMyPayments()
+        paymentsRepository.readMyPayments()
     }
 }
