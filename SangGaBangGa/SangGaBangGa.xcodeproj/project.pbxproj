@@ -141,6 +141,11 @@
 		7CE9168A2BDBA21F007B1431 /* MainFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE916892BDBA21F007B1431 /* MainFeedView.swift */; };
 		7CE9168C2BDBA31F007B1431 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE9168B2BDBA31F007B1431 /* MapDetailViewController.swift */; };
 		7CE9168E2BDBA563007B1431 /* MapDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE9168D2BDBA563007B1431 /* MapDetailViewModel.swift */; };
+		7CEA68D62BF9ED3300A0863F /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA68D52BF9ED3300A0863F /* ProfileUseCase.swift */; };
+		7CEA68D82BF9ED3A00A0863F /* PostUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA68D72BF9ED3900A0863F /* PostUseCase.swift */; };
+		7CEA68DA2BF9ED4500A0863F /* CommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA68D92BF9ED4500A0863F /* CommentUseCase.swift */; };
+		7CEA68DC2BF9ED4B00A0863F /* LikeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA68DB2BF9ED4B00A0863F /* LikeUseCase.swift */; };
+		7CEA68DE2BF9ED5200A0863F /* PaymentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA68DD2BF9ED5200A0863F /* PaymentUseCase.swift */; };
 		7CEFD0E12BDE2D4F002583E9 /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD0E02BDE2D4F002583E9 /* PostRepository.swift */; };
 		7CEFD0E42BDE33C5002583E9 /* ContentEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD0E32BDE33C5002583E9 /* ContentEntity.swift */; };
 		7CEFD0E62BDE33FD002583E9 /* ReadPostEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD0E52BDE33FD002583E9 /* ReadPostEntity.swift */; };
@@ -274,6 +279,11 @@
 		7CE916892BDBA21F007B1431 /* MainFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedView.swift; sourceTree = "<group>"; };
 		7CE9168B2BDBA31F007B1431 /* MapDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		7CE9168D2BDBA563007B1431 /* MapDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewModel.swift; sourceTree = "<group>"; };
+		7CEA68D52BF9ED3300A0863F /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
+		7CEA68D72BF9ED3900A0863F /* PostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUseCase.swift; sourceTree = "<group>"; };
+		7CEA68D92BF9ED4500A0863F /* CommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentUseCase.swift; sourceTree = "<group>"; };
+		7CEA68DB2BF9ED4B00A0863F /* LikeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUseCase.swift; sourceTree = "<group>"; };
+		7CEA68DD2BF9ED5200A0863F /* PaymentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentUseCase.swift; sourceTree = "<group>"; };
 		7CEFD0E02BDE2D4F002583E9 /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
 		7CEFD0E32BDE33C5002583E9 /* ContentEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentEntity.swift; sourceTree = "<group>"; };
 		7CEFD0E52BDE33FD002583E9 /* ReadPostEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostEntity.swift; sourceTree = "<group>"; };
@@ -1014,6 +1024,7 @@
 		7CD1CF7C2BDF701D00B7BBA2 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				7CEA68D42BF8DD8A00A0863F /* UseCases */,
 				7CEFD0E22BDE3371002583E9 /* Entity */,
 			);
 			path = Domain;
@@ -1070,6 +1081,18 @@
 				7C92D6E82BD819C60021AC66 /* CommentCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		7CEA68D42BF8DD8A00A0863F /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				7CEA68D52BF9ED3300A0863F /* ProfileUseCase.swift */,
+				7CEA68D72BF9ED3900A0863F /* PostUseCase.swift */,
+				7CEA68D92BF9ED4500A0863F /* CommentUseCase.swift */,
+				7CEA68DB2BF9ED4B00A0863F /* LikeUseCase.swift */,
+				7CEA68DD2BF9ED5200A0863F /* PaymentUseCase.swift */,
+			);
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 		7CEFD0E22BDE3371002583E9 /* Entity */ = {
@@ -1194,6 +1217,7 @@
 				7C1C50192BCCFF4F0066CBCA /* MapViewModel.swift in Sources */,
 				7C2ADFF82BD3FEFB00DA2C1F /* UIImage+.swift in Sources */,
 				7C18ECB82BC6799300F061DE /* RxBaseViewController.swift in Sources */,
+				7CEA68D82BF9ED3A00A0863F /* PostUseCase.swift in Sources */,
 				7C0EBD7F2BF4EA230004FB9D /* SSButton.swift in Sources */,
 				7C18ECE62BC699D300F061DE /* Coordinator.swift in Sources */,
 				7C21F5F42BD2522400D52383 /* PostImageCell.swift in Sources */,
@@ -1230,9 +1254,12 @@
 				7C18ECBE2BC679DD00F061DE /* Then+.swift in Sources */,
 				7CA35D7E2BE6B33B00E35AFA /* CustomMarkerView.swift in Sources */,
 				7C7D88582BE234F8005A06EB /* LikeEntity.swift in Sources */,
+				7CEA68DE2BF9ED5200A0863F /* PaymentUseCase.swift in Sources */,
 				7C21F5FD2BD28F1700D52383 /* KF+.swift in Sources */,
 				7C0ADCC32BC92183002DAEA7 /* PostsRouter.swift in Sources */,
+				7CEA68DC2BF9ED4B00A0863F /* LikeUseCase.swift in Sources */,
 				7C0ADCCC2BC92B76002DAEA7 /* UploadImageResponse.swift in Sources */,
+				7CEA68D62BF9ED3300A0863F /* ProfileUseCase.swift in Sources */,
 				7CEFD0E12BDE2D4F002583E9 /* PostRepository.swift in Sources */,
 				7C21F5F22BD23E9A00D52383 /* Reactive+.swift in Sources */,
 				7C9E2DED2BE4D4EC00FD81E3 /* SSConst.swift in Sources */,
@@ -1264,6 +1291,7 @@
 				7CEFD0E42BDE33C5002583E9 /* ContentEntity.swift in Sources */,
 				7CA35D892BE75B1600E35AFA /* PaymentsRequest.swift in Sources */,
 				7CA35D982BE7C71000E35AFA /* NetworkMonitorManager.swift in Sources */,
+				7CEA68DA2BF9ED4500A0863F /* CommentUseCase.swift in Sources */,
 				7CCBCF982BCFBBFF00B3641D /* ReadPostsResponse.swift in Sources */,
 				7C18ECBB2BC679AA00F061DE /* UserAPIManager.swift in Sources */,
 				7CCBCFA52BCFCB6900B3641D /* LikeStatusResponse.swift in Sources */,
