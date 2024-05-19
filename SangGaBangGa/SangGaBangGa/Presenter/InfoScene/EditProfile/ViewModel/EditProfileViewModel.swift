@@ -29,16 +29,16 @@ final class EditProfileViewModel: ViewModel {
     weak var coordinator: InfoCoordinator?
     private let userInfo: ProfileEntity
     private let userAPIManager = UserAPIManager.shared
-    private let profileRepository: ProfileRepository
+    private let profileUseCase: ProfileUseCase
     var disposeBag = DisposeBag()
     
     init(
         coordinator: InfoCoordinator?,
-        profileRepository: ProfileRepository,
+        profileUseCase: ProfileUseCase,
         userInfo: ProfileEntity
     ) {
         self.coordinator = coordinator
-        self.profileRepository = profileRepository
+        self.profileUseCase = profileUseCase
         self.userInfo = userInfo
     }
     
@@ -94,7 +94,7 @@ final class EditProfileViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, login in
                 owner
-                    .profileRepository
+                    .profileUseCase
                     .updateMyProfile(request: .init(nick: login.0 + " / " + login.1,
                                                     phoneNum: "",
                                                     birthDay: nil,

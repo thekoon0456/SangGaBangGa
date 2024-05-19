@@ -22,12 +22,10 @@ final class FeedCoordinator: Coordinator {
     }
     
     func start() {
-        let postRepository = PostRepositoryImpl()
-        let likeRepository = LikeRepositoryImpl()
         let vm = FeedViewModel(
             coordinator: self,
-            postRepository: postRepository,
-            likeRepository: likeRepository
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository())
         )
         let vc = FeedViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
@@ -38,22 +36,21 @@ final class FeedCoordinator: Coordinator {
     
     func pushToPost() {
         let postRepository = PostRepositoryImpl()
-        let vm = PostViewModel(coordinator: self, postRepository: postRepository)
+        let vm = PostViewModel(
+            coordinator: self,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository())
+        )
         let vc = PostViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     
     func pushToDetail(data: ContentEntity) {
-        let postRepository = PostRepositoryImpl()
-        let commentRepository = CommentRepositoryImpl()
-        let likeRepository = LikeRepositoryImpl()
-        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = DetailFeedViewModel(
             coordinator: self,
-            postRepository: postRepository,
-            commentRepository: commentRepository,
-            likeRepository: likeRepository,
-            paymentsRepository: paymentsRepository,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
+            paymentsUseCase: PaymentsUseCaseImpl(paymentsRepository: makePaymentsRepository()),
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)
@@ -65,7 +62,7 @@ final class FeedCoordinator: Coordinator {
         let commentRepository = CommentRepositoryImpl()
         let vm = CommentViewModel(
             data: data,
-            commentRepository: commentRepository,
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
             commentsRelay: commentsRelay
         )
         let vc = CommentViewController(viewModel: vm)
@@ -79,5 +76,29 @@ extension FeedCoordinator: CoordinatorDelegate {
     func didFinish(childCoordinator: Coordinator) {
         self.navigationController.popToRootViewController(animated: false)
         self.finish()
+    }
+}
+
+extension FeedCoordinator {
+    
+    private func makePostRepository() -> PostRepository {
+        //        #if DEBUG
+        //        if FakeRepositoryEnvironment.useFakeRepository {
+        //            return FakePostRepository()
+        //        }
+        //        #endif
+        return PostRepositoryImpl()
+    }
+    
+    private func makeLikeRepository() -> LikeRepository {
+        return LikeRepositoryImpl()
+    }
+    
+    private func makePaymentsRepository() -> PaymentsRepository {
+        return PaymentsRepositoryImpl()
+    }
+    
+    private func makeCommentsRepository() -> CommentRepository {
+        return CommentRepositoryImpl()
     }
 }
