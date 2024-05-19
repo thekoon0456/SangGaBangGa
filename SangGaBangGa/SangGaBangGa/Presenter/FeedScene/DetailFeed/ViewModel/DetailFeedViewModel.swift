@@ -29,26 +29,26 @@ final class DetailFeedViewModel: ViewModel {
     }
     
     private weak var coordinator: FeedCoordinator?
-    private let postRepository: PostRepository
-    private let commentRepository: CommentRepository
-    private let likeRepository: LikeRepository
-    private let paymentsRepository: PaymentsAPIRepository
+    private let postUseCase: PostUseCase
+    private let commentUseCase: CommentUseCase
+    private let likeUseCase: LikeUseCase
+    private let paymentsUseCase: PaymentsUseCase
     private let paymentsService = PaymentsService()
     private let data: ContentEntity
     var disposeBag = DisposeBag()
     
     init(coordinator: FeedCoordinator,
-         postRepository: PostRepository,
-         commentRepository: CommentRepository,
-         likeRepository: LikeRepository,
-         paymentsRepository: PaymentsAPIRepository,
+         postUseCase: PostUseCase,
+         commentUseCase: CommentUseCase,
+         likeUseCase: LikeUseCase,
+         paymentsUseCase: PaymentsUseCase,
          data: ContentEntity
     ) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
-        self.commentRepository = commentRepository
-        self.likeRepository = likeRepository
-        self.paymentsRepository = paymentsRepository
+        self.postUseCase = postUseCase
+        self.commentUseCase = commentUseCase
+        self.likeUseCase = likeUseCase
+        self.paymentsUseCase = paymentsUseCase
         self.data = data
         print("data:", data)
     }
@@ -64,7 +64,7 @@ final class DetailFeedViewModel: ViewModel {
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postRepository.readPost(queryID: owner.data.postID)
+                owner.postUseCase.readPost(queryID: owner.data.postID)
             }
             .subscribe(with: self) { owner, value in
                 data.accept(value)
@@ -79,9 +79,9 @@ final class DetailFeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 if value == true {
-                    owner.likeRepository.postLike(queryID: owner.data.postID, status: false)
+                    owner.likeUseCase.postLike(queryID: owner.data.postID, status: false)
                 } else {
-                    owner.likeRepository.postLike(queryID: owner.data.postID, status: true)
+                    owner.likeUseCase.postLike(queryID: owner.data.postID, status: true)
                 }
             }
             .subscribe { value in
@@ -123,7 +123,7 @@ final class DetailFeedViewModel: ViewModel {
             }
             .withUnretained(self)
             .flatMap{ owner, request in
-                owner.paymentsRepository.validation(request: request)
+                owner.paymentsUseCase.validation(request: request)
             }
             .asDriver(onErrorJustReturn: PaymentsValidationEntity.defaultEntity())
             .drive(with: self) { owner, validation in

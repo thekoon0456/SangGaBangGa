@@ -12,7 +12,7 @@ import RxSwift
 
 protocol LikeRepository {
     func postLike(queryID: String, status: Bool) -> Single<LikeEntity>
-    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity>
+    func readLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity>
 }
 
 final class LikeRepositoryImpl: LikeRepository {
@@ -24,7 +24,7 @@ final class LikeRepositoryImpl: LikeRepository {
             .map { $0.toEntity }
     }
     
-    func ReadLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity> {
+    func readLikePosts(query: LikePostQuery) -> Single<ReadPostsEntity> {
         apiService.readLikePosts(query: query)
             .map { $0.toEntity }
     }

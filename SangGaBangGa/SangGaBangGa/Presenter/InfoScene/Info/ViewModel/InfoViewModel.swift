@@ -28,25 +28,25 @@ final class InfoViewModel: ViewModel {
     }
     
     weak var coordinator: InfoCoordinator?
-    private let postRepository: PostRepository
-    private let likeRepository: LikeRepository
-    private let profileRepository: ProfileRepository
-    private let paymentsRepository: PaymentsAPIRepository
-    private let paymentsService = PaymentsService()
+    private let postUseCase: PostUseCase
+    private let likeUseCase: LikeUseCase
+    private let profileUseCase: ProfileUseCase
+    private let paymentsUseCase: PaymentsUseCase
+//    private let paymentsService = PaymentsService()
     var disposeBag = DisposeBag()
     
     init(
         coordinator: InfoCoordinator,
-        postRepository: PostRepository,
-        likeRepository: LikeRepository,
-        profileRepository: ProfileRepository,
-        paymentsRepository: PaymentsAPIRepository
+        postUseCase: PostUseCase,
+        likeUseCase: LikeUseCase,
+        profileUseCase: ProfileUseCase,
+        paymentsUseCase: PaymentsUseCase
     ) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
-        self.likeRepository = likeRepository
-        self.profileRepository = profileRepository
-        self.paymentsRepository = paymentsRepository
+        self.postUseCase = postUseCase
+        self.likeUseCase = likeUseCase
+        self.profileUseCase = profileUseCase
+        self.paymentsUseCase = paymentsUseCase
     }
     
     func transform(_ input: Input) -> Output {
@@ -60,7 +60,7 @@ final class InfoViewModel: ViewModel {
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.profileRepository.getMyProfile()
+                owner.profileUseCase.getMyProfile()
             }
             .do { value in
                 userProfileRelay.accept(value)
@@ -82,11 +82,11 @@ final class InfoViewModel: ViewModel {
             .flatMap { owner, index in
                 switch index.1 {
                 case 0:
-                    let posts = owner.likeRepository.ReadLikePosts(query: .init(next: "",
+                    let posts = owner.likeUseCase.readLikePosts(query: .init(next: "",
                                                                                 limit: APISetting.limit))
                     return posts.map { $0.data }
                 case 1:
-                    let posts = owner.postRepository.readUserPosts(queryID: userProfileRelay.value.userID,
+                    let posts = owner.postUseCase.readUserPosts(queryID: userProfileRelay.value.userID,
                                                                    query: ReadPostsQuery(next: "",
                                                                                          limit: APISetting.limit,
                                                                                          productID: APISetting.productID,
@@ -128,7 +128,7 @@ final class InfoViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 owner
-                    .likeRepository
+                    .likeUseCase
                     .postLike(queryID: dataRelay.value[value.0].postID, status: value.1)
                     .catch { error in
                         print(error)
@@ -157,14 +157,14 @@ final class InfoViewModel: ViewModel {
     }
     
     func paymentsContentsSingle() -> Single<[ContentEntity]> {
-        return paymentsRepository.readMyPayments()
+        return paymentsUseCase.readMyPayments()
             .asObservable()
             .map { payments in
                 Set(payments.map { $0.postID })
             }
             .flatMap { ids in
                 Observable.combineLatest(ids.map { id in
-                    self.postRepository.readPost(queryID: id)
+                    self.postUseCase.readPost(queryID: id)
                         .asObservable()
                         .flatMap {
                             Observable.just($0)

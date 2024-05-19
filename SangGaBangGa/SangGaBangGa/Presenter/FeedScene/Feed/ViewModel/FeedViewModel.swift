@@ -29,19 +29,19 @@ final class FeedViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: FeedCoordinator?
-    private let postRepository: PostRepository
-    private let likeRepository: LikeRepository
+    private let postUseCase: PostUseCase
+    private let likeUseCase: LikeUseCase
     private let userAPIManager = UserAPIManager.shared
     var disposeBag = DisposeBag()
     
     init(
         coordinator: FeedCoordinator?,
-        postRepository: PostRepository,
-        likeRepository: LikeRepository
+        postUseCase: PostUseCase,
+        likeUseCase: LikeUseCase
     ) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
-        self.likeRepository = likeRepository
+        self.postUseCase = postUseCase
+        self.likeUseCase = likeUseCase
     }
     
     func transform(_ input: Input) -> Output {
@@ -61,7 +61,7 @@ final class FeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
-                    .postRepository
+                    .postUseCase
                     .readPosts(query: .init(next: nextCursorRelay.value,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID,
@@ -102,7 +102,7 @@ final class FeedViewModel: ViewModel {
                       nextCursor == lastData.postID else {
                     return Single<ReadPostsEntity>.never()
                 }
-                return owner.postRepository.readPosts(query: .init(next: nextCursor,
+                return owner.postUseCase.readPosts(query: .init(next: nextCursor,
                                                                    limit: APISetting.limit,
                                                                    productID: APISetting.productID,
                                                                    hashTag: nil))
@@ -126,7 +126,7 @@ final class FeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 owner
-                    .likeRepository
+                    .likeUseCase
                     .postLike(queryID: dataRelay.value[value.0].postID, status: value.1)
                     .catch { error in
                         print(error)
@@ -156,7 +156,7 @@ final class FeedViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 owner
-                    .postRepository
+                    .postUseCase
                     .readHashtagPosts(query: .init(next: nextCursorRelay.value,
                                                    limit: APISetting.limit,
                                                    productID: APISetting.productID,

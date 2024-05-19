@@ -27,22 +27,22 @@ final class MapDetailViewModel: ViewModel {
     
     private weak var coordinator: MapCoordinator?
     private let data: ContentEntity
-    private let postRepository: PostRepository
-    private let commentRepository: CommentRepository
-    private let likeRepository: LikeRepository
+    private let postUseCase: PostUseCase
+    private let commentUseCase: CommentUseCase
+    private let likeUseCase: LikeUseCase
     var disposeBag = DisposeBag()
     
     init(
         coordinator: MapCoordinator,
-        postRepository: PostRepository,
-        commentRepository: CommentRepository,
-        likeRepository: LikeRepository,
+        postUseCase: PostUseCase,
+        commentUseCase: CommentUseCase,
+        likeUseCase: LikeUseCase,
         data: ContentEntity
     ) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
-        self.commentRepository = commentRepository
-        self.likeRepository = likeRepository
+        self.postUseCase = postUseCase
+        self.commentUseCase = commentUseCase
+        self.likeUseCase = likeUseCase
         self.data = data
         print("data:", data)
     }
@@ -57,7 +57,7 @@ final class MapDetailViewModel: ViewModel {
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.postRepository.readPost(queryID: owner.data.postID)
+                owner.postUseCase.readPost(queryID: owner.data.postID)
             }
             .subscribe { value in
                 data.accept(value)
@@ -79,9 +79,9 @@ final class MapDetailViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 if value == true {
-                    owner.likeRepository.postLike(queryID: owner.data.postID, status: false)
+                    owner.likeUseCase.postLike(queryID: owner.data.postID, status: false)
                 } else {
-                    owner.likeRepository.postLike(queryID: owner.data.postID, status: true)
+                    owner.likeUseCase.postLike(queryID: owner.data.postID, status: true)
                 }
             }
             .subscribe { value in

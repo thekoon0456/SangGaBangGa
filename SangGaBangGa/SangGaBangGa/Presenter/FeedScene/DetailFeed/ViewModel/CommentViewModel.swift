@@ -24,17 +24,17 @@ final class CommentViewModel: ViewModel {
     // MARK: - Properties
     
     var disposeBag = DisposeBag()
-    private let commentRepository: CommentRepository
+    private let commentUseCase: CommentUseCase
     private let data: ContentEntity
     private let commentsRelay: BehaviorRelay<[PostCommentEntity]>
     
     // MARK: - Lifecycles
     
     init(data: ContentEntity,
-         commentRepository: CommentRepository,
+         commentUseCase: CommentUseCase,
          commentsRelay: BehaviorRelay<[PostCommentEntity]>
     ) {
-        self.commentRepository = commentRepository
+        self.commentUseCase = commentUseCase
         self.data = data
         self.commentsRelay = commentsRelay
     }
@@ -48,7 +48,7 @@ final class CommentViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, value in
                 owner
-                    .commentRepository
+                    .commentUseCase
                     .postComments(queryID: owner.data.postID, content: value)
                     .catchAndReturn(PostCommentEntity.defaultData())
             }
@@ -63,7 +63,7 @@ final class CommentViewModel: ViewModel {
             .cellDeleted
             .subscribe(with: self) { owner, index in
                 var comments = owner.commentsRelay.value
-                owner.commentRepository.deleteComment(queryID: owner.data.postID,
+                owner.commentUseCase.deleteComment(queryID: owner.data.postID,
                                                       commentID: comments[index.row].commentID)
                 comments.remove(at: index.row)
                 owner.commentsRelay.accept(comments)

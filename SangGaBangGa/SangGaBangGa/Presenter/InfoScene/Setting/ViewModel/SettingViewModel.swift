@@ -25,12 +25,13 @@ final class SettingViewModel: ViewModel {
     
     weak var coordinator: InfoCoordinator?
     var disposeBag = DisposeBag()
-    private let profileRepository: ProfileRepository
+    private let profileUseCase: ProfileUseCase
     private let userAPIManager = UserAPIManager.shared
     
-    init(coordinator: InfoCoordinator, profileRepository: ProfileRepository) {
+    init(coordinator: InfoCoordinator,
+         profileUseCase: ProfileUseCase) {
         self.coordinator = coordinator
-        self.profileRepository = profileRepository
+        self.profileUseCase = profileUseCase
     }
     
     func transform(_ input: Input) -> Output {
@@ -42,7 +43,7 @@ final class SettingViewModel: ViewModel {
             .viewWillAppear
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.profileRepository.getMyProfile()
+                owner.profileUseCase.getMyProfile()
             }
             .subscribe { value in
                 userProfileRelay.accept(value)

@@ -28,12 +28,13 @@ final class MapViewModel: ViewModel {
     // MARK: - Properties
     
     weak var coordinator: MapCoordinator?
-    private let postRepository: PostRepository
+    private let postUseCase: PostUseCase
     var disposeBag = DisposeBag()
     
-    init(coordinator: MapCoordinator, postRepository: PostRepository) {
+    init(coordinator: MapCoordinator,
+         postUseCase: PostUseCase) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
+        self.postUseCase = postUseCase
     }
     
     func transform(_ input: Input) -> Output {
@@ -80,7 +81,7 @@ final class MapViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
-                    .postRepository
+                    .postUseCase
                     .readPosts(query: .init(next: nil,
                                             limit: APISetting.limit,
                                             productID: APISetting.productID,

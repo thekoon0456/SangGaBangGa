@@ -34,13 +34,14 @@ final class PostViewModel: ViewModel {
     }
     
     private weak var coordinator: FeedCoordinator?
-    private let postRepository: PostRepository
+    private let postUseCase: PostUseCase
 
     var disposeBag = DisposeBag()
     
-    init(coordinator: FeedCoordinator, postRepository: PostRepository) {
+    init(coordinator: FeedCoordinator,
+         postUseCase: PostUseCase) {
         self.coordinator = coordinator
-        self.postRepository = postRepository
+        self.postUseCase = postUseCase
     }
     
     func transform(_ input: Input) -> Output {
@@ -155,7 +156,7 @@ final class PostViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, data in
                 owner
-                    .postRepository
+                    .postUseCase
                     .uploadImages(query: .init(datas: data))
                     .catch { error in
                         return Single<UploadImageEntity>.never()
@@ -164,7 +165,7 @@ final class PostViewModel: ViewModel {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner
-                    .postRepository
+                    .postUseCase
                     .uploadContents(images: response.files, query: request)
                     .catch { error in
                         DispatchQueue.main.async {
