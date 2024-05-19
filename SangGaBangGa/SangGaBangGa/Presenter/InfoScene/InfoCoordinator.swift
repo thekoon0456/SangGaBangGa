@@ -19,24 +19,21 @@ final class InfoCoordinator: Coordinator {
     }
     
     func start() {
-        let postRepository = PostRepositoryImpl()
-        let likeRepository = LikeRepositoryImpl()
-        let profileRepository = ProfileRepositoryImpl()
-        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = InfoViewModel(
             coordinator: self,
-            postRepository: postRepository,
-            likeRepository: likeRepository,
-            profileRepository: profileRepository,
-            paymentsRepository: paymentsRepository
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
+            profileUseCase: ProfileUseCaseImpl(profileRepository: makeProfileRepository()),
+            paymentsUseCase: PaymentsUseCaseImpl(paymentsRepository: makePaymentsRepository())
         )
+        
         let vc = InfoViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: .ssUser,
                                      selectedImage: .ssUserSelected)
         navigationController.pushViewController(vc, animated: true)
     }
-    
+
     func pushToDetail(data: ContentEntity) {
         let postRepository = PostRepositoryImpl()
         let commentRepository = CommentRepositoryImpl()
@@ -44,10 +41,10 @@ final class InfoCoordinator: Coordinator {
         let paymentsRepository = PaymentsRepositoryImpl()
         let vm = DetailFeedViewModel(
             coordinator: FeedCoordinator(navigationController: self.navigationController),
-            postRepository: postRepository,
-            commentRepository: commentRepository,
-            likeRepository: likeRepository,
-            paymentsRepository: paymentsRepository,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
+            paymentsUseCase: PaymentsUseCaseImpl(paymentsRepository: makePaymentsRepository()),
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)
@@ -55,17 +52,18 @@ final class InfoCoordinator: Coordinator {
     }
     
     func pushToSetting() {
-        let profileRepository = ProfileRepositoryImpl()
-        let vm = SettingViewModel(coordinator: self, profileRepository: profileRepository)
+        let vm = SettingViewModel(
+            coordinator: self,
+            profileUseCase: ProfileUseCaseImpl(profileRepository: makeProfileRepository())
+        )
         let vc = SettingViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
     }
     
     func pushTo(userInfo: ProfileEntity) {
-        let profileRepository = ProfileRepositoryImpl()
         let vm = EditProfileViewModel(
             coordinator: self,
-            profileRepository: profileRepository,
+            profileUseCase: ProfileUseCaseImpl(profileRepository: makeProfileRepository()),
             userInfo: userInfo)
         let vc = EditProfileViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
@@ -81,5 +79,35 @@ extension InfoCoordinator: CoordinatorDelegate {
     func didFinish(childCoordinator: Coordinator) {
         self.navigationController.popToRootViewController(animated: false)
         self.finish()
+    }
+}
+
+// MARK: - Repository
+
+extension InfoCoordinator {
+    
+    private func makePostRepository() -> PostRepository {
+        //        #if DEBUG
+        //        if FakeRepositoryEnvironment.useFakeRepository {
+        //            return FakePostRepository()
+        //        }
+        //        #endif
+        return PostRepositoryImpl()
+    }
+    
+    private func makeLikeRepository() -> LikeRepository {
+        return LikeRepositoryImpl()
+    }
+    
+    private func makeProfileRepository() -> ProfileRepository {
+        return ProfileRepositoryImpl()
+    }
+    
+    private func makePaymentsRepository() -> PaymentsRepository {
+        return PaymentsRepositoryImpl()
+    }
+    
+    private func makeCommentsRepository() -> CommentRepository {
+        return CommentRepositoryImpl()
     }
 }
