@@ -20,8 +20,10 @@ final class MapCoordinator: Coordinator {
     }
     
     func start() {
-        let postRepository = PostRepositoryImpl()
-        let vm = MapViewModel(coordinator: self, postRepository: postRepository)
+        let vm = MapViewModel(
+            coordinator: self,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository())
+        )
         let vc = MapViewController(viewModel: vm)
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: "map"),
@@ -30,16 +32,12 @@ final class MapCoordinator: Coordinator {
     }
     
     func pushToDetail(data: ContentEntity) {
-        let postRepository = PostRepositoryImpl()
-        let commentRepository = CommentRepositoryImpl()
-        let likeRepository = LikeRepositoryImpl()
-        let paymentsRepository = PaymentsRepositoryImpl()
         let vm = DetailFeedViewModel(
             coordinator: FeedCoordinator(navigationController: self.navigationController),
-            postRepository: postRepository,
-            commentRepository: commentRepository,
-            likeRepository: likeRepository,
-            paymentsRepository: paymentsRepository,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
+            paymentsUseCase: PaymentsUseCaseImpl(paymentsRepository: makePaymentsRepository()),
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)
@@ -53,9 +51,9 @@ final class MapCoordinator: Coordinator {
         
         let vm = MapDetailViewModel(
             coordinator: self,
-            postRepository: postRepository,
-            commentRepository: commentRepository,
-            likeRepository: likeRepository,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
             data: data
         )
         let vc = MapDetailViewController(viewModel: vm)
@@ -66,20 +64,39 @@ final class MapCoordinator: Coordinator {
     
     func pushToMapDetail(data: ContentEntity) {
         navigationController.dismiss(animated: false)
-        let postRepository = PostRepositoryImpl()
-        let commentRepository = CommentRepositoryImpl()
-        let likeRepository = LikeRepositoryImpl()
-        let paymentsRepository = PaymentsRepositoryImpl()
-
         let vm = DetailFeedViewModel(
             coordinator: feedCoordinator,
-            postRepository: postRepository,
-            commentRepository: commentRepository,
-            likeRepository: likeRepository,
-            paymentsRepository: paymentsRepository,
+            postUseCase: PostUseCaseImpl(postRepository: makePostRepository()),
+            commentUseCase: CommentUseCaseImpl(commentRepository: makeCommentsRepository()),
+            likeUseCase: LikeUseCaseImpl(likeRepository: makeLikeRepository()),
+            paymentsUseCase: PaymentsUseCaseImpl(paymentsRepository: makePaymentsRepository()),
             data: data
         )
         let vc = DetailFeedViewController(viewModel: vm)
         navigationController.pushViewController(vc, animated: true)
+    }
+}
+
+extension MapCoordinator {
+    
+    private func makePostRepository() -> PostRepository {
+        //        #if DEBUG
+        //        if FakeRepositoryEnvironment.useFakeRepository {
+        //            return FakePostRepository()
+        //        }
+        //        #endif
+        return PostRepositoryImpl()
+    }
+    
+    private func makeLikeRepository() -> LikeRepository {
+        return LikeRepositoryImpl()
+    }
+    
+    private func makePaymentsRepository() -> PaymentsRepository {
+        return PaymentsRepositoryImpl()
+    }
+    
+    private func makeCommentsRepository() -> CommentRepository {
+        return CommentRepositoryImpl()
     }
 }
