@@ -46,8 +46,10 @@ final class MainFeedView: BaseView {
     
     let categoryLabel = PaddingLabel().then {
         $0.font =  SSFont.medium12
-        $0.textColor = .white
-        $0.backgroundColor = .tintColor
+        $0.textColor = .accent
+//        $0.backgroundColor = .tintColor
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.accent.cgColor
         $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
         $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)

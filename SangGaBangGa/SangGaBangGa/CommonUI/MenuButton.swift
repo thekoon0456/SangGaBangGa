@@ -49,7 +49,9 @@ final class SSMenuButton: UIButton {
         clipsToBounds = true
         showsMenuAsPrimaryAction = true
         addSubviews(buttonLabel, chevronImageView)
-        backgroundColor = .second
+//        backgroundColor = .second
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.accent.cgColor
         
         let menus: [String]  = menus
         

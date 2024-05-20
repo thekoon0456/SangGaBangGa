@@ -24,16 +24,18 @@ final class SSButton: UIButton {
     
     private func configureUI(buttonTitle: String, color: UIColor) {
         setTitle(buttonTitle, for: .normal)
-        setTitleColor(.white, for: .normal)
-        setTitleColor(.accent, for: .selected)
+        setTitleColor(.accent, for: .normal)
+        setTitleColor(.white, for: .selected)
         titleLabel?.font = SSFont.medium12
         layer.cornerRadius = 10
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.accent.cgColor
         clipsToBounds = true
         setBackgroundColor()
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
     
     func setBackgroundColor() {
-        backgroundColor = isSelected ? .second : .accent
+        backgroundColor = isSelected ? .accent : .white
     }
 }
