@@ -8,7 +8,6 @@
 import MapKit
 import UIKit
 
-import MarqueeLabel
 import Kingfisher
 
 final class SSAnnotationView: MKAnnotationView {
@@ -38,13 +37,10 @@ final class SSAnnotationView: MKAnnotationView {
         $0.textAlignment = .center
     }
     
-    let priceLabel = MarqueeLabel().then {
+    let priceLabel = UILabel().then {
         $0.font = SSFont.light11
         $0.textColor = .label
-        $0.type = .leftRight
-        $0.animationCurve = .easeInOut
-        $0.trailingBuffer = 4
-        $0.speed = .duration(4)
+        $0.numberOfLines = 2
     }
     
     lazy var imageView = UIImageView().then {
@@ -83,12 +79,12 @@ final class SSAnnotationView: MKAnnotationView {
         
         shadowView.snp.makeConstraints { make in
             make.width.equalTo(64)
-            make.height.equalTo(84)
+            make.height.equalTo(104)
         }
         
         backgroundView.snp.makeConstraints { make in
             make.width.equalTo(64)
-            make.height.equalTo(84)
+            make.height.equalTo(104)
         }
         
         stackView.snp.makeConstraints { make in
@@ -107,8 +103,11 @@ final class SSAnnotationView: MKAnnotationView {
         super.prepareForDisplay()
         guard let annotation = annotation as? SSAnnotation else { return }
         titleLabel.text = annotation.title
-        priceLabel.text = annotation.subtitle
         imageView.kf.setSeSACImage(input: APIKey.baseURL + "/v1/" + (annotation.data.files.first ?? ""))
         setNeedsLayout()
+        
+        guard let deposit = annotation.subtitle?.split(separator: " / ").first,
+              let price = annotation.subtitle?.split(separator: " / ").last else { return }
+        priceLabel.text = "보: \(deposit)\n월: \(price)"
     }
 }

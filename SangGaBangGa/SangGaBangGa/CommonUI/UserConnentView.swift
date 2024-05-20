@@ -85,7 +85,9 @@ final class UserConnectView: BaseView {
     
     override func configureView() {
         super.configureView()
-        self.backgroundColor = .second
+//        self.backgroundColor = .second
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.accent.cgColor
         self.layer.cornerRadius = 12
         self.clipsToBounds = true
     }

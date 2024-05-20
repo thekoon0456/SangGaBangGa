@@ -203,7 +203,7 @@ extension MapViewController: MKMapViewDelegate {
         if let customAnnotation = annotation as? SSAnnotation,
            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: SSAnnotationView.identifier) {
             annotationView.annotation = customAnnotation
-            annotationView.frame = .init(x: 0, y: 0, width: 70, height: 100)
+            annotationView.frame = .init(x: 0, y: 0, width: 70, height: 120)
             return annotationView
         }
            

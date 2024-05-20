@@ -48,8 +48,9 @@ final class DetailFeedView: BaseView {
     
     let categoryLabel = PaddingLabel().then {
         $0.font =  SSFont.medium12
-        $0.textColor = .white
-        $0.backgroundColor = .tintColor
+        $0.textColor = .accent
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.accent.cgColor
         $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
         $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)
@@ -66,7 +67,7 @@ final class DetailFeedView: BaseView {
     }
     
     let addressLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
+        $0.font = SSFont.medium14
     }
     
     private let priceTitleLabel = UILabel().then {
@@ -75,7 +76,7 @@ final class DetailFeedView: BaseView {
     }
     
     let priceLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
+        $0.font = SSFont.medium14
     }
     
     private let spaceTitleLabel = UILabel().then {
@@ -84,7 +85,7 @@ final class DetailFeedView: BaseView {
     }
     
     let spaceLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
+        $0.font = SSFont.medium14
     }
     
     private let dateTitleLabel = UILabel().then {
@@ -93,7 +94,7 @@ final class DetailFeedView: BaseView {
     }
     
     let dateLabel = UILabel().then {
-        $0.font = SSFont.semiBold14
+        $0.font = SSFont.medium14
     }
     
     private let contentTitle = UILabel().then {
