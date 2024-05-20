@@ -33,9 +33,9 @@ final class InfoFeedCell: RxBaseCollectionViewCell {
         $0.tintColor = .tintColor
     }
     
-    let heartCountLabel = UILabel().then {
-        $0.font = SSFont.light11
-    }
+//    let heartCountLabel = UILabel().then {
+//        $0.font = SSFont.light11
+//    }
     
     let commentButton = UIButton().then {
         $0.setImage(SSIcon.message?
@@ -45,14 +45,15 @@ final class InfoFeedCell: RxBaseCollectionViewCell {
         $0.tintColor = .tintColor
     }
     
-    let commentCountLabel = UILabel().then {
-        $0.font = SSFont.light11
-    }
+//    let commentCountLabel = UILabel().then {
+//        $0.font = SSFont.light11
+//    }
     
     let categoryLabel = PaddingLabel().then {
         $0.font =  SSFont.medium12
-        $0.textColor = .white
-        $0.backgroundColor = .tintColor
+        $0.textColor = .accent
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.accent.cgColor
         $0.layer.cornerRadius = 4
         $0.clipsToBounds = true
         $0.padding = .init(top: 16, left: 8, bottom: 16, right: 8)
@@ -61,6 +62,7 @@ final class InfoFeedCell: RxBaseCollectionViewCell {
     let titleLabel = MarqueeLabel().then {
         $0.font = SSFont.semiBold16
         $0.numberOfLines = 1
+        $0.trailingBuffer = 12
     }
     
     let priceLabel = UILabel().then {
@@ -96,8 +98,10 @@ final class InfoFeedCell: RxBaseCollectionViewCell {
 
     override func configureHierarchy() {
         super.configureHierarchy()
-        contentView.addSubviews(imageView, heartButton, heartCountLabel,
-                                commentButton, commentCountLabel,
+        contentView.addSubviews(imageView, heartButton,
+//                                heartCountLabel,
+                                commentButton,
+//                                commentCountLabel,
                                 categoryLabel, titleLabel, priceLabel)
     }
     
@@ -120,8 +124,8 @@ extension InfoFeedCell {
         categoryLabel.text = data.category
         titleLabel.text = data.title
         priceLabel.text = data.price
-        commentCountLabel.text = String(data.comments.count)
-        heartCountLabel.text = String(data.likes.count)
+//        commentCountLabel.text = String(data.comments.count)
+//        heartCountLabel.text = String(data.likes.count)
         guard let userID = UserDefaultsManager.shared.userData.userID else { return }
         heartButton.isSelected = data.likes.contains(userID) ? true : false
         commentButton.isSelected = data.comments.contains { $0.creator.userID == userID } ? true : false
@@ -134,27 +138,27 @@ extension InfoFeedCell {
         }
         
         heartButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom)
+            make.centerY.equalTo(categoryLabel)
             make.trailing.equalTo(commentButton.snp.leading).offset(-12)
             make.size.equalTo(30)
         }
         
-        heartCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartButton.snp.bottom)
-            make.centerX.equalTo(heartButton)
-        }
+//        heartCountLabel.snp.makeConstraints { make in
+//            make.top.equalTo(heartButton.snp.bottom)
+//            make.centerX.equalTo(heartButton)
+//        }
         
         commentButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom)
+            make.centerY.equalTo(categoryLabel)
             make.trailing.equalToSuperview().offset(-4)
             make.size.equalTo(30)
         }
         
-        commentCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(commentButton.snp.bottom)
-            make.centerX.equalTo(commentButton)
-            make.centerY.equalTo(heartCountLabel)
-        }
+//        commentCountLabel.snp.makeConstraints { make in
+//            make.top.equalTo(commentButton.snp.bottom)
+//            make.centerX.equalTo(commentButton)
+//            make.centerY.equalTo(heartCountLabel)
+//        }
         
         categoryLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(12)
@@ -163,7 +167,7 @@ extension InfoFeedCell {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(heartCountLabel.snp.bottom)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(4)
             make.trailing.equalToSuperview().offset(-4)
             make.height.equalTo(24)

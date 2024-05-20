@@ -17,7 +17,7 @@ final class UserProfileView: BaseView {
     lazy var profileImageView = UIImageView().then {
         $0.image = .ssUser
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 20
+        $0.layer.cornerRadius = 30
         $0.clipsToBounds = true
         $0.layer.borderColor = UIColor.accent.cgColor
         $0.layer.borderWidth = 2
@@ -48,9 +48,9 @@ final class UserProfileView: BaseView {
     override func configureLayout() {
         super.configureLayout()
         profileImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(8)
             make.centerY.equalToSuperview()
-            make.size.equalTo(40)
+            make.size.equalTo(60)
         }
         
         userNicknameLabel.snp.makeConstraints { make in
@@ -62,8 +62,8 @@ final class UserProfileView: BaseView {
     
     override func configureView() {
         super.configureView()
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.accent.cgColor
+//        self.layer.borderWidth = 1
+//        self.layer.borderColor = UIColor.accent.cgColor
         self.layer.cornerRadius = 12
         self.clipsToBounds = true
     }
