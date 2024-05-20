@@ -168,7 +168,6 @@ extension MapViewController {
     
     func setCurrentRegionAndAnnotation() {
         mapView.setRegion(locationManager.mapRegionRelay.value, animated: true)
-        setAnnotation(coordinate: locationManager.userLocationRelay.value)
     }
     
     func resetMapAnnotation() {
