@@ -115,6 +115,18 @@ final class FeedViewController: RxBaseViewController {
             }
             .disposed(by: disposeBag)
         
+        output
+            .selectedFilter
+            .drive(with: self) { owner, value in
+                owner.optionStackView.arrangedSubviews.forEach { view in
+                    if let view = view as? SSButton {
+                        view.isSelected = (view.titleLabel?.text! == value) ? true : false
+                        view.setBackgroundColor()
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
         allButton.rx.tap
             .withUnretained(self)
             .do { owner, _ in

@@ -24,6 +24,7 @@ final class FeedViewModel: ViewModel {
     
     struct Output {
         let feeds: Driver<[ContentEntity]>
+        let selectedFilter: Driver<String?>
     }
     
     // MARK: - Properties
@@ -50,6 +51,7 @@ final class FeedViewModel: ViewModel {
         let nextCursorRelay = BehaviorRelay<String?>(value: nil)
         let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
         let updateRelay = BehaviorRelay<Void>(value: ())
+        let selectedFilterRelay = BehaviorRelay<String?>(value: nil)
         
         Observable
             .combineLatest(
@@ -103,9 +105,9 @@ final class FeedViewModel: ViewModel {
                     return Single<ReadPostsEntity>.never()
                 }
                 return owner.postUseCase.readPosts(query: .init(next: nextCursor,
-                                                                   limit: APISetting.limit,
-                                                                   productID: APISetting.productID,
-                                                                   hashTag: nil))
+                                                                limit: APISetting.limit,
+                                                                productID: APISetting.productID,
+                                                                hashTag: nil))
             }
             .subscribe(with: self) { owner, value in
                 var data = dataRelay.value
@@ -153,9 +155,24 @@ final class FeedViewModel: ViewModel {
         
         input
             .filterHashTag
+            .do { value in
+                selectedFilterRelay.accept(value)
+            }
             .withUnretained(self)
             .flatMap { owner, value in
-                owner
+                guard let value else {
+                    return owner
+                        .postUseCase
+                        .readPosts(query: .init(next: nextCursorRelay.value,
+                                                limit: APISetting.limit,
+                                                productID: APISetting.productID,
+                                                hashTag: nil))
+                        .catch { error in
+                            print(error)
+                            return Single<ReadPostsEntity>.never()
+                        }
+                }
+                return owner
                     .postUseCase
                     .readHashtagPosts(query: .init(next: nextCursorRelay.value,
                                                    limit: APISetting.limit,
@@ -173,7 +190,8 @@ final class FeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(feeds: dataRelay.asDriver())
+        return Output(feeds: dataRelay.asDriver(),
+                      selectedFilter: selectedFilterRelay.asDriver())
     }
     
     func sortedComments(_ input: [PostCommentEntity]) -> [PostCommentEntity] {
