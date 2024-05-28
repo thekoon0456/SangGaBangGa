@@ -18,7 +18,8 @@ final class DetailFeedViewModel: ViewModel {
         let commentButtonTapped: ControlEvent<Void>
         let phoneButtonTapped: ControlEvent<Void>
         let paymentButtonTapped: ControlEvent<Void>
-        let ellipsisButtonTapped: ControlEvent<Void>
+        let editButtonTapped: Observable<Void>
+        let removeButtonTapped: Observable<Void>
     }
     
     struct Output {
@@ -27,6 +28,8 @@ final class DetailFeedViewModel: ViewModel {
         let heartCount: Driver<String>
         let comments: Driver<[PostCommentEntity]>
         let paymentDone: Driver<Void>
+        let editFeed: Driver<Void>
+        let removeFeed: Driver<Void>
     }
     
     private weak var coordinator: FeedCoordinator?
@@ -60,6 +63,8 @@ final class DetailFeedViewModel: ViewModel {
         let heartCount = BehaviorRelay(value: self.data.likes.count)
         let commentsRelay = BehaviorRelay<[PostCommentEntity]>(value: [])
         let paymentsRelay = PublishRelay<Void>()
+        let editRelay = PublishRelay<Void>()
+        let removeRelay = PublishRelay<Void>()
         
         input
             .viewWillAppear
@@ -134,11 +139,22 @@ final class DetailFeedViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        input
+            .removeButtonTapped
+            .asDriver(onErrorJustReturn: ())
+            .drive(with: self) { owner, _ in
+                owner.postUseCase.deletePost(queryID: data.value.postID)
+                owner.coordinator?.popViewController()
+            }
+            .disposed(by: disposeBag)
+        
         return Output(data: data.asDriver(onErrorJustReturn: ContentEntity.defaultData()),
                       heartButtonStatus: buttonStatus.asDriver(onErrorJustReturn: false),
                       heartCount: heartCount.map { String($0) }.asDriver(onErrorJustReturn: ""),
                       comments: commentsRelay.asDriver(onErrorJustReturn: []),
-                      paymentDone: paymentsRelay.asDriver(onErrorJustReturn: ()))
+                      paymentDone: paymentsRelay.asDriver(onErrorJustReturn: ()),
+                      editFeed: editRelay.asDriver(onErrorJustReturn: ()),
+                      removeFeed: removeRelay.asDriver(onErrorJustReturn: ()))
     }
     
     // MARK: - 댓글 sorted
@@ -162,6 +178,10 @@ final class DetailFeedViewModel: ViewModel {
            UIApplication.shared.canOpenURL(url as URL) {
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
+    }
+    
+    func showAlert(title: String, message: String, action: @escaping () -> Void) {
+        coordinator?.showAlert(title: title, message: message, action: action)
     }
 }
 

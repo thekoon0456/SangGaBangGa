@@ -20,9 +20,27 @@ final class DetailFeedViewController: RxBaseViewController {
     
     private let viewModel: DetailFeedViewModel
     private let baseView = DetailFeedView()
-    private let ellipsisButton = UIButton().then {
+    private let editRelay = PublishRelay<Void>()
+    private let removeRelay = PublishRelay<Void>()
+    
+    private lazy var ellipsisButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = .white
+        $0.showsMenuAsPrimaryAction = true
+        $0.menu = UIMenu(children: ["수정하기", "삭제하기"].map { title in
+            UIAction(title: title) { [weak self] _ in
+                guard let self else { return }
+                if title == "수정하기" {
+                    editRelay.accept(())
+                }
+                if title == "삭제하기" {
+                    viewModel.showAlert(title: "게시글 삭제",
+                                        message: "정말 삭제하시겠습니까?") {
+                        self.removeRelay.accept(())
+                    }
+                }
+            }
+        })
     }
     
     // MARK: - Lifecycles
@@ -53,7 +71,8 @@ final class DetailFeedViewController: RxBaseViewController {
                                               commentButtonTapped: baseView.commentButton.rx.tap,
                                               phoneButtonTapped: baseView.userConnectView.phoneButton.rx.tap,
                                               paymentButtonTapped: baseView.paymentButton.rx.tap,
-                                              ellipsisButtonTapped: ellipsisButton.rx.tap)
+                                              editButtonTapped: editRelay.asObservable(),
+                                              removeButtonTapped: removeRelay.asObservable())
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
