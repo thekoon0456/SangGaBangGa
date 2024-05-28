@@ -7,11 +7,9 @@
 <br>
 
 ## 📱스크린샷
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/16b60e03-f68c-4d49-b02e-600108fb8b86" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/37fc4767-5bae-423c-a13d-d0e3fff15ddd" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/5f2379c2-ee4e-4f54-b606-667ac9cc2217" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/77c36456-df23-4ac1-a680-c11791703b1e" width="150"></img>
-<img src="https://github.com/thekoon0456/SangGaBangGa/assets/106993057/5f6afb0a-405c-4a8d-a06b-601c6a99a2df" width="150"></img>
+<div align="center">
+<img src="https://github.com/thekoon0456/thekoon0456/assets/106993057/c53a4b1f-f456-407b-bf6e-c3f4742ca531" width="1000">
+</div>
 
 ## 📌 주요 기능
 - 이메일 회원가입, 로그인 기능 <br>
