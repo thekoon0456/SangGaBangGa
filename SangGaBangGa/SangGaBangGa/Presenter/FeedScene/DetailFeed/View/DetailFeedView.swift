@@ -18,6 +18,9 @@ final class DetailFeedView: BaseView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     lazy var imageScrollView = ImageScrollView()
+    private let ellipsisButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+    }
     
     let heartButton = UIButton().then {
         $0.setImage(SSIcon.heart?

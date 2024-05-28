@@ -10,5 +10,4 @@ import Foundation
 enum APISetting {
     static let limit = "10"
     static let productID = "SangbooSangzo"
-    
 }

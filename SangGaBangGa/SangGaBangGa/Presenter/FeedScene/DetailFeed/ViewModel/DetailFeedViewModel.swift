@@ -18,6 +18,7 @@ final class DetailFeedViewModel: ViewModel {
         let commentButtonTapped: ControlEvent<Void>
         let phoneButtonTapped: ControlEvent<Void>
         let paymentButtonTapped: ControlEvent<Void>
+        let ellipsisButtonTapped: ControlEvent<Void>
     }
     
     struct Output {

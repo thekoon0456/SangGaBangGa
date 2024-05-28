@@ -16,9 +16,14 @@ import Kingfisher
 
 final class DetailFeedViewController: RxBaseViewController {
     
-    private let viewModel: DetailFeedViewModel
+    // MARK: - Properties
     
+    private let viewModel: DetailFeedViewModel
     private let baseView = DetailFeedView()
+    private let ellipsisButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        $0.tintColor = .white
+    }
     
     // MARK: - Lifecycles
     
@@ -47,7 +52,8 @@ final class DetailFeedViewController: RxBaseViewController {
                                               heartButtonTapped: heartButtonTapped,
                                               commentButtonTapped: baseView.commentButton.rx.tap,
                                               phoneButtonTapped: baseView.userConnectView.phoneButton.rx.tap,
-                                              paymentButtonTapped: baseView.paymentButton.rx.tap)
+                                              paymentButtonTapped: baseView.paymentButton.rx.tap,
+                                              ellipsisButtonTapped: ellipsisButton.rx.tap)
         let output = viewModel.transform(input)
         
         output.data.drive(with: self) { owner, data in
@@ -124,6 +130,7 @@ final class DetailFeedViewController: RxBaseViewController {
     
     override func configureView() {
         super.configureView()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ellipsisButton)
     }
 }
 
