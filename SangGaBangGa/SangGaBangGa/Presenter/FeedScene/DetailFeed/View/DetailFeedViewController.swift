@@ -59,7 +59,8 @@ final class DetailFeedViewController: RxBaseViewController {
         output.data.drive(with: self) { owner, data in
             owner.baseView.configureViewData(data)
             owner.baseView.layoutIfNeeded()
-            owner.setAnnotaion(coordinate: data.coordinate, title: data.address)
+            owner.setAnnotation(coordinate: data.coordinate, title: data.address)
+            owner.ellipsisButton.isHidden = data.creator.userID != UserDefaultsManager.shared.userData.userID
         }
         .disposed(by: disposeBag)
         
@@ -103,7 +104,7 @@ final class DetailFeedViewController: RxBaseViewController {
     
     // MARK: - Configure
     
-    func setAnnotaion(coordinate: String?, title: String) {
+    func setAnnotation(coordinate: String?, title: String) {
         guard let latitude = Double(coordinate?.components(separatedBy: " / ").first ?? ""),
               let longitude = Double(coordinate?.components(separatedBy: " / ").last ?? "")
         else { return }
